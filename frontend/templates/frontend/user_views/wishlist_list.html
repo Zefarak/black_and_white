@@ -1,0 +1,67 @@
+{% extends 'frontend/user_views/dashboard.html' %}
+
+{% block profile_content %}
+    <div class="col-lg-9">
+        <div class="dashboard-right">
+            <div class="dashboard">
+                <div class="page-title">
+                    <h2>Wishlist</h2>
+                </div>
+                <div class="welcome-msg">
+                  <br />
+                </div>
+                <div class="box-account box-info">
+                    <div>
+                        <div class="box">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Προϊόν</th>
+                                                <th>Δες το</th>
+                                                <th>Παράγγειλέ το!</th>
+                                                <th>Διαγραφή </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for product in object_list %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ product }}</td>
+                                                        <td><a href="{{ product.get_absolute_url }}" class="btn btn-icon">Λεπτομεριες</a> </td>
+                                                        <td>{% if product.have_attr %}
+                                                            <a data-href="{% url 'ajax_add_product_modal' product.slug %}"
+                                                               data-toggle="modal"
+                                                               data-target="#add_product_modal"
+                                                               class="paction add-cart add_product_modal"
+                                                               title="Add to Cart"
+                                                            >
+                                                                <span>Προσθήκη Στο Καλάθι</span>
+                                                            </a>
+                                                        {% else %}
+                                                            <a href="{% url 'add_to_cart' product.slug %}" class="paction add-cart" title="Add to Cart">
+                                                                <span>Προσθήκη Στο Καλάθι</span>
+                                                            </a>
+                                                        {% endif %}
+                                                        </td>
+                                                        <td><a href='{% url "remove_product_wishlist" product.slug %}' class='btn btn-warning'><i class='fa fa-remove'></i></a>
+                                                {% empty %}
+                                                    <tr><td colspan="5">Δε έχετε προσθέσει Προϊόντα στην Wishlist</td></tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

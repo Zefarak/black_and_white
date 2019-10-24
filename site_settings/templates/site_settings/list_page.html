@@ -1,0 +1,113 @@
+{% extends 'site_settings/dashboard.html' %} {% load render_table from django_tables2 %}
+
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>{{ page_title }}</h5>
+                                        <br><br>
+                                        <a href="{{ create_url }}?next={{ request.get_full_path|urlencode }}" class="btn btn-info btn-round">Δημιουργία</a>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive" id="result_table">
+                                            {% render_table queryset_table %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-2">
+                                 <div class="card">
+                                     <div class="card-header">
+                                         <a href="{{ back_url }}" class="btn btn-warning btn-round" style="float: right;">Επιστροφή</a>
+                                     </div>
+                                     <div class="card-block">
+                                         {% if print_button %}
+                                            <a href="{{ print_url }}" class="btn btn-round btn-info"><i class="fa fa-file"></i> Print </a>
+                                         {% endif %}
+                                     </div>
+                                 </div>
+                                <br>
+                                {% if download %} <a href="{{ download_url }}" class="btn btn-primary">Κατέβασε την λίστα</a> {% endif %}
+
+                                {% if reports %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>Reports</h4>
+                                            <button data-href="{{ report_url }}" class="btn btn-success btn-round report_button">Υπολογισμός</button>
+                                            <br> <br>
+                                            <button data-href='{{ report_url }}' type="button" class="btn btn-primary btn-round" data-toggle="modal" data-target="#report_modal">Δες τα</button>
+                                            <!-- Modal -->
+                                            <div class="modal fade bd-example-modal-lg" id="report_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Report</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" id="report_result">Χρησιμοποίησε τον υπολογισμό πρώτα</div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+{% block extra_js %}
+    <script>
+        $('#search_ajax').change(function(event){
+            event.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            const search_name = btn.val();
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url + '?search_name='+ search_name,
+
+                success: function (data) {
+                    $('#result_table').html(data.result_table)
+                }
+            })
+        })
+    </script>
+    {% if reports %}
+        <script type="text/javascript">
+            $('.report_button').click(function (event) {
+                event.preventDefault();
+                const btn = $(this);
+                const url = btn.attr('data-href');
+                $.ajax({
+                    method: 'GET',
+                    dataType: 'json',
+                    url: url,
+
+                    success: function (data) {
+                        $('#report_result').html(data.report_result)
+                    }
+                })
+            })
+        </script>
+    {% endif %}
+{% endblock %}

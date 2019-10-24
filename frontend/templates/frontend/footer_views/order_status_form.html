@@ -1,0 +1,50 @@
+{% extends 'frontend/index.html' %}
+
+{% block content %}<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Εξέλιξη παραγγελίας</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Εξέλιξη παραγγελίας</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+    <section class="section-b-space blog-detail-page review-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="comment-section">
+                        <li>
+                            <div class="media">
+                                <div class="media-body">
+                                    <h6>Συμπληρώστε τον κωδικό της Παραγγελία σας</h6>
+                                    <form method="get" class="form">
+                                        {{ form }}
+                                        <br>
+                                        <button type="submit" class="btn btn-primary">Αναζήτηση</button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+{% endblock %}

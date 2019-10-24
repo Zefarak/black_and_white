@@ -1,0 +1,128 @@
+{% extends 'point_of_sale/index.html' %} {% load render_table from django_tables2 %}
+
+{% block content %}
+     <div class="pcoded-content">
+         <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-8 col-lg-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Προϊόντα</h4>
+                                    </div>
+                                    <div class="card-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Προϊόν</th>
+                                                <th>Ποσότητα</th>
+                                                <th>Τιμή Μονάδας</th>
+                                                <th>Συνολική Αξία</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for order_item in object.order_items.all %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ order_item.product.title }}</td>
+                                                    <td>{{ order_item.qty }}</td>
+                                                    <td>{{ order_item.tag_value }}</td>
+                                                    <td>{{ order_item.tag_total_value }}</td>
+                                                </tr>
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="5">Δέ έχει Προϊόντα</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+
+                                    </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 col-lg-4">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <a href="{{ back_url }}" class="btn btn-warning">Επιστροφή</a>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="card-block">
+                                                <h6 class="m-b-20 p-b-5 b-b-default f-w-600">Πληροφορίες</h6>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <p class="m-b-10 f-w-600">User</p>
+                                                        <h6 class="text-muted f-w-400">{{ object.user }}</h6>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <p class="m-b-10 f-w-600">Ημερομηνία</p>
+                                                        <h6 class="text-muted f-w-400">{{ object.timestamp }}</h6>
+                                                    </div>
+
+                                                </div>
+                                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Projects</h6>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <p class="m-b-10 f-w-600">Μεταφορικά</p>
+                                                        <h6 class="text-muted f-w-400">{{ object.shipping_method }}</h6>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <p class="m-b-10 f-w-600">Αντικαταβολή</p>
+                                                        <h6 class="text-muted f-w-400">{{ object.payment_method }}</h6>
+                                                    </div>
+                                                </div>
+
+                                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Κουπόνια</h6>
+                                                <div class="row">
+                                                    {% for ele in object.vouchers.all %}
+                                                        <div class="col-sm-6">
+                                                            <p class="m-b-10 f-w-600">Αξία Προϊόντων</p>
+                                                            <h6 class="text-muted f-w-400">{{ object.tag_value }}</h6>
+                                                        </div>
+                                                    {% empty %}
+                                                        <div class="col-sm-6">
+                                                            <p class="m-b-10 f-w-1000">Δε υπάρχουν κουπόνια</p>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Αξία</h6>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <p class="m-b-10 f-w-600">Αξία Προϊόντων</p>
+                                                        <h6 class="text-muted f-w-400">{{ object.tag_value }}</h6>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <p class="m-b-10 f-w-600">Έκπτωση</p>
+                                                        <h6 class="text-muted f-w-400">{{ object.tag_discount_value }}</h6>
+                                                    </div>
+                                                    <br>
+                                                    <div class="col-sm-6">
+                                                        <p class="m-b-10 f-w-1000">Συνολική Αξία {{ object.tag_final_value }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            {% if order %}
+                                                <a href="{{ order.get_eshop_url }}" class="btn btn-info">Παραγγελία</a>
+                                            {% else %}
+                                                <a href="{% url 'cart:create_order_from_cart' object.id %}" class="btn btn-success"><i class="fa fa-shopping-cart">
+                                                </i> Δημιουργία Παραγγελίας </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Container ends -->
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

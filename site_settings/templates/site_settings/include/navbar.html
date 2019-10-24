@@ -1,0 +1,64 @@
+
+<nav class="pcoded-navbar">
+    <div class="pcoded-inner-navbar main-menu">
+
+        <div class="pcoded-navigatio-lavel">Site Manager</div>
+
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="">
+                <a href="{% url 'dashboard:home' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Αρχική Σελίδα</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'site_settings:banner_list' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Banners</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'vouchers:voucher_list' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Κουπόνια</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'site_settings:shipping' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Τρόποι Μεταφοράς</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'site_settings:payment_methods' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Τρόποι Πληρωμής</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'site_settings:company' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Στοιχεία Εταιρίας</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'newsletter:list' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">NewsLetters</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'subscribe:homepage' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Subscribes</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'contact:contact_list' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Contacts</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

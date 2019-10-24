@@ -1,0 +1,96 @@
+{% load static %}
+    <table class="table cart-table table-responsive-xs">
+        <thead>
+            <tr class="table-head">
+                <th scope="col">#</th>
+                <th scope="col">Προϊον</th>
+                <th scope="col">Αξια</th>
+                <th scope="col">Ποσοτητα</th>
+                <th scope="col">Διαγραφη</th>
+                <th scope="col">Συνολο</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for cart_item in cart.order_items.all %}
+                <tr>
+                    <td>
+                        {% if cart_item.product.image %}
+                            <a href="{{ cart_item.product.get_absolute_url }}"><img src="{{ cart_item.product.image.url }}" alt=""></a>
+                        {% else %}
+                            <a href="{{ cart_item.product.get_absolute_url }}"><img src="{% static 'frontend/demo_images/no_image.png' %}" alt=""></a>
+                        {% endif %}
+                    </td>
+                        <td>
+                            <a href="{{ cart_item.product.get_absolute_url }}">{{ cart_item }}</a>
+                            <div class="mobile-cart-content row">
+                                <div class="col-xs-3">
+                                    <div class="qty-box">
+                                        <div class="input-group">
+                                            <input type="text"data-href="{% url 'ajax_modify_qty' cart_item.id %}"
+                                            value="{{ cart_item.qty }}" class="form-control input-number change_qty" value="{{ cart_item.qty }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <h2 class="td-color">{{ cart_item.tag_total_value }}</h2></div>
+                                <div class="col-xs-3">
+                                    <h2 class="td-color">
+                                        <a href="{% url 'delete_from_cart' cart_item.id %}" class="icon"><i class="ti-close"></i></a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <h2>{{ cart_item.tag_value }}</h2></td>
+                        <td>
+                            <div class="qty-box">
+                                <div class="input-group">
+                                    <input
+                                            data-href="{% url 'ajax_modify_qty' cart_item.id %}"
+                                            value="{{ cart_item.qty }}"
+                                            class="form-control input-number change_qty" type="number"
+                                    >
+                                </div>
+                            </div>
+                        </td>
+                        <td><a href="{% url 'delete_from_cart' cart_item.id %}" class="icon"><i class="ti-close"></i></a></td>
+                        <td>
+                            <h2 class="td-color">{{ cart_item.tag_total_value }}</h2></td>
+                </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6">Δε έχετε επιλέξει Προϊόντα</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+<table class="table cart-table table-responsive-md">
+                    <tfoot>
+                    <tr>
+                        <td>Συνολική Αξία :</td>
+                        <td>
+                            <h2>{{ cart.tag_value }}</h2></td>
+                    </tr>
+                    </tfoot>
+                </table>
+
+{% include 'frontend/include/cart_js.html' %}
+
+<script type="text/javascript">
+    $('.change_qty').change(function (evt) {
+        evt.preventDefault();
+        const my_input = $(this);
+        const url = my_input.attr('data-href');
+        const value = my_input.val();
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url + '?qty=' + value,
+
+            success: function (data) {
+                $('#cart_items_container').html(data.cart_items_result);
+                $('#cart_container').html(data.cart_result)
+            }
+        })
+    })
+</script>

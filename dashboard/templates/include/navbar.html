@@ -1,0 +1,34 @@
+
+<nav class="pcoded-navbar">
+    <div class="pcoded-inner-navbar main-menu">
+
+        <div class="pcoded-navigatio-lavel">Dashboard</div>
+
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="">
+                <a href="{% url 'dashboard:home' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Αρχική Σελίδα</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'dashboard:products' %}">
+                    <span class="pcoded-micon"><i class="fa fa-camera"></i></span>
+                    <span class="pcoded-mtext">Κατάλογος</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'point_of_sale:home' %}">
+                    <span class="pcoded-micon"><i class="fa fa-credit-card"></i></span>
+                    <span class="pcoded-mtext">Πωλήσεις</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="{% url 'site_settings:dashboard' %}">
+                    <span class="pcoded-micon"><i class="fa fa-sitemap"></i></span>
+                    <span class="pcoded-mtext">Site Manager</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

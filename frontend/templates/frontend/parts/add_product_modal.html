@@ -1,0 +1,76 @@
+<!-- Modal -->{% load static %}
+
+<!-- Quick-view modal popup start-->
+<div class="modal fade bd-example-modal-lg theme-modal" id="quick-view" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content quick-view-modal">
+            <div class="modal-header">
+                 <h2>{{ product.title }}</h2>
+            </div>
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12">
+                        <a href="{{ product.get_absolute_url }}">
+                        <div class="quick-view-img">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="" class="img-fluid blur-up lazyload">
+                            {% else %}
+                            <img src="{% static 'frontend/demo_images/no_image.png' %}" alt="" class="img-fluid blur-up lazyload">
+                            {% endif %}
+                        </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 rtl-text">
+                        <div class="product-right">
+                            <h3>{{ product.tag_final_price }} {% if product.is_offer %}<span style="text-decoration: line-through; color: red">{{ product.tag_price }}</span>  {% endif %}</h3>
+                            <br>
+                            <p>
+                                <a class="btn btn-info btn-small" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                   <i class="fa fa-phone"></i>  Επικοινωνηστε για να συζητησουμε <br>μια καλυτερη τιμη
+                                </a>
+                            </p>
+                            <br>
+                            <div class="collapse" id="collapseExample">
+                                <div class="card card-body">
+                                    <h5>Τρόποι επικοινωνίας</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item" >Τηλεφωνήστε μας στο 2732 022566</li>
+                                        <li class="list-group-item" >Μεσω Facebook Messenger <a class="btn btn-primary" href="https://m.me/optikakotsalis" target="_blank"><i class="fa fa-facebook"></i> </a>
+                                        </li>
+                                        <li class="list-group-item" > H χρησιμοποιήστε την φόρμα επικοινωνίας
+                                            <br>
+                                            <form method="post" class="form" action="{% url 'contact:validate_frontend_form' %}">
+                                                {% csrf_token %}
+                                                {{ contact_form }}
+                                                <br>
+                                                <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> </button>
+                                            </form>
+
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                                <br>
+                            <p>Sku... {{ product.sku|default_if_none:'Δεν υπάρχει' }}</p>
+
+                            <div class="border-product">
+                                <h6 class="product-title">Πληροφορίες</h6>
+                                <p>{{ product.site_text|safe }}</p>
+                            </div>
+
+                            <div class="product-buttons">
+                                <a href="{{ product.get_absolute_url }}" class="btn btn-solid">Λεπτομεριες</a>
+                                <a href="{% url 'add_to_cart' product.slug %}"  class="btn btn-success btn-solid"> <i class="fa fa-cart-plus"></i> Προσθηκη</a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Quick-view modal popup end-->
+
+

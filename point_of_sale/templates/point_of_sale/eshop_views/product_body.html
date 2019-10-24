@@ -1,0 +1,91 @@
+<table class="table table-responsive">
+    <thead>
+    <tr>
+        <th>Προϊόν</th>
+        <th>Αξία Μονάδας</th>
+        <th>Ποσότητα</th>
+        <th>Υπόλοιπο Αποθήκης</th>
+        <th>Συνολική Αξία</th>
+        <th>Κατάσταση</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in object.order_items.all %}
+        <tr>
+            <td>{{ item }}
+                {% if item.attribute %}
+                    - Νουμερο
+                    {% for item_ in item.attributes.all %}
+                        {{ item_.attribute }} <br>
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td>{{ item.tag_value }}</td>
+            <td>{{ item.qty }}</td>
+            <td>{{ item.title.qty }}</td>
+            <td>{{ item.tag_final_value }}</td>
+                {% if item.have_attribute %}
+                <td>
+                    {% for attribute in item.attributes.all %}
+                        {% if attribute.is_found %}
+                        <a data-href="{% url 'point_of_sale:ajax_attr_found' attribute.id %}"
+                           class="btn btn-success btn-small btn-round is_found_attr">{{ attribute.attribute }}, Qty {{ attribute.qty }}--> Βρέθηκε!</a>
+                        {% else %}
+                        <a data-href="{% url 'point_of_sale:ajax_attr_found' attribute.id %}"
+                           class="btn btn-warning btn-small btn-round is_found_attr">{{ attribute.attribute }}, Qty {{ attribute.qty }}--> Δεν Βρέθηκε!</a>
+                        {% endif %}
+                        <br /> <br>
+                    {% endfor %}
+                </td>
+                {% else %}
+                    <td>
+                        {% if item.is_find %}
+                        <a data-href="{% url 'point_of_sale:ajax_find_product' item.id %}"
+                           class="btn btn-success is_find">Βρέθηκε</a>
+                        {% else %}
+                            <a data-href="{% url 'point_of_sale:ajax_find_product' item.id %}"
+                               class="btn btn-warning is_find">Δε βρέθηκε</a>
+                        {% endif %}
+                    </td>
+                {% endif %}
+            <td></td>
+        </tr>
+    {% empty %}
+
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+     $('.is_found_attr').click(function (evt) {
+        evt.preventDefault();
+        const my_button = $(this);
+        const url = my_button.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url,
+
+            success: function (data) {
+                $('#order_items_container').html(data.result)
+            }
+        })
+    });
+
+     $('.is_find').click(function (evt) {
+        evt.preventDefault();
+        const my_button = $(this);
+        const url = my_button.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url,
+
+            success: function (data) {
+                $('#order_items_container').html(data.result)
+
+            }
+        })
+
+    });
+</script>

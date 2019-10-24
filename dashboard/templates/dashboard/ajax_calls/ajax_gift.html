@@ -1,0 +1,44 @@
+<h5>Επιλεγμενο Δωρο -->
+    <a href="" class="btn btn-info btn-round">{{ object.products_gift|default_if_none:'Δε εχετε επιλεξει' }} <i class="fa fa-remove"></i> </a>
+</h5>
+<br>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Προϊον</th>
+        <th>#</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in object.product_related.all %}
+        <tr>
+            <td>{{ product }}</td>
+            <td>
+                <button data-href="{% url 'dashboard:ajax_modify_gift' object.id product.id 'remove' %}" class="btn btn-danger btn-round modify_button"><i class="fa fa-minus"></i> </button>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="2">Δε εχετε επιλεξει δεδομενα</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<script>
+    $('.modify_button').click(function (evt) {
+        evt.preventDefault();
+        const myBtn = $(this);
+        const url = myBtn.attr('data-href');
+        $.ajax({
+            dataType: 'json',
+            url: url,
+            method: 'GET',
+
+            success: function (data) {
+                $('#result_container').html(data.result)
+            }
+        })
+    })
+</script>

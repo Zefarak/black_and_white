@@ -1,0 +1,323 @@
+{% extends 'point_of_sale/index.html' %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-c-blue">
+                                    <div class="card-block">
+                                        <div class="row align-items-end">
+                                            <div class="col-8">
+                                                <h4 class="text-white">{{ object.date_expired|date }}</h4>
+                                                <h6 class="text-white m-b-0">Ημερομηνία</h6>
+                                            </div>
+                                            <div class="col-4 text-right"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                                                <canvas id="update-chart-2" height="100" width="88" style="display: block; width: 44px; height: 50px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-c-green">
+                                    <div class="card-block">
+                                        <div class="row align-items-end">
+                                            <div class="col-8">
+                                                <h4 class="text-white">{{ object.tag_final_value }}</h4>
+                                                <h6 class="text-white m-b-0">Αξία</h6>
+                                            </div>
+                                            <div class="col-4 text-right"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                                                <canvas id="update-chart-2" height="100" width="88" style="display: block; width: 44px; height: 50px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-c-blue">
+                                    <div class="card-block">
+                                        <div class="row align-items-end">
+                                            <div class="col-8">
+                                                <h4 class="text-white">{{ object.tag_profile_full_name }}</h4>
+                                                <h6 class="text-white m-b-0">Πελάτης</h6>
+                                            </div>
+                                            <div class="col-4 text-right"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                                                <canvas id="update-chart-2" height="100" width="88" style="display: block; width: 44px; height: 50px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-c-pink">
+                                    <div class="card-block">
+                                        <div class="row align-items-end">
+                                            <div class="col-8">
+                                                <h4 class="text-white">{{ object.order_items.count }}</h4>
+                                                <h6 class="text-white m-b-0">Προϊόντα</h6>
+                                            </div>
+                                            <div class="col-4 text-right"><iframe class="chartjs-hidden-iframe" tabindex="-1" style="display: block; overflow: hidden; border: 0px; margin: 0px; top: 0px; left: 0px; bottom: 0px; right: 0px; height: 100%; width: 100%; position: absolute; pointer-events: none; z-index: -1;"></iframe>
+                                                <canvas id="update-chart-2" height="100" width="88" style="display: block; width: 44px; height: 50px;"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-8" >
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="title">Κωδικός.. {{ object.number }}</h6>
+                                        <br>
+                                        <a href="{{ object.get_print_url }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Εκτύπωση </a>
+                                        <a href="" class="btn btn-primary"><i class="fa fa-mail-reply"></i> Στείλε email</a>
+                                        <br><br>
+                                        <div id="change_status_container">
+                                            <form class="form">{{ form }}</form>
+                                        </div>
+                                    </div>
+                                    <div class="card-body"  id="order_items_container">
+                                        {% include 'point_of_sale/eshop_views/product_body.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6>Πελάτης -> Email {{ object.guest_email }}</h6>
+                                        <br>
+                                        {% if object.user %}
+                                            <a href="" class="btn btn-info">{{ object.user }}</a>
+                                        {% else %}
+                                            <a href="" class="btn-success btn-round btn">Δημιούργησε Πελάτη</a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="sub-title">Στοιχεια Παραγγελιας</div>
+                                        <!-- Nav tabs -->
+                                        <ul class="nav nav-tabs md-tabs" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" data-toggle="tab" href="#home3" role="tab" aria-expanded="true">Στοιχεία Αποστολής</a>
+                                                <div class="slide"></div>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#profile3" role="tab" aria-expanded="false">Κουπόνια</a>
+                                                <div class="slide"></div>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#messages3" role="tab" aria-expanded="false">Ανάλυση Χρεώσεων</a>
+                                                <div class="slide"></div>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" data-toggle="tab" href="#settings3" role="tab" aria-expanded="false">Voucher Courier</a>
+                                                <div class="slide"></div>
+                                            </li>
+                                        </ul>
+
+                                        <!-- Tab panes -->
+                                        <div class="tab-content card-block">
+                                            <div style="height:600px;" class="tab-pane active" id="home3" role="tabpanel" aria-expanded="true">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Email</th>
+                                                            <th>{{ order_profile.email }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th>Πελάτης</th>
+                                                            <td>{{ order_profile.tag_full_name }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Πόλη Τκ</th>
+                                                            <td>{{ object.tag_address }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Κινητό - Τηλέφωνο</th>
+                                                            <td>{{ order_profile.cellphone }} - {{ order_profile.phone }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Τρόπος Αποστολής</th>
+                                                            <td>{{ object.shipping_method }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Τρόπος Πληρωμής</th>
+                                                            <td>{{ object.payment_method }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Σχόλια</th>
+                                                            <td>{{ order_profile.notes }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <br>
+                                                <a href="{{ object.cart_related.get_edit_url }}" class="btn btn-info">Cart</a>
+                                            </div>
+                                            <div style="height:600px;" class="tab-pane voucher_container" id="profile3" role="tabpanel" aria-expanded="false">
+                                                <ul>
+                                                    {% for coupon in object.vouchers.all %}
+                                                        <li>{{ coupon }} <a href="">x</a> </li>
+                                                    {% endfor %}
+                                                </ul>
+                                                <br>
+                                                <form class="form">
+                                                    <input type="text" class="form-control voucher_input" placeholder="Προσθήκη Κουπονιού">
+                                                    <br>
+                                                    <button data-href="{% url 'point_of_sale:ajax_voucher_add' object.id %}" type="submit" class="btn btn-primary voucher_submit">Προσθήκη</button>
+                                                </form>
+                                            </div>
+                                            <div style="height:600px;" class="tab-pane" id="messages3" role="tabpanel" aria-expanded="false">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Αξία Προϊόντων</td>
+                                                            <td>{{ object.tag_value }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Αξία Μεταφορικών</td>
+                                                            <td>{{ object.tag_shipping_cost }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Αξία Αντικαταβολής</td>
+                                                            <td>{{ object.tag_payment_cost }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Έκπτωση κουπονιών</td>
+                                                            <td>{{ object.tag_voucher_discount }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Αξία</td>
+                                                            <td>{{ object.tag_final_value }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div style="height:600px;" class="tab-pane" id="settings3" role="tabpanel" aria-expanded="false">
+                                               {% if object.shipping_voucher %}
+                                                   <table class="table table-responsive table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>#</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Κωδικός</td>
+                                                                <td>{{ object.shipping_voucher.shipping_code }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Τρόπος Αποστολής</td>
+                                                                <td>{{ object.shipping_voucher.shipping_method }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                   </table>
+                                                    <a href="{{ object.voucher.get_edit_url }}" class="btn btn-primary"> Επεξεργασία</a>
+                                                    <a href="" class="btn btn-warning"><i class="fa fa-mail-reply"></i> Αποστολή Με email </a>
+                                                {%  else  %}
+                                                    <a href="{% url 'point_of_sale:create_shipping_voucher' object.id %}" class="btn btn-success">Δημιουργία Παραστατικού</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a href="{{ object.get_edit_url }}" class="btn btn-warning">Επεξεργασία</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script type="text/javascript">
+    $('.change_status').change(function (evt) {
+        evt.preventDefault();
+        console.log('works!')
+        const my_input = $(this);
+        const new_value = my_input.val();
+        const url = "{% url 'point_of_sale:ajax_change_status' object.id %}";
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url + '?change_status='+ new_value,
+
+            success: function (data) {
+                $('#change_status_container').html(data.result)
+            }
+        })
+
+    });
+
+    $('.is_find').click(function (evt) {
+        evt.preventDefault();
+        const my_button = $(this);
+        const url = my_button.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url,
+
+            success: function (data) {
+                $('#order_items_container').html(data.result)
+
+            }
+        })
+
+    });
+
+    $('.is_found_attr').click(function (evt) {
+        evt.preventDefault();
+        const my_button = $(this);
+        const url = my_button.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url,
+
+            success: function (data) {
+                $('#order_items_container').html(data.result)
+            }
+        })
+    });
+
+    $('.voucher_submit').click(function (evt) {
+        evt.preventDefault();
+        const my_button = $(this);
+        const url = my_button.attr('data-href');
+        const slug = $('.voucher_input').val();
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url + '?slug=' + slug,
+
+            success: function (data) {
+                $('#voucher_container').html(data.result)
+            }
+        })
+    })
+</script>
+{% endblock %}

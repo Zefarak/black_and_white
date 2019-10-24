@@ -1,0 +1,79 @@
+
+
+<div class="card">
+    <div class="card-header">
+        <h6 class="title">Κωδικός.. {{ object.number }}</h6>
+        <br>
+        <a href="" class="btn btn-primary"><i class="fa fa-print"></i> Εκτύπωση </a>
+        <a href="" class="btn btn-primary"><i class="fa fa-mail-reply"></i> Στείλε email</a>
+        <br><br>
+        <div id="change_status_container">
+            <form class="form">{{ form }}</form>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Προϊόν</th>
+                <th>Αξία Μονάδας</th>
+                <th>Ποσότητα</th>
+                <th>Υπόλοιπο Αποθήκης</th>
+                <th>Συνολική Αξία</th>
+                <th>Κατάσταση</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in object.order_items.all %}
+                <tr>
+                    <td>{{ item }}
+                        {% if item.attribute %}
+                            - Νουμερο
+                            {% for item_ in item.attributes.all %}
+                                {{ item_.attribute }}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                    <td>{{ item.tag_value }}</td>
+                    <td>{{ item.qty }}</td>
+                    <td>{{ item.title.qty }}</td>
+                    <td>{{ item.tag_final_value }}</td>
+                    <td>{% if item.is_find %}
+                        <a data-href="{% url 'point_of_sale:ajax_find_product' item.id %}"
+                           class="btn btn-success is_find">Βρέθηκε</a>
+                    {% else %}
+                        <a data-href="{% url 'point_of_sale:ajax_find_product' item.id %}"
+                           class="btn btn-warning is_find">Δε βρέθηκε</a>
+                    {% endif %}
+                    </td>
+                    <td>
+
+                    </td>
+
+                </tr>
+
+            {% empty %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.is_find').click(function (evt) {
+        evt.preventDefault();
+        const my_button = $(this);
+        const url = my_button.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url,
+
+            success: function (data) {
+                $('#order_items_container').html(data.result)
+
+            }
+        })
+
+    })
+</script>

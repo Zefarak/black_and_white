@@ -1,0 +1,97 @@
+
+<nav class="pcoded-navbar">
+    <div class="pcoded-inner-navbar main-menu">
+
+        <div class="pcoded-navigatio-lavel">Dashboard</div>
+
+        <ul class="pcoded-item pcoded-left-item">
+            <li class="">
+                <a href="{% url 'dashboard:home' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Αρχική Σελίδα</span>
+                </a>
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="feather icon-gitlab"></i></span>
+                    <span class="pcoded-mtext">Κατάλογος</span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class="active">
+                        <a href="{% url 'dashboard:products' %}">
+                            <span class="pcoded-mtext">Προϊόντα</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'dashboard:product_class_view' %}">
+                            <span class="pcoded-mtext">Είδος</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'catalogue:vendors' %}">
+                            <span class="pcoded-mtext">Προμηθευτές</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'dashboard:brand_list_view' %}">
+                            <span class="pcoded-mtext">Εταιρίες</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="feather icon-sidebar"></i></span>
+                    <span class="pcoded-mtext">Κατηγορίες</span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class="">
+                        <a href="{% url 'dashboard:ware_cate_list_view' %}">
+                            <span class="pcoded-mtext">Κατηγορίες Αποθήκης</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'dashboard:category_list' %}">
+                            <span class="pcoded-mtext">Κατηγορίες Site</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="pcoded-hasmenu">
+                <a href="javascript:void(0)">
+                    <span class="pcoded-micon"><i class="feather icon-layers"></i></span>
+                    <span class="pcoded-mtext" >Πρόσθετα</span>
+                </a>
+                <ul class="pcoded-submenu">
+                    <li class="">
+                        <a href="{% url 'dashboard:color_list_view' %}">
+                            <span class="pcoded-mtext">Χρωματα</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{% url 'dashboard:characteristics_list_view' %}">
+                            <span class="pcoded-mtext" >Χαρακτηριστικά</span>
+                        </a>
+                    </li>
+                    <li class=" ">
+                        <a href="{% url 'dashboard:attribute_class_list_view' %}">
+                            <span class="pcoded-mtext" >Μεγεθολόγια</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'dashboard:discount_manager' %}">
+                            <span class="pcoded-mtext">Διαχείριση Εκπτώσεων</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+             <li class="">
+                <a href="{% url 'dashboard:gift_list' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Δωρα</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

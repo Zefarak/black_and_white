@@ -1,0 +1,34 @@
+{% load zefarak_tags %}
+<div id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="card">
+        <div class="card-header" role="tab" id="headingVendor">
+            <h6 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                   href="#collapseVendor" aria-expanded="false" aria-controls="collapseVendor">
+                    Επιλογή Καταστήματος
+                </a>
+            </h6>
+        </div>
+        <div id="collapseVendor" class="collapse" role="tabpanel" aria-labelledby="headingVendor">
+            <div class="card-block">
+                {% for store in stores %}
+                    {% if store.id|stringformat:"s" in request.GET|get_item:'store_name'%}
+                        <div class="checkbox">
+                            <input name="vendor_name" value="{{ store.id }}" id="checkbox1" type="checkbox" checked>
+                            <label for="checkbox1">
+                                {{ store}}
+                            </label>
+                        </div>
+                    {% else %}
+                        <div class="checkbox">
+                            <input name="vendor_name" value="{{ store.id }}" id="checkbox1" type="checkbox">
+                            <label for="checkbox1">
+                                {{ store}}
+                            </label>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

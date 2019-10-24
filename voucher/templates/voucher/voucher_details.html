@@ -1,0 +1,78 @@
+{% extends 'point_of_sale/index.html' %}
+
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h4>{{ voucher }}</h4>
+                                            </div>
+                                            <div class="col-md-4>">
+                                                <a href="{{ back_url }}" class="btn btn-warning fluid right">Επιστροφή</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Κουπόνι ==> {{ voucher }}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post" class="form">{% csrf_token %}
+                                            {{ voucher_form }}
+                                            <br />
+                                            <input hidden name="form_type" value="voucher" />
+                                            <button type="submit" value="voucher" class="btn btn-primary">
+                                                <i class="fa fa-save"></i> Αποθήκευση
+                                            </button>
+                                        </form>
+                                    </div>
+                            </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Οδηγίες</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post" class="form"> {% csrf_token %}
+                                            {{ rules_form }}
+                                            <br />
+                                            <input hidden name="form_type" value="rules" />
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-save"></i> Αποθήκευση
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Επιλογή Προϊόντων</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <a href="{% url 'vouchers:voucher_range' voucher.id %}" class="btn btn-success btn-round">Επιλογή Προϊόντων</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

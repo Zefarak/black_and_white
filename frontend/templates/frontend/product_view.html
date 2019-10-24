@@ -1,0 +1,370 @@
+{% extends 'frontend/index.html' %} {% load static %}
+{% block seo_data %}
+    <title>Οπτικα - Κοτσαλης | {{ object }}</title>
+    <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, Οπτικά Κότσαλης .Όλες οι λεπτομέριες για το προϊόν {{ object }} βρίσκονται εδώ.">
+
+
+
+
+{% endblock %}
+{% block content %}
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="{{ object.title }}" />
+    <meta property="og:description"   content="{{ object.site_text }}" />
+    <meta property="og:image"         content="{{ object.image.url }}" />
+
+    <!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>{{ object }}</h2></div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ object }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!-- section start -->
+<section>
+    <div class="collection-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-1 col-sm-2 col-xs-12">
+                    <div class="row">
+                        <div class="col-12 p-0">
+                            <div class="slider-right-nav">
+                                {% if object.image %}
+                                    <div>
+                                        <img src="{{ product.image.url }}" alt="" class="img-fluid blur-up lazyload expand_image"></div>
+                                    {% else %}
+                                    <div>
+                                        <img src="{% static 'frontend/demo_images/no_image.png' %}" alt="" class="img-fluid blur-up lazyload">
+                                    </div>
+                                {% endif %}
+                                {% for image in object.get_extra_images.all %}
+                                    <div>
+                                        <img src="{{ image.image.url }}" alt="" class="img-fluid blur-up lazyload expand_image">
+                                    </div>
+                                {%  endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-10 col-xs-12 order-up">
+                    <div class="product-right-slick">
+                        {% if object.image %}
+                            <div><img src="{{ product.image.url }}" alt="" class="img-fluid blur-up lazyload "></div>
+                        {% else %}
+                            <div><img src="{% static 'frontend/demo_images/no_image.png' %}" alt="" class="img-fluid blur-up lazyload image_zoom_cls-{{ image.id}}"></div>
+                        {% endif %}
+                        {% for image in object.get_extra_images.all %}
+                            <div>
+                                <img src="{{ image.image.url }}" alt="" class="img-fluid blur-up lazyload image_zoom_cls-{{ image.id}}">
+                            </div>
+                        {%  endfor %}
+
+                    
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="product-right product-description-box">
+                        <h2>{{ object }}</h2>
+                        <div class="border-product">
+                            <h6 class="product-title">Πληροφοριες</h6>
+                            {{ object.site_text|safe}}
+                        </div>
+
+                        <div class="single-product-tables border-product detail-section">
+                            <table>
+                                <tbody>
+                                    {% for category in object.category_site.all %}
+                                        <tr>
+                                            <td>{{ category }}</td>
+                                            <td><a href="{{ category.get_absolute_url }}" class="btn btn-small"><i class="fa fa-search"></i> </a> </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="border-product">
+                            <h6 class="product-title">Μοιράσου το</h6>
+
+                            <div class="product-icon">
+                                <ul class="product-social">
+                                    <li>
+                                        <div class="fb-share-button" data-href="{{ request.path }}" data-layout="button" data-size="small">
+                                        <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+                                           class="fb-xfbml-parse-ignore">Share</a>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4" style="background-color:white ">
+                    <div class="product-right product-form-box">
+                        {% if object.is_offer %}<h4><del>{{ object.tag_price}}</del><span>- {{ object.tag_discount_percent }}</span></h4>{% endif %}
+                        <h3>{{ object.tag_final_price }}</h3>
+                        <a href="{% url 'add_product_wishlist' object.slug %}" class="btn btn-solid btn-small btn-round"><i class="fa fa-heart"></i></a>
+                        <div class="single-product-tables border-product detail-section">
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td>Brand:</td>
+                                    <td>{{ object.brand }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Χρωμα:</td>
+                                    <td>{{ object.color }}</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <form method="post">{% csrf_token %}
+                            <div class="product-description border-product">
+                                <h6 class="product-title">Ποσότητα</h6>
+                                <div class="qty-box">
+                                    <div class="input-group">
+                                        <span class="input-group-prepend">
+                                            <button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
+                                        <input type="text" name="qty" class="form-control input-number" value="1"> <span class="input-group-prepend">
+                                        <button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-buttons">
+                                <button type="submit" data-target="#addtocart" class="btn btn-solid">Προσθηκη στο Καλαθι</button>
+                                <br /> <br />
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal">
+                                 Μαθετε την νεα εκπληκτικη τιμη
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="modal hide" id="imageModal">
+                            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-body modal1" >
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12" id="image_container">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Modal -->
+                        <div class="modal fade bd-example-modal-lg theme-modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                 <div class="modal-header">{{ object }}</div>
+                                <div class="modal-body modal1">
+                                    <div class="row">
+                                     <div class="col-lg-12">
+                                         <div class="modal-bg">
+                                            <form method="post" class="form">
+                                                 {% for attr_header in object.attr_class.all %}
+                                                     <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                                         <span class="text-muted">{{ attr_header }}</span>
+                                                     </h4>
+                                                     <ul class="list-group mb-3">
+                                                        {% for attr in attr_header.my_attributes.all %}
+                                                             <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                                                 <div>
+                                                                     <div class="custom-control custom-radio">
+                                                         <input type="radio" class="custom-control-input" id="defaultUnchecked_{{ attr.id }}_{{ attr_header_id }}" name="defaultExampleRadios">
+                                                         <label class="custom-control-label" for="defaultUnchecked_{{ attr.id }}_{{ attr_header_id }}">{{ attr }}</label>
+                                                          </div>
+                                                                 </div>
+
+                                                             </li>
+                                                        {% endfor %}
+                                                     </ul>
+                                                     <br>
+
+                                                     
+
+                                                 {% endfor %}
+                                            </form>
+                                         </div>
+                                     </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- Section ends -->
+
+
+<!-- product-tab starts -->
+<section class="tab-product m-0">
+    <div class="container">
+        <div class="row">
+            <div  class="col-sm-12 col-lg-12">
+                <ul  class="nav nav-tabs nav-material" id="top-tab" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-selected="false">Χαρακτηριστικα</a>
+                        <div class="material-border"></div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link " id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-selected="true">Επιπλεον Χρωματα</a>
+                        <div class="material-border"></div>
+                    </li>
+
+                </ul>
+                <div class="tab-content nav-material" id="top-tabContent">
+                    <div class="tab-pane fade" id="top-home" role="tabpanel" aria-labelledby="top-home-tab">
+                        <section class="ratio_square section-b-space">
+                            <div class="collection-wrapper">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="collection-content col">
+                                            <div class="page-main-content">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="collection-product-wrapper">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="col-12 product-related">
+                                                                        <h4>Επιπλέον Χρωματα</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product-wrapper-grid">
+                                                                <div class="row infinite-container">
+                                                                    {% for product in different_color_products %}
+                                                                    <div class="col-xl-3 col-md-6 col-grid-box infinite-item">
+                                                                        {% include 'frontend/parts/product_card.html' %}
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                    <div class="tab-pane fade show active" id="top-profile" role="tabpanel" aria-labelledby="profile-top-tab">
+                        <div style="margin-top: 2%" class="row">
+
+                            <div class="col-md-12 col-lg-6 col-sm-12">
+                                <h5>Χαρακτηριστικα</h5>
+                                <table style="background-color: white;margin-top: 3%" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for characteristic in object.characteristics.all %}
+                                <tr>
+                                    <td>{{ characteristic.title }}</td>
+                                    <td>{{ characteristic.value }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2">Δυστυχώς δε υπάρχουν επιπλέον χαρακτηριστικά</td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                            </div>
+                            <div class="col-6"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- product-tab ends -->
+
+
+<!-- section start -->
+<section class="ratio_square section-b-space">
+    <div class="collection-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="collection-content col">
+                    <div class="page-main-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="collection-product-wrapper">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="col-12 product-related">
+                                                <h2>Επισης σας προτεινουμε</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-wrapper-grid">
+                                        <div class="row infinite-container">
+                                            {% for product in related_products %}
+                                            <div class="col-xl-3 col-md-6 col-grid-box infinite-item">
+                                                {% include 'frontend/parts/product_card.html' %}
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- section End -->
+
+
+
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $('.expand_image').click(function(evt){
+            const my_img = $(this);
+            const url = my_img.attr('src');
+            $('#image_container').empty();
+            $('#image_container').html("<img src='" + url + "' width=800 height=800 class='img-fluid' />")
+            console.log('here')
+            $('#imageModal').modal('show');
+        })
+    </script>
+{% endblock %}

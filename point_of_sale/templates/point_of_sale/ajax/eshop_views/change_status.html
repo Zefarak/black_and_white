@@ -1,0 +1,22 @@
+<form class="form">{{ form }}</form>
+
+
+<script type="text/javascript">
+    $('.change_status').change(function (evt) {
+        evt.preventDefault();
+        console.log('works!')
+        const my_input = $(this);
+        const new_value = my_input.val();
+        const url = "{% url 'point_of_sale:ajax_change_status' object.id %}";
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url + '?change_status='+ new_value,
+
+            success: function (data) {
+                $('#change_status_container').html(data.result)
+            }
+        })
+
+    })
+</script>

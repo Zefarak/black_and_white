@@ -1,0 +1,355 @@
+{% extends 'point_of_sale/index.html' %} {% load render_table from django_tables2 %} {% load static %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Λίστα Προϊόντων</h5>
+                                        <input type="text" style="width: 30%"
+                                               class="form-control waves-effect waves-light f-right d-inline-block md-trigger"
+                                               data-href="{% url 'point_of_sale:ajax_search' instance.id %}"
+                                               id="search_products" placeholder="Search">
+                                    </div>
+                                    <div id='products_container' class="content">
+                                        {% include 'point_of_sale/ajax/products_container.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="header my_header">
+                                        <a href="{{ back_url }}" class="btn btn-warning fluid right">Επιστροφή</a>
+                                       {% comment %} <div class="title .my_header"><a href="{% url 'point_of_sale:copy_order' instance.id %}" class="btn btn-info"><i class="fa fa-copy"></i> </a></div> {% endcomment %}
+                                    </div>
+                                    <div class="content" id="order_items_container">{% include 'point_of_sale/ajax/order_container.html' %}</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!-- tab header start -->
+                                <div class="tab-header card">
+                                    <ul class="nav nav-tabs md-tabs tab-timeline" role="tablist" id="mytab">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-toggle="tab" href="#personal" role="tab" aria-expanded="true">Πελάτης</a>
+                                            <div class="slide"></div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#binfo" role="tab" aria-expanded="false">Στοιχεία</a>
+                                            <div class="slide"></div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#contacts" role="tab" aria-expanded="false">Φορμα</a>
+                                            <div class="slide"></div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" data-toggle="tab" href="#review" role="tab">Επιλογές</a>
+                                            <div class="slide"></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- tab header end -->
+
+
+                                <!-- tab content start -->
+                                <div class="tab-content">
+                                    <!-- tab panel personal start -->
+                                    <div class="tab-pane active" id="personal" role="tabpanel" aria-expanded="true">
+                                        <div class="card" style="height: 600px">
+                                            <div class="card-header">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h4>Πελάτες</h4>
+                                                        <br>
+                                                        <a href='{% url "point_of_sale:order_create_costumer" instance.id %}' class="btn btn-success"><i class="fa fa-plus"></i>Νέος Πελάτης</a>
+                                                        <br /> <br />
+                                                        <form class="form">
+                                                            <input data-href="{% url 'point_of_sale:ajax_order_search_costumer' instance.id %}"  type="text" class="form-control search_costumer" placeholder="Αναζήτηση Πελάτη">
+                                                        </form>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="card social-card bg-simple-c-blue">
+                                                            <div class="card-block">
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-auto">
+                                                                        <i class="fa fa-user f-34 text-c-blue social-icon"></i>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <h6 class="m-b-0">{{ instance.profile }}</h6>
+                                                                        <p>Πληροφορίες</p>
+                                                                        <p class="m-b-0">
+                                                                            Υπόλοιπο..
+                                                                            <br>
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <a href="{{ instance.profile.get_card_url }}" target="_blank" class="download-icon"><i class="feather icon-arrow-down"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-body">
+                                                    <div id="costumer_container">
+                                                        <br><br>
+                                                        {% include 'point_of_sale/ajax/order_costumer_container.html' %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- tab pane personal end
+
+                                    <!-- tab pane info start -->
+                                    <div class="tab-pane" id="binfo" role="tabpanel" aria-expanded="false">
+                                        <!-- info card start -->
+                                        <div class="row">
+                                            <div class="col-xl-6 col-md-6">
+                                                <div class="card table-card" style="height: 600px">
+                                                    <div class="card-header">
+                                                        <h5>Στοιχεία Παραλήπτη</h5>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li><a href="{% url 'point_of_sale:order_profile_edit' instance.id %}">
+                                                                        <i class="fa fa fa-edit blue open-card-option"></i>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover table-borderless">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Ονομασία</th>
+                                                                        <th>Τιμή</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Email</td>
+                                                                        <td>{{ profile_detail.email }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Ονοματεπώνυμο</td>
+                                                                        <td>{{ profile_detail.first_name }} {{ profile_detail.last_name }}</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td>Διεύθυνση</td>
+                                                                        <td>{{ profile_detail.tag_full_address }}</td>
+                                                                    </tr>
+                                                                     <tr>
+                                                                        <td>Τηλέφωνα</td>
+                                                                        <td>{{ profile_detail.tag_phones }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Σημειώσεις</td>
+                                                                        <td>{{ profile_detail.notes }}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-6 col-md-6">
+                                                <div class="card table-card">
+                                                    <div class="card-header">
+                                                        <h5>Στοιχεία Αποστολής</h5>
+                                                        <div class="card-header-right">
+                                                            <ul class="list-unstyled card-option">
+                                                                <li>
+                                                                    <a href="{% url 'point_of_sale:send_order_email' instance.id %}"><i class="fa fa-edit"></i></a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover table-borderless">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Ονομασία</th>
+                                                                        <th>Τιμή</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td>Τρόπος Αποστολής</td>
+                                                                        <td>{{ instance.shipping_method }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Κόστος Αποστολής</td>
+                                                                        <td>{{ instance.tag_shipping_cost }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Τρόπος Πληρωμής</td>
+                                                                        <td>{{ instance.payment_method }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Κόστος Αντικαταβολής</td>
+                                                                        <td>{{ instance.tag_payment_cost }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>Κατασταση</td>
+                                                                        <td>{{ instance.get_status_display}}</td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td>Voucher Code</td>
+                                                                        <td>{{ shipping_voucher.shipping_code|default_if_none:'No data' }}</td>
+                                                                    </tr>
+
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- tab pane info end -->
+
+                                    <!-- tab pane contact start -->
+                                    <div class="tab-pane" id="contacts" role="tabpanel" aria-expanded="false">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-md-6">
+                                                <!-- user contact card left side start -->
+                                                <div class="card" style="height: 600px;">
+                                                    <div class="card-header contact-user">
+                                                        <h5 class="m-l-10">Επεξεργασία</h5>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <form class="form" method="post">
+                                                            {% csrf_token %} {{ form }}
+                                                            <button type="submit" class="btn btn-success">
+                                                                <i class="fa fa-save"></i> Αποθήκευση
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <div class="card-header">Κουπόνια</div>
+                                                    <div class="card-body">
+                                                        <a class="btn btn-primary" href="{% url 'point_of_sale:voucher_manager' instance.id  %}"><i class="fa fa-edit"></i> Επεξεργασία </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane" id="review" role="tabpanel">
+                                        <div class="card" style="height: 600px;">
+                                            <div class="card-header">
+                                                <h5 class="card-header-text">Επιλογές</h5>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="row" id="general_info">
+                                            <div class="col-md-12">
+                                                <a onclick="return confirm('Are you sure?')" href="{{ instance.get_delete_url }}" class="btn btn-warning"><i class="fa fa-remove"></i>Delete</a>
+                                                {% if not is_return %}
+                                                    <a href="" class="btn btn-primary">
+                                                        Δημιουργία Παραστατικού Επιστροφής
+                                                    </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        $('#search_products').keyup(function (event) {
+            event.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            const search_name = btn.val();
+            console.log(search_name);
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url + '?search_name='+search_name,
+                success: function (data) {
+                    $('#products_container').html(data.products_container)
+                }
+            })
+        });
+
+        $('.edit_button').click(function (evt) {
+            evt.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+                success: function (data) {
+                    $('#order_items_container').html(data.order_container)
+                }
+            })
+        });
+
+        $('.add_button').click(function (evt) {
+            evt.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            $.ajax({
+                dataType: 'json',
+                url: url,
+                method: 'GET',
+
+                success: function (data) {
+                    $('#order_items_container').html(data.order_container)
+                }
+            })
+        })
+    </script>
+    <script>
+        $('.search_costumer').keyup(function (evt) {
+            evt.preventDefault();
+            console.log('works!');
+            const my_input = $(this);
+            const url = my_input.attr('data-href');
+            const value = my_input.val();
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url + '?search_name=' + value,
+                success: function (data) {
+                    $('#costumer_container').html(data.result)
+                }
+            })
+        })
+    </script>
+    {{ form.media }}
+
+
+
+{% endblock %}
+
+

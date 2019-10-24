@@ -1,0 +1,36 @@
+<table id="gallery" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Λιστα</th>
+        <th>Αρχική Εικόνα</th>
+        <th>Δευτερη Εικόνα</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for photo in photos %}
+        <tr>
+            <td {% if photo.is_primary %} style="background-color: #0af9d7" {% endif %}><img src='{{ photo.image.url }}' style='max-height: 50px;max-width: 50px;' class="img img-rounded img-thumbnail"></td>
+            <td><a data-href="{% url 'dashboard:ajax_image' 'is_primary' instance.id photo.id %}"  class="btn btn-success photo-button">{{ photo.tag_primary }}</a></td>
+            <td><a data-href="{% url 'dashboard:ajax_image' 'is_secondary' instance.id photo.id %}"  class="btn btn-success photo-button">{{ photo.tag_secondary }}</a></td>
+            <td><a data-href="{% url 'dashboard:ajax_image' 'delete' instance.id photo.id %}" class="btn btn-warning photo-button">Διαγραφή</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $('.photo-button').click(function (event) {
+        event.preventDefault();
+        const btn = $(this);
+        const href = btn.attr('data-href');
+        $.ajax({
+            url: href,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#container_content').html(data.result)
+            }
+        })
+    })
+</script>

@@ -1,0 +1,105 @@
+{% extends 'catalogue_index.html' %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Πεδίο Επιλογών</h4>
+                                        <button data-href="{{ ajax_add_url }}" class="btn btn-success" id="add_product">Προσθήκη</button>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Προϊόν</th>
+                                                    <th>Brand</th>
+                                                    <th>Κατηγορία</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for product in products %}
+                                                    <tr>
+                                                        <td><input type="checkbox" class="checkbox" value="{{ product.id }}" name="add_"></td>
+                                                        <td>{{ product }}</td>
+                                                        <td>{{ product.brand }}</td>
+                                                        <td>{{ product.category }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a href="{{ back_url }}" class="btn btn-warning right">Επιστροφή</a>
+                                        <br>
+                                        <h4>Έκπτωση... {{ object.title }}</h4>
+                                        <p>Timestamp.. {{ object.timestamp }}</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="form" method="post">
+                                            {% csrf_token %} {{ form }}
+                                            <br >
+                                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Αποθήκευση</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="card" id="result_container">
+                                    {% include 'dashboard/ajax_calls/discount_result.html' %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extra_js %}
+    <script>
+        $('#add_product').click(function (evt) {
+            evt.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url ,
+
+                success: function (data) {
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
+    </script>
+    
+    <script>
+        $('.delete_product').click(function (evt) {
+            evt.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+
+                success: function (data) {
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'point_of_sale/index.html' %} {% load render_table from django_tables2 %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-header start -->
+                    <div class="page-header">
+                        <div class="row align-items-end">
+                            <div class="col-lg-8">
+                                <div class="page-header-title">
+                                    <div class="d-inline">
+                                        <h4>{{ page_title }}</h4>
+                                        <span>Υπόλοιπο {{ instance.tag_balance }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="page-header-breadcrumb">
+                                    <ul class="breadcrumb-title">
+                                        <li class="breadcrumb-item">
+                                            <a href="index.html"> <i class="feather icon-home"></i> </a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="#!">Widget</a> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page-header end -->
+
+                    <!-- Page body start -->
+                    <div class="page-body invoice-list-page">
+                        <div class="row">
+                            <div class="col-xl-3 col-lg-12 push-xl-9">
+                                <!-- Search Box card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a href="{{ back_url }}" class="btn btn-warning btn-round">Επιστροφή</a>
+                                    </div>
+                                    <div class="card-block p-t-10">
+                                        <div class="task-right">
+                                            <h6 class="sub-title">Πληροφορίες</h6>
+                                            <ul class="basic-list list-icons">
+                                                <li class="">
+                                                    <i class="icofont icofont-speech-comments text-primary p-absolute text-center d-block f-30"></i>
+                                                    <h6>Συνολικός Τζίρος</h6>
+                                                    <p>{{ total_incomes }} {{ currency }}</p>
+                                                </li>
+                                                 <li>
+                                                    <i class="icofont icofont-speech-comments text-primary p-absolute text-center d-block f-30"></i>
+                                                    <h6>Υπόλοιπο</h6>
+                                                    <p>{{ instance.tag_balance }}</p>
+                                                </li>
+                                                <li>
+                                                    <i class="icofont icofont-speech-comments text-primary p-absolute text-center d-block f-30"></i>
+                                                    <h6>Επιπλέον Χρέωση</h6>
+                                                    <p>{{ instance.tag_value }}</p>
+                                                </li>
+                                                <li>
+                                                    <h6>Επεξεργασία</h6>
+                                                    <a href="{{ instance.get_edit_url }}" target="_blank" class="btn btn-primary btn-round"><i class="fa fa-edit"></i> </a>
+                                                </li>
+
+                                            </ul>
+                                            <div class="task-right-header-status">
+                                                <span data-toggle="collapse">Μη Πληρωμένα</span>
+                                                <i class="icofont icofont-rounded-down f-right"></i>
+                                            </div>
+                                            <!-- end of sidebar-header completed status-->
+                                            <div class="taskboard-right-progress">
+                                                <div class="card-block panels-wells">
+                                                   {% include 'point_of_sale/ajax/costumer_not_paid_view.html' %}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-9 col-lg-12 pull-xl-3">
+                                <div class="card">
+                                    <div class="card-header">Όλες οι κινήσεις</div>
+                                    <div class="card-body">{% render_table queryset_table %}</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $('.pay_order').click(function (evt) {
+            evt.preventDefault();
+            console.log('works')
+            const btn = $(this);
+            const endpoint = btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: endpoint,
+                success: function (data) {
+                    $('.panels-wells').html(data.not_paid_section)
+                }
+            })
+        })
+    </script>
+
+{% endblock %}

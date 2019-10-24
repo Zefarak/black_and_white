@@ -1,0 +1,121 @@
+{% extends 'frontend/user_views/dashboard.html' %}
+
+{% block content %}
+
+
+<!-- thank-you section start -->
+<section class="section-b-space light-layout">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="success-text"><i class="fa fa-check-circle" aria-hidden="true"></i>
+                    <h2>Σας ευχαριστουμε!</h2>
+                    <p>Η παραγγελία σας ολοκληρώθηκε επιτυχώς. Θα σας αποστείλουμε τα προϊόντα μετά απο τηλεφωνική επικοινωνία. Σας ευχαριστούμε για την προτίμησή σας</p>
+                    <p>Transaction ID: {{ order.number }}</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->
+
+
+<!-- order-detail section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-order">
+                    <h3>Προϊόντα</h3>
+                    <div class="row product-order-detail">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Προϊόν</th>
+                                <th>Ποσότητα</th>
+                                <th>Αξία</th>
+                                <th>Συνολική Αξία</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for product in order.order_items.all %}
+                                <tr>
+                                    <td>{{ product }}</td>
+                                    <td>{{ product.qty }}</td>
+                                    <td>{{ product.tag_final_value }}</td>
+                                    <td>{{ product.tag_total_value }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="total-sec">
+                        <ul>
+                            <li>Αξία Προϊόντων <span>{{ order.tag_value }}</span></li>
+                            <li>Κόστος Μεταφοράς <span>{{ order.tag_shipping_cost }}</span></li>
+                            <li>Κόστος Αντικαταβολής <span>{{ order.tag_payment_cost }}</span></li>
+                            <li>Έκπτωση <span>{{ order.tag_discount }}</span></li>
+                        </ul>
+                    </div>
+                    <div class="final-total">
+                        <h3>Συνολο <span>{{ order.tag_final_value }}</span></h3></div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row order-success-sec">
+                    <div class="col-sm-6">
+                        <h4>summery</h4>
+                        <ul class="order-detail">
+                            <li>Email: {{ order.guest_email }}</li>
+                            <li>Order Date: {{ order.timestamp }}</li>
+                             <li>{{ profile.cellphone }}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <h4>shipping address</h4>
+                        <ul class="order-detail">
+                            <li>{{ order.profile.full_name }}</li>
+                            <li>{{ profile.address }} </li>
+                            <li>{{ profile.city }}, {{ profile.zip_code }}</li>
+
+                        </ul>
+                    </div>
+                    <br>
+                    <div class="col-sm-12 payment-mode">
+                        <h4>Τροπος Πληρωμής</h4>
+                        <p>{{ order.payment_method }}</p>
+                    </div>
+                     <div class="col-sm-12 payment-mode">
+                        <h4>Τροπος Αποστολής</h4>
+                        <p>{{ order.shipping_method }}</p>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="delivery-sec">
+                            <h3>Κατάσταση</h3>
+                            <h2>{{ order.get_status_display }}</h2></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 5%" class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-12">
+                {% if order.payment_method.payment_type == 'b' %}
+                    <h4>Παρακαλούμε μόλις καταθέσετε τα χρήματα να μας ενημερώσετε τηλεφωνικά στο 2732022566 για άμεση αποστολή των προϊόντων.</h4>
+                    <br>
+                    <p>Εθνική Τράπεζα --> &nbsp;&nbsp;&nbsp;&nbsp; GR 0501104180000041893101182</p>
+                    <p>Τράπεζα Πειραιώς --> GR 5401405650565002101028488</p>
+                    <p>Alpha Bank --> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GR 3001713410006341128057491</p>
+                    <p>Δικαιούχως -->  Κότσαλης Δημήτρης</p>
+
+                {%  endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->
+
+
+{% endblock %}

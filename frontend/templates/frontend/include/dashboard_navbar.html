@@ -1,0 +1,146 @@
+
+<header class="header"> {% load static %}
+    <div class="header-top">
+        <div class="container">
+            <div class="header-left header-dropdowns">
+                <div class="header-search">
+                    <a href="#" class="search-toggle" role="button"><i class="icon-search"></i><span>Αναζητηση</span></a>
+                    <form action="{% url 'search_page' %}" method="get">
+                        <div class="header-search-wrapper">
+                            <input type="search" class="form-control" name="search_name" id="q" placeholder="Αναζήτηση..." required>
+                            <div class="select-custom">
+                                <select id="cat" name="cat">
+                                    <option value="">Όλες οι κατηγορίες</option>
+                                     {% for category in parent_categories %}
+                                            <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% for children in category.get_childrens %}
+                                                <option value="{{ children.id }}">- {{ children.name }}</option>
+                                            {% endfor %}
+                                    {% endfor %}
+
+                                </select>
+                            </div><!-- End .select-custom -->
+                            <button class="btn" type="submit"><i class="icon-search"></i></button>
+                        </div><!-- End .header-search-wrapper -->
+                    </form>
+                </div><!-- End .header-search -->
+            </div><!-- End .header-left -->
+            <div class="header-right">
+                <div class="header-contact">
+                    <i class="icon-phone-1"></i>
+                    <a href="tel:#">+123 5678 890</a>
+                </div><!-- End .header-contact -->
+                <div class="header-contact">
+                    <i class="icon-user"></i>
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'user_profile' %}">{{ request.user }}</a> {% else %}
+                        <a href="{% url 'register' %}">Login</a> {% endif %}
+                </div>
+                <div class="dropdown cart-dropdown">
+                    <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                        <span class="cart-count">{{ cart.order_items.count }}</span>
+                    </a>
+                    <div class="dropdown-menu" >
+                        <div class="dropdownmenu-wrapper">
+                            <div class="dropdown-cart-header">
+                                <span>{{ cart.order_items.count }} ΠροΪόντα</span>
+                                <a href="{% url 'cart_view' %}">Καλάθι</a>
+                            </div><!-- End .dropdown-cart-header -->
+                            <div class="dropdown-cart-products">
+                                {% for order_item in cart.order_items.all %}
+                                    <div class="product">
+                                        <div class="product-details">
+                                            <h4 class="product-title">
+                                                <a href="{{ order_item.product.get_absolute_url }}">{{ order_item }}</a>
+                                            </h4>
+                                            <span class="cart-product-info">
+                                                <span class="cart-product-qty">{{ order_item.qty }}</span>
+                                                <a href="{% url 'delete_from_cart' order_item.id %}"> x</a> {{ order_item.tag_total_value }}
+                                            </span>
+                                        </div><!-- End .product-details -->
+
+                                        <figure class="product-image-container">
+                                            <a href="{{ order_item.product.get_absolute_url }}" class="product-image">
+                                                <img src="{{ order_item.product.image.url }}" alt="product">
+                                            </a>
+                                                <a href="{% url 'delete_from_cart' order_item.id %} " class="btn-remove" title="Remove Product"><i class="icon-cancel"></i></a>
+                                            </figure>
+                                        </div><!-- End .product -->
+                                {% endfor %}
+                            </div><!-- End .cart-product -->
+
+                            <div class="dropdown-cart-total">
+                                <span>Συνολική Αξία</span>
+
+                                <span class="cart-total-price">{{ cart.tag_final_value|default_if_none:'0,00' }}</span>
+                            </div><!-- End .dropdown-cart-total -->
+
+                                    <div class="dropdown-cart-action">
+                                        <a href="{% url 'shipping_list_view' %}" class="btn btn-block">Checkout</a>
+                                    </div><!-- End .dropdown-cart-total -->
+                                </div><!-- End .dropdownmenu-wrapper -->
+                            </div><!-- End .dropdown-menu -->
+                        </div><!-- End .dropdown -->
+                    </div><!-- End .header-right -->
+        </div><!-- End .container -->
+    </div><!-- End .header-top -->
+
+    <div class="header-middle sticky-header">
+                <div class="container">
+                    <div class="header-left">
+                        <ul class="menu sf-arrows">
+                            {% for category in parent_categories %}
+                            <li>
+                                <a href="{{ category.get_absolute_url }}" class="sf-with-ul">{{ category }}</a>
+                                <div class="megamenu megamenu-fixed-width">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                {% for children in category.get_childrens %}
+                                                <div class="col-lg-6">
+                                                    <div class="menu-title">
+                                                        <a href="{{ children.get_absolute_url }}">{{ children.name }}</a>
+                                                    </div>
+
+                                                    <ul>
+                                                        {% for grand_children in children.get_childrens %}
+                                                        <li><a href="{{ grand_children.get_absolute_url }}">{{ grand_children.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                {% endfor %}
+                                            </div><!-- End .row -->
+                                        </div><!-- End .col-lg-8 -->
+                                        <div class="col-lg-4">
+                                            <div class="banner">
+                                                <a href="#">
+                                                    <img src="assets/images/menu-banner-2.jpg" alt="Menu banner">
+                                                </a>
+                                            </div><!-- End .banner -->
+                                        </div><!-- End .col-lg-4 -->
+                                    </div>
+                                </div><!-- End .megamenu -->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div><!-- End .header-left -->
+
+                    <div class="header-center">
+                        <a href="{% url 'homepage' %}" class="logo">
+                            <img src="{% static 'frontend/demo_images/logo.png' %}" alt="Porto Logo">
+                        </a>
+                    </div><!-- End .headeer-center -->
+
+                    <div class="header-right">
+                        <ul class="menu sf-arrows">
+                            <li><a href="{% url 'offer_view' %}">Προσφορές</a></li>
+                            <li><a href="{% url 'new_products_view' %}">Νέα Προϊόντα</a></li>
+                        </ul>
+
+                        <button class="mobile-menu-toggler" type="button">
+                            <i class="icon-menu"></i>
+                        </button>
+                    </div><!-- End .header-right -->
+                </div><!-- End .container -->
+            </div><!-- End .header-middle -->
+</header><!-- End .header -->

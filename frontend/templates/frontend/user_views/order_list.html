@@ -1,0 +1,56 @@
+{% extends 'frontend/user_views/dashboard.html' %}
+
+
+{% block profile_content %}
+    <div class="col-lg-9">
+        <div class="dashboard-right">
+            <div class="dashboard">
+                <div class="page-title">
+                    <h2>Οι Παραγγελιες μου</h2></div>
+                <div class="welcome-msg">
+                  <br />
+                </div>
+                <div class="box-account box-info">
+                    <div>
+                        <div class="box">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                     <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Ημερομηνία</th>
+                                                <th>Τίτλος</th>
+                                                <th>Τρόπος Πληρωμής</th>
+                                                <th>Τρόπος Αποστολής</th>
+                                                <th>Αξία</th>
+                                                <th>Κατάσταση</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for order in object_list %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ order.date_expired|date }}</td>
+                                                        <td>{{ order }}</td>
+                                                        <td>{{ order.payment_method }}</td>
+                                                        <td>{{ order.shipping }}</td>
+                                                        <td>{{ order.tag_final_value }}</td>
+                                                        <td><a href="{{ order.get_absolute_url }}" class="btn btn-primary btn-small">{{ order.get_status_display }}</a></td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr><td colspan="5">Δε έχετε κάνει καμία παραγγελία</td></tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

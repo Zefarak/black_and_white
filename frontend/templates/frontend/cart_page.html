@@ -1,0 +1,91 @@
+{% extends 'frontend/user_views/dashboard.html' %} {% load static %}
+
+{% block extra_css %}
+    <style>
+        .modify_attribute{
+            width: 30%;
+            display: inline
+        }
+        .cart_group {
+            text-align: center;
+        }
+        .change_qty {
+            width: 30%;
+            display: inline;
+
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>cart</h2></div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item active">cart</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+    <!--section start-->
+    <section class="cart-section section-b-space">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" id="cart_items_container">
+                    {% include 'frontend/ajax_views/cart_items_container.html' %}
+                </div>
+            </div>
+            <div class="row cart-buttons">
+                <div class="col-6"><a href="{% url 'homepage' %}" class="btn btn-solid">Επιστροφη</a></div>
+                <div class="col-6"><a href="{% url 'checkout_view' %}" class="btn btn-solid">Παραγγελια</a></div>
+            </div>
+        </div>
+    </section>
+    <!--section end-->
+
+    <section class="authentication-page">
+    <div style="background-color: white" class="container">
+        <section class="search-block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3">
+                        <br>
+                        <h4>Προσθεστε το κουπόνι σας!</h4>
+                        <form class="form-header" action="{% url 'add_voucher_cart_view' %}">
+                            <div class="input-group">
+                                <input name="voucher_code"
+                                       id="exampleFormControlInput3"
+                                       type="text" class="form-control"
+                                       aria-label="Amount (to the nearest dollar)" placeholder="Κωδικός Κουπονιού">
+                                <div class="input-group-append">
+                                    <button class="btn btn-solid"><i class="fa fa-plus"></i>Προσθηκη</button>
+                                </div>
+                            </div>
+                        </form>
+                        <br> <br>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    </section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+    {% include 'frontend/include/cart_js.html' %}
+{% endblock %}

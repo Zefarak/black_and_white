@@ -1,0 +1,55 @@
+{% extends 'frontend/index.html' %} {% load static %}
+
+{% block seo_data %}
+    <title>Οπτικα - Κοτσαλης | Δημιουργία Λογαριασμού</title>
+    <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, optika kotsalis. Εδώ θα βρείτε μεγάλη ποικιλία απο γυαλιά ηλιού και οράσεως.">
+{% endblock %}
+
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Δημιουργια Λογαριασμου</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Δημιουργία Λογαριασμου</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!--section start-->
+<section class="register-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Συμπληρωστε την φορμα</h3>
+                <div class="theme-card">
+                    <form class="theme-form" method="post">{% csrf_token %}
+                       {{ form }}
+                        <br> <br>
+                        <button type="submit" class="btn btn-solid">Δημιουργια λογαριασμου</button>
+                        <br>
+
+                    </form>
+                    <a style="margin-top: 3%" href="{% url 'login' %}" class="btn btn-primary pull-right">Για συνδεση πατηστε εδω.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
+
+{% endblock %}

@@ -1,0 +1,93 @@
+
+ <div class="cart-summary">
+     <h3>Ανάλυση Αξίας Καλαθιού</h3>
+     <h4>
+         <a data-toggle="collapse" href="#total-estimate-section"
+            class="collapsed" role="button" aria-expanded="false" aria-controls="total-estimate-section">
+             Υπολογισμος Κοστων μεταφορας και αντικαταβολης
+         </a>
+     </h4>
+
+     <div class="collapse" id="total-estimate-section">
+         <form action="#">
+             <div class="form-group form-group-sm">
+                 <label>Τρόπος Μεταφοράς</label>
+                 <div class="select-custom">
+                     <select data-href="{% url 'ajax_estimate_cost' 'shipping' %}" class="form-control form-control-sm estimate_">
+                         {% if cart.shipping_method %} <option value="{{ cart.shipping_method.id }}">{{ cart.shipping_method }}</option> {% endif %}
+                         {% for shipping in shipping_methods %}
+                             {% if shipping.id == cart.shipping_method.id %}{% else %}<option value="{{ shipping.id }}">{{ shipping }}</option>{% endif %}
+                         {% endfor %}
+                     </select>
+                 </div><!-- End .select-custom -->
+             </div><!-- End .form-group -->
+
+             <div class="form-group form-group-sm">
+                 <label>Τρόπος Πληρωμής</label>
+                 <div class="select-custom">
+                     <select data-href="{% url 'ajax_estimate_cost' 'payment' %}" class="form-control form-control-sm estimate_">
+                         {% if cart.payment_method %} <option value="{{ cart.payment_method.id }}">{{ cart.payment_method }}</option> {% endif %}
+                         {% for payment in payment_methods %}
+                            {% if payment.id == cart.payment_method.id %}{% else %}<option value="{{ payment.id }}">{{ payment }}</option>{% endif %}
+                         {% endfor %}
+                     </select>
+                 </div><!-- End .select-custom -->
+             </div><!-- End .form-group -->
+             <div class="form-group form-group-custom-control">
+                 <label>Κόστος Μεταφοράς</label>
+                 <div class="custom-control">
+                     <label class="custom-control-label" >{{ cart.shipping_method }} {{ cart.tag_shipping_method_cost }}</label>
+                 </div><!-- End .custom-checkbox -->
+             </div><!-- End .form-group -->
+             <div class="form-group form-group-custom-control">
+                 <label>Κόστος Αντικαταβολής</label>
+                 <div class="custom-control">
+                     <label class="custom-control-label">{{ cart.payment_method }} {{ cart.payment_method_cost }}</label>
+                 </div><!-- End .custom-checkbox -->
+             </div><!-- End .form-group -->
+         </form>
+     </div><!-- End #total-estimate-section -->
+     <table class="table table-totals">
+         <tbody>
+         <tr>
+             <td>Αξία Προϊόντων</td>
+             <td>{{ cart.tag_value }}</td>
+         </tr>
+
+         <tr>
+             <td>Μεταφορικά</td>
+             <td>{{ cart.tag_shipping_method_cost }}</td>
+         </tr>
+         <tr>
+             <td>Αντικαταβολή</td>
+             <td>{{ cart.tag_payment_method_cost }}</td>
+         </tr>
+         <tr>
+             <td>Έκπτωση κουπονιών</td>
+             <td>{{ cart.tag_voucher_discount }}</td>
+         </tr>
+         </tbody>
+         <tfoot>
+         <tr>
+             <td>Συνολική Αξία</td>
+             <td>{{ cart.tag_final_value }}</td>
+         </tr>
+         </tfoot>
+     </table>
+    <br>
+    <h5>Επιλεγμενα Κουπονια</h5>
+    <ul class="list-group">
+         {% for voucher in cart.vouchers.all %}
+             <li class="list-group-item right">
+                 {{ voucher }}
+                 <a href="{% url 'delete_voucher_from_cart' voucher.id %}">Αφαίρεση</a>
+             </li>
+         {% endfor %}
+    </ul>
+    <br /> <br />
+    <div class="checkout-methods">
+        <a href="{% url 'checkout_view' %}" class="btn btn-block btn-sm btn-primary">Παραγγειλε το</a>
+    </div><!-- End .checkout-methods -->
+</div><!-- End .cart-summary -->
+
+{% include 'frontend/include/cart_js.html' %}

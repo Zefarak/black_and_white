@@ -1,0 +1,91 @@
+{% extends 'point_of_sale/index.html' %} {% load render_table from django_tables2 %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>{{ page_title }}</h5>
+                                        <br>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive" id="result_table">
+                                            {% render_table queryset_table %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-2">
+                                 <div class="card">
+                                     <div class="card-header">
+                                         <a href="{{ back_url }}" class="btn btn-warning btn-round" style="float: right;">Επιστροφή</a>
+                                     </div>
+                                     <div class="card-block">
+                                         {% if print_button %}
+                                            <a href="{{ print_url }}" class="btn btn-round btn-info"><i class="fa fa-file"></i> Print </a>
+                                         {% endif %}
+                                     </div>
+                                 </div>
+                                <br>
+                                {% if reports %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <button data-href="{{ report_url }}" class="btn btn-success btn-round report_button">Report</button>
+                                        </div>
+                                        <div class="card-body" id="report_result">
+                                            <p>No data</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+{% block extra_js %}
+    <script>
+        $('#search_ajax').change(function(event){
+            event.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            const search_name = btn.val();
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url + '?search_name='+ search_name,
+
+                success: function (data) {
+                    $('#result_table').html(data.result_table)
+                }
+            })
+        })
+    </script>
+    {% if reports %}
+        <script type="text/javascript">
+            $('.report_button').click(function (event) {
+                event.preventDefault();
+                const btn = $(this);
+                const url = btn.attr('data-href');
+                $.ajax({
+                    method: 'GET',
+                    dataType: 'json',
+                    url: url,
+
+                    success: function (data) {
+                        $('#report_result').html(data.report_result)
+                    }
+                })
+            })
+        </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'frontend/index.html' %}
+
+
+ {% block seo_data %}
+        <title>Οπτικα - Κοτσαλης | Τρόποι Αποστολής</title>
+        <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, optika kotsalis. Εδώ θα βρείτε μεγάλη ποικιλία απο γυαλιά ηλιού και οράσεως.">
+ {% endblock %}
+
+{% block content %}
+
+
+    <!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Τροποι Αποστολης</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Τροποι Αποστολης</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+
+<!-- about section start -->
+<section class="about-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Τρόποι Αποστολής</h4>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- about section end -->
+
+    <!--Testimonial start-->
+<section class="testimonial small-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="slide-2 testimonial-slider no-arrow">
+                    <div>
+                        <div class="media">
+                            <div class="text-center">
+                                <h5>Παραλαβή Από το Κατάστημά μας</h5>
+                                <h6>Δωρεάν Κόστος</h6>
+                            </div>
+                            <div class="media-body">
+                                <p>Μπορείτε να παραλάβετε την παραγγέλια σας οποιαδήποτε ώρα θέλετε μέσα στο ωράριο του καταστήματος μας</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="media">
+                            <div class="text-center">
+                                <h5>Αποστολή με Courier</h5>
+                                <h6>Κόστος εώς 5 ευρώ</h6>
+                            </div>
+                            <div class="media-body">
+                                <p>Σε συνεργασία με την ACS Courier σας αποστέλουμε την παραγγελίας σας στον
+                                    χώρο σας, με κόστος 6 ευρώ . </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="media">
+
+                            <div class="text-center">
+                                <h5>Παραλαβή Από το κατάστημα της ACS Courier</h5>
+                            </div>
+
+                            <div class="media-body">
+                                <p>Σε συνεργασία με την ACS Courier μπορείτε να παραλάβετε την παραγγελία σας
+                                    από το κοντυνότερο κατάστημά τους, με κόστος 6 ευρώ. </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Testimonial ends-->
+
+
+
+
+
+
+
+
+
+{% endblock %}

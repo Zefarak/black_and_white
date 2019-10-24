@@ -1,0 +1,53 @@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Ονομασία</th>
+            <th>Επιλογές</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ele in selected_data %}
+        <tr>
+            <td>{{ ele.id }}</td>
+            <td>{{ ele }}</td>
+            {% if chars %}
+                <td><a href="{% url 'dashboard:product_char_delete_view' ele.id %}" class="btn btn-warning btn-round"><i class="fa fa-trash"></i></a></td>
+            {% elif attrs %}
+                <td><a href="{% url 'dashboard:delete_product_attr' ele.id %}" class="btn btn-warning btn-round"><i class="fa fa-trash"></i></a></td>
+            {% elif color %}
+                <td><button data-href="{% url 'dashboard:ajax_different_color_view' 'delete' instance.id ele.id %}" class="btn btn-warning delete_button">Διαγραφή Color</button></td>
+            {% elif related_product %}
+                <td><button data-href="{% url 'dashboard:ajax_related_product' 'delete' instance.id ele.id %}" class="btn btn-warning delete_button"><i class="fa fa-trash"></i></button></td>
+            {% else %}
+                <td><button data-href="{% url 'dashboard:ajax_category_site' 'delete' instance.id ele.id  %}" class="btn btn-warning delete_button">Διαγραφή</button></td>
+            {% endif %}
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">No Data</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+<script>
+    $('.delete_button').click(function(event) {
+        event.preventDefault();
+        const btn = $(this);
+        const href = btn.attr('data-href');
+        $.ajax({
+            url: href,
+            dataType: 'json',
+            method: 'GET',
+
+            success: function(data) {
+                $('#result_container').html(data.result)
+            }
+        })
+    });
+</script>

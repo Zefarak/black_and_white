@@ -1,0 +1,44 @@
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h6 class="sub-title">Ανaλυση Αποθhκης</h6>
+        <ul class="basic-list">
+            <li class="">
+                <h6>Απόθεμα Αποθήκης</h6>
+                <p>{{ total_qty }} Τεμάχια</p>
+            </li>
+            <li class="">
+                <h6>Κόστος Αποθήκης</h6>
+                <p>{{ total_cost_value }} {{ currency }}</p>
+            </li>
+            <li class="">
+                <h6>Αξία Αποθήκης</h6>
+                <p>{{ total_value }} {{ currency }}</p>
+            </li>
+        </ul>
+        <h6 class="sub-title">Ανάλυση Αποθήκης</h6>
+    </div>
+    <br> <br>
+    <h4>Ανάλυση Προμηθευτών</h4>
+    <table class="table table-bordered table-responsive">
+        <thead>
+            <tr>
+                <th>Προμηθευτής</th>
+                <th>Υπόλοιπο</th>
+                <th>Κόστος Αποθήκης</th>
+                <th>Αξία Αποθήκης</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ele in qs_vendor %}
+                <tr>
+                    <td>{{ ele.0 }}</td>
+                    <td>{{ ele.1 }}</td>
+                    <td>{{ ele.2 }} {{ currency }}</td>
+                    <td>{{ ele.3 }} {{ currency }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

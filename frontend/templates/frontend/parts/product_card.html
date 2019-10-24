@@ -1,0 +1,57 @@
+{% load static %}
+<div class="product-box product-wrap">
+    <div class="img-wrapper">
+        <div class="lable-block">
+            {% if product.is_offer %} <span class="lable3"> -{{ product.tag_discount_percent }}</span> {% endif %}
+        </div>
+        <div class="front">
+             <a href="{{ product.get_absolute_url }}">
+                <img {% if product.image %}
+                        src="{{ product.image.url }}" class="img-fluid blur-up lazyload bg-img" alt="">
+                {% else %}
+                src="{% static 'frontend/demo_images/no_image.png' %}" class="img-fluid blur-up lazyload bg-img" alt="">
+                {% endif %}
+            </a>
+        </div>
+        <div class="back">
+            <a href="{{ product.get_absolute_url }}">
+                <img {% if product.secondary_image %}
+                            src="{{ product.secondary_image.url }}" class="img-fluid blur-up lazyload bg-img" alt="">
+                    {% else %}
+                        src="{% static 'frontend/demo_images/no_image.png' %}" class="img-fluid blur-up lazyload bg-img" alt="">
+                    {% endif %}
+            </a>
+        </div>
+        <div class="cart-box">
+            {% if product.have_attr %}
+                <button  data-href="{% url 'ajax_add_product_modal' product.slug %}"
+                       data-toggle="modal"
+                       data-target="#add_product_modal" title="Add to cart">
+                <i class="ti-shopping-cart"></i>
+                </button>
+            {% else %}
+                <a href="{% url 'add_to_cart' product.slug %}" class="paction add-cart" title="Add to Cart">
+                    <span> <i class="ti-shopping-cart"></i></span>
+                </a>
+            {% endif %}
+            <a href="{% url 'add_product_wishlist' product.slug %}" title="Add to Wishlist"><i class="ti-heart" aria-hidden="true"></i></a>
+            <a class='add_product_modal'
+               data-href="{% url 'ajax_add_product_modal' product.slug %}"
+               data-toggle="modal"
+               data-target="#add_product_modal"
+               title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+
+        </div>
+    </div>
+     <div class="product-detail text-center">
+        <div class="rating">
+            <h6>Sku: {{ product.sku }}</h6>
+        </div>
+
+        <a href="{{ product.get_absolute_url }}">
+            <h6>{{ product.title }}</h6>
+        </a>
+        <h4>{{ product.tag_final_price }} {% if product.is_offer %} <span style="color: red;text-decoration: line-through">{{ product.tag_price }}</span>{% endif %}</h4>
+    </div>
+</div>
+

@@ -1,0 +1,14 @@
+<h4 class="sub-title">Προτεινομενα</h4>
+<select name="feature_name" class="form-control form-control-info">
+    {% if request.GET.active_name == '1' %}
+        <option value="1">Επιλέξατε Προτεινόμενα</option>
+    {% elif request.GET.active_name == '2' %}
+        <option value="2">Ολα</option>
+    {% else %}
+         <option value="opt1">Επιλέξτε</option>
+    {% endif %}
+
+    <option value="1">Προτεινόμενα</option>
+    <option value="2">Ολα</option>
+</select>
+<br >

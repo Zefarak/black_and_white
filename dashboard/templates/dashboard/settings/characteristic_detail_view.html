@@ -1,0 +1,78 @@
+{% extends 'index.html' %}
+
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="title text-center">{{ instance.title }}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Ονομασία</th>
+                                                <th>Λεπτομέριες</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for ele in instance.my_values.all %}
+                                                    <tr>
+                                                        <td>{{ ele.id }}</td>
+                                                        <td>{{ ele }}</td>
+                                                        <td><a href="{{ ele.get_edit_url }}" class="btn btn-primary">Edit</a> </td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td>No Added data</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="title text-center">Επεξεργασία</h4>
+                                        <a href="{{ back_url }}" class="btn btn-warning">Επιστροφή</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="post">{% csrf_token %}
+                                            {{ form }}
+                                            <br>
+                                            <button name="edit_form" class="btn btn-primary"><i class="fa fa-save"></i>Αποθήκευση</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header"><h4 class="title text-center">Δημιουργία Νέας Τιμής</h4></div>
+                                    <div class="card-body">
+                                        <form method="post">{% csrf_token %}
+                                            {{ add_form }}
+                                            <br>
+                                            <button name="add_form" class="btn btn-primary"><i class="fa fa-save"></i>Αποθήκευση</button>
+                                        </form>
+                                        <br>
+                                        <a href="{% url 'dashboard:char_delete_view' instance.id %}" onclick="return confirm('Are you sure?'); "class="btn btn-warning">Διαγραφή</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

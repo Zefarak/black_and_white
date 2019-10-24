@@ -1,0 +1,67 @@
+{% extends 'frontend/index.html' %} {% load static %}
+
+{% block content %}
+
+<!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Συνδεση Χρηστη</h2></div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item active">Συνδεση</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!--section start-->
+<section class="login-page section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Συνδεσου</h3>
+                <div class="theme-card">
+                    <form class="form" method="post">{% csrf_token %}
+                        {{ form }}
+                        <br />
+                        <button type='submit' class='btn btn-primary' value='{{ form_button }}'> {{ form_button }} </button>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col-lg-6 right-login">
+                <h3>Ενναλακτικα</h3>
+                <div style="max-height: 250px;" class="theme-card authentication-right">
+                    <h6 class="title-font">Συνδέσου μεσω facebook</h6>
+                    <p>Από εδώ μπορείτε είτε να δημιουργήσετε ή να σθνδεθείτε από τον λογαριασμό σας στο facebook</p>
+                    <a href="{% url 'register_view' %}" class="btn btn-solid btn-primary">Συνδεση μεσω facebοοκ</a>
+                </div>
+
+                <div class="theme-card authentication-right">
+                    <h6 class="title-font">Δημιουργία νεου Πελατη</h6>
+                    <p>Sign up for a free account at our store. Registration is quick and easy. It allows you to be able to order from our shop. To start shopping click register.</p>
+                    <a href="{% url 'register_view' %}" class="btn btn-solid">Δημιουργία Λογαριασμου</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
+
+
+
+
+
+
+
+{% endblock %}

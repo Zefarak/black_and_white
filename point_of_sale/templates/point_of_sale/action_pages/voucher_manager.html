@@ -1,0 +1,52 @@
+{% extends 'point_of_sale/dashboard.html' %}
+
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Manager Κουπονιών
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Κουπόνι</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for voucher in vouchers %}
+                                                    <tr>
+                                                        <td>{{ voucher }}</td>
+                                                        <td><a class="btn btn-danger"><i class="fa fa-remove"></i> </a> </td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="2">Δε έχετε επιλέξει κουπόνια</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <br> <br>
+                                        <form method="post" class="form">
+                                            {% csrf_token %}  {{ form }}
+                                            <button class="btn btn-success" type="submit"><i class="fa fa-plus"></i> Προσθήκη </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

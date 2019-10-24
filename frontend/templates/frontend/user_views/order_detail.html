@@ -1,0 +1,110 @@
+{% extends 'frontend/user_views/dashboard.html' %}
+
+{% block content %}
+    <main class="main">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχική Σελίδα</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Σελιδα Προφίλ</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-9 order-lg-last dashboard-content">
+                        <h2>Κατάσταση Παραγγελίας... <span>{{ object.get_status_display }}</span></h2>
+
+                        <div class="mb-4"></div><!-- margin -->
+
+                        <h3>Πληροφορίες Προφίλ</h3>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                       Πληροφοριες Παραγγελιας
+                                    </div><!-- End .card-header -->
+
+                                    <div class="card-body">
+                                        <ul>
+                                            <li><p>Ημερομηνία {{ object.date_expired|date }}</p></li>
+                                            <li><p>Αξία Προϊόντων {{ object.tag_value }}</p></li>
+                                            <li><p>Έκπτωση</p></li>
+                                            <li><p>Αξία Μεταφορικών</p></li>
+                                            <li><p>Αξία Αντικαταβολής</p></li>
+                                            <li><p>Συνολική Αξία {{ object.tag_final_value }}</p></li>
+                                        </ul>
+                                    </div><!-- End .card-body -->
+                                </div><!-- End .card -->
+                            </div><!-- End .col-md-6 -->
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        Πληροφοριες αποστολης
+                                    </div><!-- End .card-header -->
+
+                                    <div class="card-body">
+                                        <p>
+                                            Δε έχει αποσταλεί ακόμα
+                                        </p>
+                                    </div><!-- End .card-body -->
+                                </div><!-- End .card -->
+                            </div><!-- End .col-md-6 -->
+                        </div><!-- End .row -->
+
+                        <div class="card">
+                            <div class="card-header">
+                                Προϊόντα
+                            </div><!-- End .card-header -->
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Προϊόν</th>
+                                                <th>Σχόλια</th>
+                                                <th>Αξία</th>
+                                                <th>Ποσότητα</th>
+                                                <th>Συνολική Αξία</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for item in object.order_items.all %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ item.title }}</td>
+                                                        <td>{% if item.have_attributes %}
+                                                                {% for attr in item.attributes %}{{ attr.attribute }} - {{ attr.qty }}, {% endfor %}
+                                                            {% else %}
+                                                            - {% endif %}
+
+
+                                                        </td>
+                                                        <td>{{ item.tag_final_value }}</td>
+                                                        <td>{{ item.qty }}</td>
+                                                        <td>{{ item.tag_total_value }}</td>
+
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div><!-- End .card-body -->
+                        </div><!-- End .card -->
+                    </div><!-- End .col-lg-9 -->
+
+                    {% include 'frontend/user_views/include/aside.html' %}
+                </div><!-- End .row -->
+            </div><!-- End .container -->
+
+            <div class="mb-5"></div><!-- margin -->
+        </main>
+{% endblock %}

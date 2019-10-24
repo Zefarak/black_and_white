@@ -1,0 +1,53 @@
+{% extends 'catalogue_index.html'%} {% load render_table from django_tables2 %}
+{% block extra_css %}
+<style>
+ .selection__rendered {
+     background-color: white;
+ }
+</style>
+{% endblock %}
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>{{ page_title }}</h5>
+                                        <br><br>
+                                        <a href="{{ create_url }}" class="btn btn-info btn-round">Δημιουργία</a>
+                                        <a href="{{ back_url }}" class="btn btn-warning btn-round" style="float: right;">Επιστροφή</a>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            {% render_table queryset_table %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-4">
+                                 <div class="card">
+                                     <div class="card-header">
+                                         <h5>Φίλτρα</h5>
+                                     </div>
+                                     <div class="card-block">
+                                         <form class="form" method="get">
+                                             {% if search_filter %}{% include 'filters/search_filter.html' %} {% endif %}
+                                             {% if date_filter %}{% include 'filters/date_range_filter.html' %} {% endif %}
+                                             <br> <br>
+                                             <button class="btn btn-primary btn round" type="submit">Υποβολή</button>
+                                         </form>
+                                     </div>
+                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}

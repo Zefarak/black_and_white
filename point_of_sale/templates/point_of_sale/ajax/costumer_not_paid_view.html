@@ -1,0 +1,33 @@
+ {% for order in not_paid_orders %}
+    <div class="panel panel-danger">
+        <div class="panel-heading bg-danger">
+            {{ order }}
+        </div>
+        <div class="panel-body">
+            <p>Ημερομηνία --> {{ order.date_expired }}</p>
+            <br>
+            <a class="btn btn-primary btn-round" href="{{ order.get_edit_url }}" target="_blank"><i class="fa fa-edit"></i></a>
+        </div>
+        <a data-href="{% url 'point_of_sale:ajax_costumer_pay_order' order.id %}" class="panel btn btn-danger pay_order">
+            Πληρωμή --> {{ order.tag_final_value }}
+        </a>
+    </div>
+{% endfor %}
+
+
+ <script>
+        $('.pay_order').click(function (evt) {
+            evt.preventDefault();
+            console.log('works')
+            const btn = $(this);
+            const endpoint = btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: endpoint,
+                success: function (data) {
+                    $('.panels-wells').html(data.not_paid_section)
+                }
+            })
+        })
+    </script>

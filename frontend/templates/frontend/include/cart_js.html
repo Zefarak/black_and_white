@@ -1,0 +1,90 @@
+<script type="text/javascript">
+   $('.change_qty').change(function (evt) {
+       evt.preventDefault();
+       console.log('is this a...')
+       const my_input = $(this);
+       const url = my_input.attr('data-href');
+       const value = my_input.val();
+       $.ajax({
+           method: 'GET',
+           dataType: 'json',
+           url: url + '?qty=' + value,
+
+           success: function (data) {
+               $('#cart_items_container').html(data.cart_items_result);
+               $('#cart_container').html(data.cart_result)
+           }
+       })
+   })
+</script>
+
+<script>
+    $('.modify_attribute').change(function (evt) {
+        evt.preventDefault();
+        const this_input = $(this);
+        const url = this_input.attr('data-href');
+        const qty = this_input.val();
+        $.ajax({
+            method: 'GET',
+            url: url + '?qty='+ qty,
+            dataType: 'json',
+            success: function (data) {
+                $('#cart_items_container').html(data.cart_items_result);
+                $('#cart_container').html(data.cart_result)
+            }
+        })
+    });
+
+    $('.delete_cart_item').click(function (evt){
+        evt.preventDefault();
+        const my_btn = $(this);
+        const url = my_btn.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            url: url,
+            dataType: 'json',
+
+            success: function (data) {
+                $('#cart_items_container').html(data.cart_items_result);
+                $('#cart_container').html(data.cart_result)
+            }
+        })
+    })
+</script>
+
+<script>
+        $('.add_voucher').click(function(evt){
+            evt.preventDefault();
+            const my_input = $('#voucher_input').val();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url+'?voucher='+my_input,
+
+                success: function(data){
+                    $('#cart_container').html(data.cart_result)
+                }
+            })
+        })
+    </script>
+
+<script>
+        $('.estimate_').change(function (evt) {
+            console.log('works!');
+            evt.preventDefault();
+            const my_input = $(this);
+            const url = my_input.attr('data-href');
+            const value = my_input.val();
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url + '?pk='+ value,
+
+                success: function (data) {
+                    $('#cart_container').html(data.cart_result)
+                }
+            })
+        })
+    </script>

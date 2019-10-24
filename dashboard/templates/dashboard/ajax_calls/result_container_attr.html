@@ -1,0 +1,66 @@
+<div class="card">
+    <div class="card-header">
+        <div class="title">Επιλεγμένα</div>
+    </div>
+    <div class="content">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Τίτλος</th>
+                <th>Ποσότητα</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ele in selected_data %}
+                <tr>
+                    <td>{{ ele.id }}</td>
+                    <td>{{ ele }}</td>
+                    <td>
+                        <input class="form-control edit_button" data-href="{% url 'dashboard:ajax_manage_qty_attribute' ele.id %}" type="number" step='1' value="{{ ele.qty }}">
+                    </td>
+                    {% if related_product %}
+                        <td><button data-href="{% url 'dashboard:ajax_related_product' 'delete' attr_class.id ele.title.id  %}" class="btn btn-warning delete_button">Delete</button></td>
+                    {% else %}
+                        <td><button data-href="{% url 'dashboard:ajax_manage_attribute' 'delete' attr_class.id ele.title.id  %}" class="btn btn-warning delete_button">Delete</button></td>
+                    {% endif %}
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="3">No Data</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+    $('.edit_button').keyup(function(event){
+        event.preventDefault();
+        const btn = $(this);
+        const href = btn.attr('data-href');
+        const data = btn.val();
+        console.log('edit', href, data);
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: href + '?qty='+ data
+        })
+    });
+
+    $('.delete_button').click(function(event) {
+        event.preventDefault();
+        const btn = $(this);
+        const href = btn.attr('data-href');
+        $.ajax({
+            url: href,
+            dataType: 'json',
+            success: function(data) {
+                $('#result_container').html(data.result)
+            }
+        })
+    });
+</script>

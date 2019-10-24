@@ -1,0 +1,13 @@
+<aside class="sidebar col-lg-3">
+    <div class="widget widget-dashboard">
+        <h3 class="widget-title">O Λογαριαμός μου</h3>
+        <ul class="list">
+            <li><a href="{% url 'user_profile' %}">Αρχική Σελίδα</a></li>
+            <li><a href="{% url 'update_profile_view' %}">Επεξεργασία Προφίλ</a></li>
+            <li><a href="{% url 'change_password_view' %}">Αλλαγή Κωδικού</a></li>
+            <li><a href="{% url 'user_profile_order_list' %}">'Ολες οι παραγγελίες</a></li>
+            <li><a href="{% url 'wishlist' %}">WishList</a></li>
+            <li><a href="{% url 'logout' %}?next=/">Αποσύνδεση</a></li>
+        </ul>
+    </div><!-- End .widget -->
+</aside><!-- End .col-lg-3 -->

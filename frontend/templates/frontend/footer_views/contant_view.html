@@ -1,0 +1,87 @@
+{% extends 'frontend/index.html' %} {% load static %}
+
+ {% block seo_data %}
+        <title>Οπτικα - Κοτσαλης | Τρόποι Επικοινώνιας</title>
+        <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, optika kotsalis. Εδώ θα βρείτε μεγάλη ποικιλία απο γυαλιά ηλιού και οράσεως.">
+    {% endblock %}
+
+{% block content %}
+
+    <!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>Τρόποι Επικοινώνιας</h2>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item active">Τρόποι Επικοινώνιας</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!--section start-->
+<section  class="contact-page section-b-space">
+    <div class="container">
+        <div class="row section-b-space">
+            <div style="background-color: white" class="col-lg-7 map">
+                <img src="{% static 'frontend/my_assets/our store.jpg' %}" />
+            </div>
+            <div style="background-color: white" class="col-lg-5">
+                <div class="contact-right">
+                    <ul>
+                        <li>
+                            <div class="contact-icon"><img src="/static/frontend/assets/images/icon/phone.png" alt="Generic placeholder image">
+                                <h6>Τηλεφωνα</h6></div>
+                            <div class="media-body">
+                                <p>2732 022566</p>
+                                <p>6974415199</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-icon"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                                <h6>Διευθυνση</h6></div>
+                            <div class="media-body">
+                                <p>Επιδαύρου Λιμηράς 36</p>
+                                <p>Μολάοι Λακωνίας 23052</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-icon">
+                                <img src="/static/frontend/assets/images/icon/email.png" alt="Generic placeholder image">
+                                <h6>Email</h6></div>
+                            <div class="media-body">
+                                <p>kots_d@hotmail.com</p>
+
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4>Για οποιαδηποτε απορία παρακαλώ ρωτήστε μας ότι θέλετε</h4>
+                <br />
+                <form class="theme-form" method="post">
+                    {% csrf_token %}
+                    {{ form }}
+                    <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Section ends-->
+{% endblock %}

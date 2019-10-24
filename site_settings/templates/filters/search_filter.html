@@ -1,0 +1,7 @@
+<div class="form-group row">
+    <div class="col-sm-10">
+        <input type="text" {% if request.GET.search_name %} value="{{ request.GET.search_name }}" placeholder="{{ request.GET.search_name }}"
+    {% else %} placeholder="Αναζήτηση" {% endif %} class="form-control"  name="search_name" id="search_name">
+    </div>
+</div>
+

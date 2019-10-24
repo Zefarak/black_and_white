@@ -1,0 +1,45 @@
+{% extends 'index.html' %}
+
+{% block navbar %} {% include 'site_settings/include/navbar.html' %}{% endblock %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-header-left">
+                                            <h5>Επιλογή</h5>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <a href="{% url 'site_settings:banner_list' %}" class="btn btn-primary btn-square btn-block">Banners</a>
+                                                    <a href="{% url 'vouchers:voucher_list' %}" class="btn btn-info btn-square btn-block">Κουπόνια</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12">
+                                                <div class="form-group">
+                                                    <a href="{% url 'site_settings:payment_methods' %}" class="btn btn-success  btn-round btn-block">Τρόποι Πληρωμής</a>
+                                                    <a href="{% url 'site_settings:shipping' %}" class="btn btn-info btn-round btn-block">Τρόποι Μεταφοράς</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

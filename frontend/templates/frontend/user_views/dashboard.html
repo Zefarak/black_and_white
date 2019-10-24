@@ -1,0 +1,117 @@
+{% extends 'frontend/index.html' %}
+
+{% block seo_data %}
+    <title>Οπτικα - Κοτσαλης |Σελίδες Χρήστη</title>
+        <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, optika kotsalis. Εδώ θα βρείτε μεγάλη ποικιλία απο γυαλιά ηλιού και οράσεως.">
+{% endblock %}
+
+
+{% block content %}
+    <!-- breadcrumb start -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2> {% if request.user.email  %}{{ request.user.email }} {% else %} {{ request.user }} {% endif %}</h2></div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελίδα</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!-- section start -->
+<section class="section-b-space">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="account-sidebar"><a class="popup-btn">Τα στοιχεία μου</a></div>
+                <div class="dashboard-left">
+                    <div class="collection-mobile-back"><span class="filter-back"><i class="fa fa-angle-left" aria-hidden="true"></i> back</span></div>
+                    <div class="block-content">
+                        <ul>
+                            <li class=""><a href="{% url 'user_profile' %}">Στοιχεία</a></li>
+                            <li><a href="{% url 'user_profile_order_list' %}">Οι Παραγγελίες μου</a></li>
+                            <li><a href="{% url 'wishlist' %}">My Wishlist</a></li>
+                            <li><a href="{% url 'frontend_subscribe' %}">Οι συνδρομές μου!</a></li>
+                            <li><a href="{% url 'change_password_view' %}">Αλλαγή Κωδικού</a></li>
+                            <li><a href="{% url 'user_personal_data' %}">Προσωπικα Δεδομένα</a> </li>
+                            <li class="last"><a href="{% url 'logout' %}">Αποσυνδεση</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% block profile_content %}
+            <div class="col-lg-9">
+                <div class="dashboard-right">
+                    <div class="dashboard">
+                        <div class="page-title">
+                            <h2>My Dashboard</h2></div>
+                        <div class="welcome-msg">
+                            <p>Καλώς ήρθες, {{ profile.full_name }}</p>
+                        </div>
+                        <div class="box-account box-info">
+                            <div class="box-head">
+                                <h2>Στοιχεία Χρήστη</h2>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="box">
+                                        <div class="box-title">
+                                            <h3>Πληροφορίες</h3><a href="{% url 'update_profile_view' %}">Επεξεργασία</a></div>
+                                        <div class="box-content">
+                                            <h6>{{ profile.full_name }}</h6>
+                                            <h6>{{ user.email }}</h6>
+                                            <h6><a href="{% url 'change_password_view' %}">Change Password</a></h6></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="box">
+                                        <div class="box-title">
+                                            <h3>Newsletters</h3>
+                                                <a href="#">Edit</a>
+                                            </div>
+                                        <div class="box-content">
+                                            <p>Δεν υποστηρίζεται ακόμα.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="box">
+                                    <div class="box-title">
+                                        <h3>Διευθυνση</h3></div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h6>{{ profile.shipping_city }} {{ profile.shipping_zip_code }}</h6>
+                                            <address>{{ profile.shipping_address }}</address><br>
+                                            <p>{{ profile.tag_phones }}</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+</section>
+<!-- section end -->
+
+
+{% endblock %}
+{% block extra_js %}
+
+{% endblock %}

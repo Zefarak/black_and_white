@@ -1,0 +1,91 @@
+{% extends 'point_of_sale/dashboard.html' %}
+
+{% block content %}
+
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header"><h4>Προσθήκη</h4></div>
+                                    <div class="card-body">
+                                        <table class="table">
+                                          <thead>
+                                            <tr>
+                                              <th scope="col">#</th>
+                                              <th scope="col">Τίτλος</th>
+                                              <th scope="col">Action</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                              {% for ele in attri_class.my_attributes.all %}
+                                                  <tr>
+                                                      <th scope="row">{{ forloop.counter }}</th>
+                                                      <td>{{ ele }}</td>
+
+                                                      <td><a data-href="{% url 'point_of_sale:ajax_add_product_with_attr' order.id instance.id ele.id %}" class="btn btn-primary btn-round add_button"><i class="fa fa-plus"></i> </a> </td>
+                                                  </tr>
+                                              {% endfor %}
+                                          </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a href="{{ back_url }}" class="btn btn-warning btn-round">Επιστροφή</a> <br />
+                                        <h4>Επιλεγμένα</h4>
+                                    </div>
+                                    <div class="card-body" id="result_container">
+                                       {% include 'point_of_sale/ajax/attribute_container.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $('.add_button').click(function (evt) {
+        evt.preventDefault();
+        const btn = $(this);
+        const url = btn.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url,
+            success: function(data){
+                $('#result_container').html(data.result)
+            }
+        })
+    })
+</script>
+
+    <script>
+        $('.edit_button').click(function (evt) {
+            evt.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+
+                success: function (data) {
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
+    </script>
+
+{% endblock %}

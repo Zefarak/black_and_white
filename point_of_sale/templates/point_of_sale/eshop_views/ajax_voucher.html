@@ -1,0 +1,10 @@
+<ul>
+    {% for coupon in coupons %}
+        <li>{{ coupon }} <a href="">x</a> </li>
+    {% endfor %}
+</ul> <br>
+<form class="form">
+    <input type="text" class="form-control voucher_input" placeholder="Προσθήκη Κουπονιού">
+    <br>
+    <button data-href="{% url 'point_of_sale:ajax_voucher_add' object.id %}" class="btn btn-primary voucher_submit">Προσθήκη</button>
+</form>

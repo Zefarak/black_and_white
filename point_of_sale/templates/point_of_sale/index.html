@@ -1,0 +1,130 @@
+{% extends 'index.html'%}  {% load render_table from django_tables2 %}
+{% block navbar %} {% include 'point_of_sale/include/navbar.html' %} {% endblock %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <!-- task, page, download counter  start -->
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-c-yellow update-card">
+                                    <div class="card-block">
+                                        <div class="row align-items-end">
+                                            <div class="col-8">
+                                                <h4 class="text-white">{{ currency }} {{ total_invoices }}</h4>
+                                                <h6 class="text-white m-b-0">Αξία Τιμολογίων</h6>
+                                            </div>
+                                            <div class="col-4 text-right">
+                                                <canvas id="update-chart-1" height="50"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="{% url 'warehouse:dashboard' %}" class="text-white m-b-0"><i class="feather icon-clock text-white f-14 m-r-10"></i>Λεπτομέριες</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-c-green update-card">
+                                    <div class="card-block">
+                                        <div class="row align-items-end">
+                                            <div class="col-8">
+                                                <h4 class="text-white">{{ currency }} {{ total_orders }}</h4>
+                                                <h6 class="text-white m-b-0">Έσοδα Πωλήσεων</h6>
+                                            </div>
+                                            <div class="col-4 text-right">
+                                                <canvas id="update-chart-2" height="50"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="{% url 'point_of_sale:home' %}" class="text-white m-b-0"><i class="feather icon-clock text-white f-14 m-r-10"></i>Λεπτομέριες</a>
+                                    </div>
+                                </div>
+                            </div>
+                                            <div class="col-xl-3 col-md-6">
+                                                <div class="card bg-c-pink update-card">
+                                                    <div class="card-block">
+                                                        <div class="row align-items-end">
+                                                            <div class="col-8">
+                                                                <h4 class="text-white">{{ currency }} {{ total_billing }}</h4>
+                                                                <h6 class="text-white m-b-0">Υπόλοιπο Λογαριασμών</h6>
+                                                            </div>
+                                                            <div class="col-4 text-right">
+                                                                <canvas id="update-chart-3" height="50"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <a href="{% url 'warehouse:billing_view' %}" class="text-white m-b-0"><i class="feather icon-clock text-white f-14 m-r-10"></i>Λεπτομέριες</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-md-6">
+                                                <div class="card bg-c-lite-green update-card">
+                                                    <div class="card-block">
+                                                        <div class="row align-items-end">
+                                                            <div class="col-8">
+                                                                <h4 class="text-white">{{ currency }} {{ total_payroll }}</h4>
+                                                                <h6 class="text-white m-b-0">Υπόλοιπο Μισθοδοσίας</h6>
+                                                            </div>
+                                                            <div class="col-4 text-right">
+                                                                <canvas id="update-chart-4" height="50"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <a href="{% url 'warehouse:payroll_homepage' %}" class="text-white m-b-0"><i class="feather icon-clock text-white f-14 m-r-10"></i>Λεπτομέριες</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- task, page, download counter  end -->
+
+                                            <!--  sale analytics start -->
+                                            <div class="col-xl-9 col-md-12">
+                                                <div class="card table-card">
+                                                    <div class="card-header">
+                                                        <h5>Τελευταίες Καταχωρίσεις</h5>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="table-responsive">
+                                                            {% render_table queryset_table %}
+                                                            <div class="text-center">
+                                                                <a href="{% url 'dashboard:products' %}" class=" b-b-primary text-primary">Όλα τα Προϊόντα</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-md-12">
+                                                <div class="card user-card2">
+                                                    <div class="card-block text-center">
+                                                        <h6 class="m-b-15">Ονομασία Επιχείρησης</h6>
+                                                        <h6 class="m-b-10 m-t-10">ΑΦΜ</h6>
+                                                        <a href="#!" class="text-c-yellow b-b-warning">Reports</a>
+                                                        <div class="row justify-content-center m-t-10 b-t-default m-l-0 m-r-0">
+                                                            <div class="col m-t-15 b-r-default">
+                                                                <h6 class="text-muted">Έσοδα</h6>
+                                                                <h6>0.00 €</h6>
+                                                            </div>
+                                                            <div class="col m-t-15">
+                                                                <h6 class="text-muted">Έξοδα</h6>
+                                                                <h6>0.00 €</h6>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a href="" class="btn btn-warning btn-block p-t-15 p-b-15">Ισολογισμός</a>
+                                                </div>
+                                            </div>
+                                            <!--  sale analytics end -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+{% endblock %}
+

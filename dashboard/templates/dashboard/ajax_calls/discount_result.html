@@ -1,0 +1,45 @@
+
+<div class="card-header">
+    <h4>Eπιλεγμένα Προϊόντα</h4>
+</div> <div class="card-body">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Προϊόν</th>
+            <th>Προμηθευτής</th>
+            <th>Τιμές</th>
+            <th>#</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in object.products_related.all %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product }}</td>
+                <td>{{ product.vendor }}</td>
+                <td>{{ product.tag_price_discount }} / {{ product.tag_price }}</td>
+                <td><button data-href="{% url 'dashboard:ajax_products_discount_delete' object.id product.id %}" class="btn btn-warning delete_product"><i class="fa fa-trash"></i> </button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+   <script>
+        $('.delete_product').click(function (evt) {
+            evt.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+
+                success: function (data) {
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
+    </script>

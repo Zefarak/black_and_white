@@ -1,0 +1,62 @@
+<style> {% load static %}
+    .scrollable {
+  height: 800px;
+  overflow-y: scroll;
+}
+</style>
+
+<div class="row scrollable">
+    <!-- Invoice list card start -->
+    {% for product in products %}
+        <div class="col-sm-4">
+            <div class="card rounded-card user-card">
+            <div class="card-block">
+                <div class="img-hover">
+                    {% if product.image %}
+                    <img style="width: 200px; height: 200px;" class="img-fluid img-radius" src="{{ product.image.url }}" alt="round-img">
+                    {% else %}
+                    <img style="width: 200px; height: 200px;" class="img-fluid img-radius" src="{% static 'my_static/no_image.png' %}" alt="round-img">
+                    {% endif %}
+                    <div class="img-overlay img-radius">
+                        <span>
+                            {% if product.have_attr %}
+                                <a href="{% url 'point_of_sale:add_to_order_attr' instance.id product.id %}" class="btn btn-info">Διάλεξε <br> Νούμερο</a>
+                            {% else %}
+                                 <button data-href="{% url 'point_of_sale:ajax_add_product' instance.id product.id %}" class="btn btn-warning add_button block">
+                            <i class="fa fa-plus"></i> Προσθήκη
+                             </button>
+                            {% endif %}
+                            <p>Υπολοιπο.. {{ product.qty }}</p>
+                        </span>
+                    </div>
+                </div>
+                <div class="user-content">
+                    <h4 class="">{{ product.title|truncatechars:30 }}</h4>
+                    <p class="m-b-0 text-muted">Sku... {{ product.sku }}</p>
+                    <p class="m-b-0 text-muted">Τιμή... {{ product.tag_final_price }}</p>
+                    <a href="{{ product.get_absolute_url }}" target="_blank" class="btn btn-info"><i class="fa fa-info"></i> </a>
+                </div>
+            </div>
+        </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+<script>
+    $('.add_button').click(function (evt) {
+            evt.preventDefault();
+            const btn = $(this);
+            const url = btn.attr('data-href');
+            $.ajax({
+                dataType: 'json',
+                url: url,
+                method: 'GET',
+
+                success: function (data) {
+                    $('#order_items_container').html(data.order_container)
+                }
+            })
+        })
+</script>

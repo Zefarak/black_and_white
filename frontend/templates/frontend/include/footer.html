@@ -1,0 +1,111 @@
+<!-- footer --> {% load static %}
+<footer>
+    <div class="dark-layout">
+        <div class="container">
+            <section class="section-b-space border-b">
+                <div class="row footer-theme2">
+                    <div class="col-lg-3">
+                        <div class="footer-title footer-mobile-title">
+                            <h4>about</h4>
+                        </div>
+                        <div class="footer-contant">
+                            <div class="footer-logo"><img src="{% static 'frontend/my_assets/logo.png' %}" alt=""></div>
+                            <p>Επισκεφτείτε μας για να σας εξυπηρετήσουμε κατασκευάζοντας τα γυαλιά σας την ίδια μέρα με τα σύγχρονα μηχανήματά μας.
+                                Οι φακοί επαφής (μηνιαίοι,ημερήσιοι,σιλικόνης υδρογέλης ) που διαθέτουμε καλύπτουν και τον πιο απαιτητικό χρήστη.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 subscribe-wrapper">
+                        <div class="subscribe-block">
+                            <h2>newsletter</h2>
+                            <form method="post" action="{% url 'newsletter:validate_newsletter' %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input name="email" type="email" class="form-control" id="exampleFormControlInput3" placeholder="Enter your email" required>
+                                    <button type="submit" class="btn btn-solid">Εγγραφη</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="footer-title">
+                            <h4>Πληροφοριες Καταστηματος</h4>
+                        </div>
+                        <div class="footer-contant">
+                            <ul class="contact-details">
+                                <li>Επιδαύρου Λιμηράς 36 Μολάοι,Δήμος Μονεμβασιάς, Λακωνία, 23052</li>
+                                <li>Καλέστε μας: 2732022566</li>
+                                <li>Κινητό: 6974415199</li>
+                                <li>Email : kots_d@hotmail.com</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="dark-layout">
+        <div class="container">
+            <section class="small-section">
+                <div class="row footer-theme2">
+                    <div class="col p-set">
+                        <div class="footer-link">
+                            <div class="footer-title">
+                                <h4>Πληροφοριες</h4>
+                            </div>
+                            <div class="footer-contant">
+                                <ul>
+                                    <li><a href="{% url 'shipping_list_view' %}">Τροποι Αποστολής</a></li>
+                                    <li><a href="{% url 'payment_list_view' %}">Τροποι Πληρωμής</a></li>
+                                    <li><a href="{% url 'return_policy_view' %}">Πολιτική Επιστροφών</a></li>
+                                    <li><a href="{% url 'terms_rules_view' %}">Οροι Χρήσης</a></li>
+                                    <li><a href="{% url 'personal_data_view' %}">Πολιτική Απορρήτου και Cookies</a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="footer-link-b">
+                            <div class="footer-title">
+                                <h4>Παρραγελιες</h4>
+                            </div>
+                            <div class="footer-contant">
+                                <ul>
+                                     <li><a href="{% url 'contact_view' %}">Ποιοι Ειμαστε</a></li>
+                                    <li><a href="{% url 'order_status_form' %}">Εξέλιξη Παραγγελίας</a></li>
+                                    <li><a href="{% url 'user_profile' %}">Οι Πληροφορίες Μου</a></li>
+                                    <li><a href="{% url 'user_profile_order_list' %}">Οι Παραγγελίες μου</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="sub-footer darker-subfooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-md-6 col-sm-12">
+                    <div class="footer-end">
+
+                        <p> 2019 Δημιουργήθηκε από το <a style="color: #fe816d" href="https://www.simply-chris.com/" target="_blank">Simply-Chris.com</a></p>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 col-sm-12">
+                    <div class="payment-card-bottom">
+                        <ul>
+                            <li>
+                                <a style="color: #fe816d" href="https://www.facebook.com/optikakotsalis/" target="_blank"><i class="fa fa-facebook"></i> </a>
+                            </li>
+                             <li>
+                                <a style="color: #fe816d" href="https://www.instagram.com/optikakotsalis/?hl=el" target="_blank"><i class="fa fa-instagram"></i> </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- end footer -->

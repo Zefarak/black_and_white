@@ -1,0 +1,15 @@
+
+<h4 class="sub-title">Κατασταση</h4>
+<select name="active_name" class="form-control form-control-info">
+    {% if request.GET.active_name == '1' %}
+        <option value="1">Επιλέξατε Ενεργοποιημένο</option>
+    {% elif request.GET.active_name == '2' %}
+        <option value="2">Επιλέξατε Απενεργοποιημένο</option>
+    {% else %}
+         <option value="opt1">Επιλέξτε</option>
+    {% endif %}
+
+    <option value="1">Ενεργοποιημένο</option>
+    <option value="2">Απενεργοποιημένο</option>
+</select>
+<br >

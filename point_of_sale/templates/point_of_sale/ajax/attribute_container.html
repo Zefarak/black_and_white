@@ -1,0 +1,42 @@
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Τίτλος</th>
+        <th>Qty</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for ele in order_item.attributes.all %}
+        <tr>
+            <th scope="row">{{ forloop.counter }}</th>
+            <td>{{ ele }}</td>
+            <td>{{ ele.qty }}</td>
+             <td colspan="2">
+                    <button data-href="{% url 'point_of_sale:ajax_edit_product_with_attr' 'remove' ele.id %}" class="btn btn-sm btn-warning edit_button"><i class="fa fa-arrow-down"></i></button>
+                    <button data-href="{% url 'point_of_sale:ajax_edit_product_with_attr' 'add' ele.id %}" class="btn btn-sm btn-success edit_button"><i class="fa fa-arrow-up"></i></button>
+                    <button data-href="{% url 'point_of_sale:ajax_edit_product_with_attr' 'delete' ele.id %}" class="btn btn-sm btn-danger edit_button"><i class="fa fa-trash"></i></button>
+                </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+    $('.edit_button').click(function (evt) {
+        evt.preventDefault();
+        const btn = $(this);
+        const url = btn.attr('data-href');
+        $.ajax({
+            method: 'GET',
+            dataType: 'json',
+            url: url,
+
+            success: function (data) {
+                $('#result_container').html(data.result)
+            }
+        })
+    })
+</script>

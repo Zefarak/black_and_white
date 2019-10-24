@@ -1,0 +1,170 @@
+
+<!DOCTYPE html> {% load static %}
+    <html lang="en">
+        <head>
+            <meta charset='UTF-8'>
+            {% include 'include/css.html' %}
+            <style>
+                div#container {
+                    font: normal 12px Arial, Helvetica, Sans-serif;
+                    padding: 20px;
+                    width: 820px;
+                    height: 1158px;
+                }
+
+            </style>
+        </head>
+        <body>
+        <div class="page-wrapper" id="container">
+            <div class="page-body">
+                <!-- Container-fluid starts -->
+                <div class="container">
+                    <!-- Main content starts -->
+                    <div>
+                        <!-- Invoice card start -->
+                        <div class="card">
+                            <div class="row invoice-contact">
+                                <div class="col-md-8">
+                                    <div class="invoice-box row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-responsive invoice-table table-borderless">
+                                                <tbody>
+                                                <tr>
+                                                    <td><img width="50px" height="30px" src="{{ company.logo.url }}" class="m-b-10" alt=""></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ company.company_name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ company.company_address }}  {{ company.company_city_zip }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><a href="mailto:demo@gmail.com" target="_top">{{ company.company_email }}</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>{{ company.company_phone }}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+
+                                </div>
+                            </div>
+                            <div class="card-block">
+                                <div class="row invoive-info">
+                                    <div class="col invoice-client-info">
+                                        <h6>Πληροφοριες Πελατη</h6>
+                                        <h6 class="m-0">{{ profile.tag_full_name }}</h6>
+                                        <p class="m-0 m-t-10">{{ profile.tag_full_address }}</p>
+                                        <p class="m-0">{{ profile.tag_phones }}</p>
+                                        <p>{{ profile.email }}</p>
+                                    </div>
+                                    <div class="col">
+                                        <h6>Πληροφοριες παραγγελιας:</h6>
+                                        <table class="table table-responsive invoice-table invoice-order table-borderless">
+                                            <tbody>
+                                            <tr>
+                                                <th>Αποστολή :</th>
+                                                <td>{{ order.shipping }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Πληρωμή :</th>
+                                                <td>{{ order.payment_method }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Id :</th>
+                                                <td>
+                                                    #{{ order.number }}
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="table-responsive">
+                                            <table class="table  invoice-detail-table">
+                                                <thead>
+                                                <tr class="thead-default">
+                                                    <th>Προϊόν</th>
+                                                    <th>Ποσότητα</th>
+                                                    <th>Αξία Μοναδας</th>
+                                                    <th>Σύνολο</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for order_item in self.object.order_items.all %}
+                                                        <tr>
+                                                            <td>
+                                                                <h6>{{ order_item }}</h6>
+                                                                <p>{% if order_item.attribute %} Νούμερο {% endif %}</p>
+                                                            </td>
+                                                            <td>{{ order_item.qty }}</td>
+                                                            <td>{{ order_item.tag_final_value }}</td>
+                                                            <td>{{ order_item.tag_total_value }}</td>
+                                                        </tr>
+                                                {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-responsive invoice-table invoice-total">
+                                            <tbody>
+                                            <tr>
+                                                <th>Αξία Προϊόντων :</th>
+                                                <td>{{ object.tag_value }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Έξοδα Μεταφορικών - Αντικαταβολής :</th>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Έκπτωση από Κουπόνια :</th>
+                                                <td></td>
+                                            </tr>
+                                            <tr class="text-info">
+                                                <td>
+                                                    <hr>
+                                                    <h5 class="text-primary">Σύνολο :</h5>
+                                                </td>
+                                                <td>
+                                                    <hr>
+                                                    <h5 class="text-primary">{{ object.tag_final_value }}</h5>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h6>Σημειώσεις</h6>
+                                        {% if profile.notes %}
+                                        <p>{{ profile.notes }}</p>
+                                        {% else %}
+                                        <p>No data</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Invoice card end -->
+                    </div>
+                </div>
+                <!-- Container ends -->
+            </div>
+            <!-- Page body end -->
+        </div>
+        </body>
+    {% include 'include/js.html' %}
+</html>

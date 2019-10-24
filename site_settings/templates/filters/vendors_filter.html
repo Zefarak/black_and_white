@@ -1,0 +1,46 @@
+{% load zefarak_tags %}
+<div id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="card">
+        <div class="card-header" role="tab" id="headingVendor">
+            <h6 class="mb-0">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                   href="#collapseVendor" aria-expanded="false" aria-controls="collapseVendor">
+                    Επιλογή Προμηθευτή
+                </a>
+            </h6>
+        </div>
+        <div id="collapseVendor" class="collapse" role="tabpanel" aria-labelledby="headingVendor">
+            <div class="card-block filter_scrollbar" style="height: 300px;max-height: 300px;overflow-y: scroll;">
+                {% for vendor in vendors %}
+                    {% if vendor.id|stringformat:"s" in request.GET|get_item:'vendor_name'%}
+                        <div class="form-check">
+                            <input name="vendor_name"
+                                   class="form-check-input"
+                                   type="checkbox"
+                                   value="{{ vendor.id }}"
+                                   id="vendor_name_{{ vendor.id }}" checked
+                            >
+                            <label class="form-check-label" for="vendor_name_{{ vendor.id }}">
+                                {{ vendor }}
+                            </label>
+                        </div>
+                    {% else %}
+                        <div class="form-check">
+                            <input name="vendor_name"
+                                   class="form-check-input"
+                                   type="checkbox"
+                                   value="{{ vendor.id }}"
+                                   id="vendor_name_{{ vendor.id }}"
+                            >
+                            <label class="form-check-label" for="vendor_name_{{ vendor.id }}">
+                                {{ vendor }}
+                            </label>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+

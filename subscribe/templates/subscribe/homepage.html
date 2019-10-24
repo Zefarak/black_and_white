@@ -1,0 +1,87 @@
+{% extends 'index.html' %}
+
+{% block navbar %} {% include 'site_settings/include/navbar.html' %}{% endblock %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Subscribes</h4>
+                                        <a href="{% url 'subscribe:subscribe_list_view' %}" class="btn btn-primary">Λιστα</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Τιτλος</th>
+                                                    <th>Κατηγορια</th>
+                                                    <th>Επεξεργασια</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for subscribe in subscribes %}
+                                                    <tr>
+                                                        <td>{{ subscribe }}</td>
+                                                        <td>{{ subscribe.get_category_display }}</td>
+                                                        <td><a href="{{ subscribe.get_edit_url }}" class="btn btn-info"><i class="fa fa-edit"></i> </a> </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <a href="{% url 'subscribe:subscribe_create' %}" class="btn btn-success"><i class="fa fa-plus"></i> Προσθήκη </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Χρηστες</h4>
+                                         <a href="{% url 'subscribe:user_subscribe_list_view' %}" class="btn btn-primary">Λιστα</a>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Διαστημα</th>
+                                                    <th>Κατηγορια</th>
+                                                    <th>Χρηστης</th>
+                                                    <th>Αξία</th>
+                                                    <th>Κατασταση</th>
+                                                    <th>Eπεξεργασια</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for subscribe in user_subs %}
+                                                    <tr>
+                                                        <td>{{ subscribe.duration }}</td>
+                                                        <td>{{ subscribe.subscription }}</td>
+                                                        <td>{{ subscribe.user }}</td>
+                                                        <td>{{ subscribe.tag_value }}</td>
+                                                        <td>{{ subscribe.is_paid }}</td>
+                                                        <td><a href="{{ subscribe.get_edit_url }}" class="btn btn-info"><i class="fa fa-edit"></i> </a> </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <br>
+                                        <a href="{% url 'subscribe:user_subscribe_create' %}" class="btn btn-success"><i class="fa fa-plus"></i> Προσθήκη </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

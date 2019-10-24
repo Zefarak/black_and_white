@@ -1,0 +1,43 @@
+HTTrack3.49-2+htsswf+htsjava launched on Fri, 03 May 2019 21:23:21 at https://colorlib.com//polygon/adminty/default/index.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qiC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" https://colorlib.com//polygon/adminty/default/index.html -O1 "C:\Users\Zefarak\Desktop\grigoris\admin" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+21:31:34	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/css/mCSB_buttons.png (from https://colorlib.com//polygon/adminty/files/assets/css/jquery.mCustomScrollbar.css)
+21:35:35	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/images/Modal/overflow.jpg (from https://colorlib.com//polygon/adminty/default/modal.html)
+21:35:40	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/classie/js/classie.js (from https://colorlib.com//polygon/adminty/default/icon-weather.html)
+21:35:44	Error: 	"Not Found" (404) at link https://handsontable.com/docs/7.0.2/components/handsontable-pro/dist/handsontable.full.min.css (from https://colorlib.com//polygon/adminty/default/handson-appearance.html)
+21:35:46	Error: 	"Forbidden" (403) at link https://www.mapbox.com/files/assets/data/realworld.388.js (from https://colorlib.com//polygon/adminty/default/location.html)
+21:35:46	Warning: 	Retry after error -5 (Unable to get server's address: No such host is known. ) at link {s}.tile.osm.org/{z}/{x}/{y}.png (from https://colorlib.com//polygon/adminty/default/location.html)
+21:35:53	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/default/cropped.jpg (from https://colorlib.com//polygon/adminty/default/image-crop.html)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/owl.carousel/css/owl.video.play.png (from https://colorlib.com//polygon/adminty/files/bower_components/owl.carousel/css/owl.carousel.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/icon-tree.png (from https://colorlib.com//polygon/adminty/files/assets/pages/treeview/treeview.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/throbber.gif (from https://colorlib.com//polygon/adminty/files/assets/pages/treeview/treeview.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/tree-1.png (from https://colorlib.com//polygon/adminty/files/assets/pages/treeview/treeview.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/images/icons-black.png (from https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/trumbowyg.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/images/icons-white.png (from https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/trumbowyg.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/images/icons-black-2x.png (from https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/trumbowyg.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/images/icons-white-2x.png (from https://colorlib.com//polygon/adminty/files/assets/pages/sticky/css/trumbowyg.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/images/sort_both.png (from https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/css/jquery.dataTables.min.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/images/sort_asc.png (from https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/css/jquery.dataTables.min.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/images/sort_desc.png (from https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/css/jquery.dataTables.min.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/images/sort_asc_disabled.png (from https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/css/jquery.dataTables.min.css)
+21:35:57	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/images/sort_desc_disabled.png (from https://colorlib.com//polygon/adminty/files/assets/pages/foo-table/css/jquery.dataTables.min.css)
+21:35:57	Warning: 	Retry after error -5 (Unable to get server's address: unknown error) at link {s}.tile.osm.org/{z}/{x}/{y}.png (from https://colorlib.com//polygon/adminty/default/location.html)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/ajax-loader.gif (from https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/slick-theme.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/fonts/slick.eot (from https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/slick-theme.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/fonts/slick.eot? (from https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/slick-theme.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/fonts/slick.woff (from https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/slick-theme.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/fonts/slick.ttf (from https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/slick-theme.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/fonts/slick.svg (from https://colorlib.com//polygon/adminty/files/bower_components/slick-carousel/css/slick-theme.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/img/vimeo-play.png (from https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/css/lightgallery.min.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/img/video-play.png (from https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/css/lightgallery.min.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/img/youtube-play.png (from https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/css/lightgallery.min.css)
+21:36:00	Error: 	"Not Found" (404) at link https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/img/loading.gif (from https://colorlib.com//polygon/adminty/files/bower_components/lightgallery/css/lightgallery.min.css)
+21:36:00	Error: 	"Unable to get server's address: unknown error" (-5) after 2 retries at link {s}.tile.osm.org/{z}/{x}/{y}.png (from https://colorlib.com//polygon/adminty/default/location.html)
+
+HTTrack Website Copier/3.49-2 mirror complete in 12 minutes 39 seconds : 1360 links scanned, 1327 files written (64428669 bytes overall), 1327 files updated [17633397 bytes received at 23232 bytes/sec], 57939533 bytes transferred using HTTP compression in 1173 files, ratio 17%, 44.9 requests per connection
+(30 errors, 2 warnings, 0 messages)

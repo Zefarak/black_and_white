@@ -1,0 +1,1 @@
+default_app_config = 'point_of_sale.apps.PointOfSaleConfig'

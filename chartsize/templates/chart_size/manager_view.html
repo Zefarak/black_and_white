@@ -1,0 +1,117 @@
+{% extends 'site_settings/dashboard.html' %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="title">{{ object }}</h4>
+                                        <p>Brand... {{ object.brand }}</p>
+                                        <a href="{% url 'size_chart:list' %}" class="btn btn-warning pull-right">Επιστροφή</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Επιλεγμένα</h4>
+                                    </div>
+                                    <div class="card-body" id="result_container">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Sku</th>
+                                                    <th>Προϊόν</th>
+                                                    <th>Brand</th>
+                                                    <th>Επεξεργασία</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for product in object.products.all %}
+                                                    <tr>
+                                                        <td>{{ product.sku }}</td>
+                                                        <td>{{ product.title|truncatechars:25 }}</td>
+                                                        <td>{{ product.brand }}</td>
+                                                        <td><button data-href="{% url 'size_chart:ajax_modify_manager' object.id product.id 'delete' %}"
+                                                                    class="btn btn-danger modify_button"><i class="fa fa-trash "></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="4">Δε υπάρχουν δεδομένα</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-header">Προϊόντα</div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th>Sku</th>
+                                                <th>Προϊόν</th>
+                                                <th>Brand</th>
+                                                <th>Επεξεργασία</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                 {% for product in products %}
+                                                     <tr>
+                                                         <td>{{ product.sku }}</td>
+                                                         <td><a href="{{ product.get_edit_url }}" target="_blank">{{ product.title|truncatechars:25 }}</a> </td>
+                                                         <td>{{ product.brand }}</td>
+                                                         <td>
+                                                             <button data-href="{% url 'size_chart:ajax_modify_manager' object.id product.id 'add' %}"
+                                                                     class="btn btn-success modify_button"><i class="fa fa-plus"></i>
+                                                         </button>
+                                                         </td>
+                                                     </tr>
+                                                 {% empty %}
+                                                     <tr>
+                                                         <td colspan="4">Δε υπάρχουν δεδομένα</td>
+                                                     </tr>
+                                                 {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $('.modify_button').click(function(evt){
+            const my_btn = $(this);
+            const url = my_btn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+
+                success: function(data){
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
+    </script>
+
+{% endblock %}

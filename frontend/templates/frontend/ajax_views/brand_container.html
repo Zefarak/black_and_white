@@ -1,0 +1,25 @@
+ {% load static %}
+<div class="row category-grid">
+    {% for brand in object_list %}
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="grid-product">
+                <figure class="product-image-container">
+                    <a href="{{ brand.get_absolute_url }}" class="product-image">
+                        <img
+                                {% if brand.image %}
+                                    src="{{ brand.image.url }}"
+                                {% else %}
+                                    src="{% static 'frontend/demo_images/no_image.png' %}"
+                                {% endif %}
+                                    alt="{{ brand }}">
+                    </a>
+                </figure>
+                <div class="product-details">
+                    <h2 class="product-title">
+                        <a href="{{ brand.get_absolute_url }}">{{ brand }}</a>
+                    </h2>
+                </div><!-- End .product-details -->
+            </div><!-- End .product -->
+        </div>
+    {% endfor %}
+</div><!-- End .row -->

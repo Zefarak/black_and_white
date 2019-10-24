@@ -1,0 +1,261 @@
+{% extends 'catalogue_index.html' %} {% load static %}
+
+{% block extra_css %}
+    <style>
+        .form-inline .form-control {
+            display: inline-block;
+            width: 100%;
+            vertical-align: middle
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-header start -->
+                    <div class="page-header">
+                        <div class="row align-items-end">
+                            <div class="col-lg-8">
+                                <div class="page-header-title">
+                                    <div class="d-inline">
+                                        <h4>{{ instance }}</h4>
+                                        <span>
+                                            Προμηθευτής... {{ instance.vendor|default_if_none:'Δε έχεις Επιλέξει' }} |
+                                            Κατηγορία... {{ instance.category|default_if_none:'Δε έχεις Επιλέξει' }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="page-header-breadcrumb">
+                                    <ul class="breadcrumb-title">
+                                        <li class="breadcrumb-item">
+                                            <a href="{% url 'dashboard:home' %}"> <i class="feather icon-home"></i> </a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="{% url 'dashboard:products' %}">Προϊόντα</a>
+                                        </li>
+                                        <li class="breadcrumb-item"><a href="">{{ instance }}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page-header end -->
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <!-- Task-detail-right start -->
+                            <div class="col-xl-4 col-lg-12 push-xl-8 task-detail-right">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a href="{% url 'dashboard:products' %}" class="btn btn-warning btn-round">Επιστροφή</a>
+                                        <br> <br>
+                                        <img class="img img-thumbnail" width="200" height="200" src="{{ instance.image.url }}" />
+                                        <h5 class="card-header-text"><i class="icofont icofont-clock-time m-r-10"></i>Επιλογές</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="counter">
+                                            <div class="yourCountdownContainer">Δημιουργία Νέου Προμηθευτή Κατηγορίων κτλ</div>
+                                            <!-- end of yourCountdown -->
+                                        </div>
+                                        <!-- end of counter -->
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="f-left">
+                                            <i class="icofont icofont-rewind"></i> <i class="icofont icofont-pause"></i> <i class="icofont icofont-play-alt-1"></i>
+                                        </div>
+                                        <div class="f-right">
+                                            <div class="dropdown-secondary dropdown">
+                                                <button class="btn btn-sm btn-primary dropdown-toggle waves-light" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Δημιουργία</button>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                                    <button class="dropdown-item waves-light waves-effect active"  data-href="{% url 'dashboard:popup_vendor' %}" id="add_vendor" onclick="return addData(this);">Προμηθευτή</button>
+                                                    <button class="dropdown-item waves-light waves-effect" data-href="{% url 'dashboard:popup_category' %}"  id="add_category" onclick="return addData(this);">Κατηγορίας Αποθήκης</button>
+                                                    <button class="dropdown-item waves-light waves-effect" data-href="{% url 'dashboard:popup_brand' %}" id="add_author" onclick="return addData(this);">Brand</button>
+                                                     <button class="dropdown-item waves-light waves-effect" data-href="{% url 'dashboard:popup_color' %}" id="add_color" onclick="return addData(this);">Χρώμα</button>
+                                                    <div class="dropdown-divider"></div>
+
+                                                </div>
+                                                <!-- end of dropdown menu -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-header-text"><i class="icofont icofont-ui-note m-r-10"></i> Λεπτομέριες</h5>
+                                    </div>
+                                    <div class="card-block task-details">
+                                        <table class="table table-border table-xs">
+                                            <tbody>
+                                            <tr>
+                                                <td><i class="icofont icofont-contrast"></i> Προμηθευτής</td>
+                                                <td class="text-right"><span class="f-right"><a href="{{ instance.vendor.get_edit_url }}"> {{ instance.vendor }}</a></span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="icofont icofont-meeting-add"></i> Κατηγορία</td>
+                                                <td class="text-right">{{ instance.category }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="icofont icofont-id-card"></i> Είδος</td>
+                                                <td class="text-right">{{ instance.product_class }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="icofont icofont-id-card"></i> Υπόλοιπο</td>
+                                                <td class="text-right">{{ instance.qty }} {{ instance.get_measure_unit_display }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="icofont icofont-spinner-alt-5"></i> Τιμή Αγοράς</td>
+                                                <td class="text-right">
+                                                    <div class="btn-group">
+                                                        <a href="#">
+                                                            <i class="icofont icofont-upload m-r-5"></i> {{ instance.price_buy }} {{ currency }} - {{ instance.order_discount }} %
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="icofont icofont-spinner-alt-3"></i>Τιμη Πώλησης</td>
+                                                <td class="text-right">{{ instance.tag_final_price }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="icofont icofont-ui-love-add"></i> Added by:</td>
+                                                <td class="text-right">{{ instance.timestamp }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><i class="icofont icofont-washing-machine"></i> Κατάσταση</td>
+                                                <td class="text-right">{{ instance.active }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="card">
+                                    <div class="header"></div>
+                                    <div class="card-body">
+                                        <h6 class="sub-title">Επιπλεον</h6>
+                                        <ul class="basic-list">
+                                            <li class="">
+                                                <h6>Φωτογραφίες</h6>
+                                                <p>Περιέχει {{ instance.images.all.count }} φωτογραφίες.</p>
+                                                <a href='{% url "dashboard:image_manager_view" instance.id %}'  class="btn btn-primary btn-round">Manager</a>
+                                            </li>
+                                            <br>
+                                            <li class="">
+                                                <h6>Σχετικά Προϊόντα</h6>
+                                                <p>Περιέχει {{ instance.related_products.all.count }} Προϊόντα.</p>
+                                                <a href='{% url "dashboard:related_products_manager_view" instance.id %}' class="btn btn-primary btn-round">Manager</a>
+                                            </li>
+                                            <br>
+                                            <li class="">
+                                                <h6>Eπιπλεον Χρωματα</h6>
+                                                <p>Περιέχει {{ instance.different_color_products.all.count }} Προϊόντα.</p>
+                                                <a href='{% url "dashboard:different_color_manager_view" instance.id %}' class="btn btn-primary btn-round">Manager</a>
+                                            </li>
+                                            <br>
+                                            <li class="">
+                                                <h6>Κατηγορίες Site</h6>
+                                                <p>Περιέχει {{ instance.category_site.all.count }} Κατηγορίες.</p>
+                                                <a href='{% url "dashboard:category_manager_view" instance.id %}' class="btn btn-primary btn-round">Manager</a>
+                                            </li>
+
+                                            <br>
+                                            <li class="">
+                                                <h6>Χαρακτηριστικά</h6>
+                                                <p>Περιέχει {{ instance.characteristics.all.count }} Χαρακτηριστικά.</p>
+                                                <a href='{% url "dashboard:char_manager_view" instance.id %}' class="btn btn-primary btn-round">Manager</a>
+                                            </li>
+                                            <br>
+                                            {% if instance.have_attr %}
+                                            <li class="">
+                                                <h6>Μεγεθολόγιο</h6>
+                                                <a href='{% url "dashboard:attribute_manager_view" instance.id %}'  class="btn btn-primary btn-round">Manager</a>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="header">Επιλογές</div>
+                                    <div class="card-body">
+                                        
+                                        <a href="{{ instance.get_copy_url }}" class="btn btn-primary">
+                                            <i class="fa fa-copy"></i>
+                                        </a>
+                                        <a onclick="return confirm('Είσαι σίγουρος;')"
+                                           href="{{ instance.get_delete_url }}"
+                                           class="btn btn-danger">Διαγραφή
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Task-detail-right start -->
+                            <!-- Task-detail-left start -->
+                            <div class="col-xl-8 col-lg-12 pull-xl-4">
+                                <div class="row">
+                                    <div class="col-md-12 col-xl-12">
+                                        <div class="card">
+                                            <div class="card-header"><h5><i class="icofont icofont-tasks-alt m-r-5"></i> Επεξεργασία</h5></div>
+                                            <div class="card-block">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-md-12">
+                                                        <form method="post" class="form">
+                                                            {% csrf_token %}
+                                                            {{ form.as_p }}
+                                                            <button name="_update" type="submit" class="btn btn-success btn-round"><i class="fa fa-save"></i>Αποθήκευση</button>
+                                                            <button name="_save" type="submit" class="btn btn-danger btn-round f-right"><i class="fa fa-save"></i>Αποθήκευση και Κλείσιμο</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Task-detail-left end -->
+                    </div>
+                </div>
+                <!-- Page-body end -->
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+
+    <script type="text/javascript">
+        function showEditPopup(url) {
+            var win = window.open(url, "Edit",
+                'height=500,width=800,resizable=yes,scrollbars=yes');
+            return false;
+        }
+        function addData(triggeringLink) {
+            const name = triggeringLink.id.replace(/^add_/, '');
+            const btn = $(triggeringLink);
+            href = btn.attr('data-href');
+            var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
+            win.focus();
+            return false
+        }
+        function closePopup(win, newID, newRepr, id) {
+            $(id).append('<option value=' + newID + ' selected >' + newRepr + '</option>');
+            win.close();
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    {{ form.media }}
+
+
+
+
+{% endblock %}

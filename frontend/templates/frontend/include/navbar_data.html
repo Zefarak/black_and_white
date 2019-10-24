@@ -1,0 +1,166 @@
+<header>
+    <div class="mobile-fix-option"></div>
+    <div class="top-header top-header-dark2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="header-contact">
+                        <ul>
+                            <li>Καλώς ήρθατε στα Οπτικά- Κότσαλης</li>
+                            <li><i class="fa fa-phone" aria-hidden="true"></i>Καλέστε μας :2732022566</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-right">
+                    <ul class="header-dropdown">
+                        <li class="mobile-wishlist"><a href="{% url 'wishlist' %}"><i class="fa fa-heart" aria-hidden="true"></i> wishlist</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li class="onhover-dropdown mobile-account"> <i class="fa fa-user" aria-hidden="true"></i>
+                            {% if request.user.email  %}{{ request.user.email }} {% else %} {{ request.user }} {% endif %}
+
+                            <ul class="onhover-show-div">
+                                {% if request.user.is_staff %}
+                                    <li><a href="{% url 'dashboard:home' %}" data-lng="en">Διαχείριση site</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'user_profile' %}" data-lng="en">Profile</a></li>
+                                <li><a href="{% url 'logout' %}" data-lng="es">Logout</a></li>
+                            </ul>
+                        </li>
+                        {% else  %}
+                             <li class="mobile-wishlist"><a data-toggle="modal" data-target="#login_modal">Συνδεση</a> </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container layout3-menu">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="main-menu">
+                    <div class="menu-left around-border">
+                        <div class="navbar">
+
+                        </div>
+                        <div class="main-menu-right">
+                            <nav id="main-nav">
+                                <div class="toggle-nav"><i class="fa fa-bars sidebar-bar"></i></div>
+                                <ul id="main-menu" class="sm pixelstrap sm-horizontal light-font-menu">
+                                    <li>
+                                        <div class="mobile-back text-right">Back<i class="fa fa-angle-right pl-2" aria-hidden="true"></i></div>
+                                    </li>
+
+
+                                    {% for category in parent_categories %}
+                                    <li class="mega" id="hover-cls">
+                                        <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+                                        <ul class="mega-menu full-mega-menu">
+                                            <li>
+                                                <div class="container">
+                                                    <div class="row">
+                                                       {% for cate in category.children.all %}
+                                                        <div class="col mega-box">
+                                                            <div class="link-section">
+                                                                <div class="menu-title">
+                                                                    <h5>{{ cate.name }}</h5>
+                                                                    <a href="{{ cate.get_absolute_url }}">Λεπτομεριες</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% endfor %}
+                                    <li> <a href="{% url 'brands_view' %}">Brands</a></li>
+                                    <li> <a href="{% url 'offer_view' %}">Προσφορες</a></li>
+                                    <li > <a href="{% url 'new_products_view' %}">Νεα Προϊοντα</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="absolute-logo">
+                        <div class="brand-logo">
+                            <a href="{% url 'homepage' %}">
+                                <img alt="" src="{% static 'frontend/my_assets/logo_2.jpg' %}">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="menu-right pull-right">
+                            <div>
+                                <div class="icon-nav">
+                                    <ul>
+                                        <li class="onhover-div mobile-search">
+                                            <div><img alt="" src="{% static 'frontend/assets/images/icon/layout4/search.png' %}" onclick="openSearch()" class="img-fluid blur-up lazyload">
+                                                <i class="ti-search" onclick="openSearch()"></i>
+                                            </div>
+                                            <div id="search-overlay" class="search-overlay">
+                                                <div> <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
+                                                    <div class="overlay-content">
+                                                        <div class="container">
+                                                            <div class="row">
+                                                                <div class="col-xl-12">
+                                                                    <form action="{% url 'search_page' %}">
+                                                                        <div class="form-group">
+                                                                            <input name="search_name" type="text" class="form-control" id="exampleInputPassword1" placeholder="Αναζήτηση">
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="onhover-div mobile-cart">
+                                            <div><img alt="" src="{% static 'frontend/assets/images/icon/layout4/cart.png' %}" class="img-fluid blur-up lazyload"><i class="ti-shopping-cart"></i></div>
+                                            <ul class="show-div shopping-cart">
+                                                {% for cart_item in cart.order_items.all %}
+                                                <li>
+                                                    <div class="media">
+                                                        <a href="{{ cart_item.product.get_absolute_url }}">
+                                                            <img alt="" class="mr-3"
+                                                                    {% if cart_item.product.image %}
+                                                                     src="{{ cart_item.product.image.url }}"
+                                                                    {% else %}
+                                                                        src="{% static 'frontend/demo_images/no_image.png' %}"
+                                                                    {% endif %}
+                                                            >
+                                                        </a>
+                                                        <div class="media-body">
+                                                            <a href="#">
+                                                                <h4>{{ cart_item }}</h4>
+                                                            </a>
+                                                            <h4><span>{{ cart_item.qty }} x {{ cart_item.tag_value }}</span></h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="close-circle"><a href="{% url 'delete_from_cart' cart_item.id %}"><i class="fa fa-times" aria-hidden="true"></i></a></div>
+                                                </li>
+                                                {% endfor %}
+
+                                                <li>
+                                                    <div class="total">
+                                                        <h5>Συνολο : <span>{{ cart.tag_final_value|default_if_none:'0.00' }}</span></h5>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="buttons">
+                                                        <a href="{% url 'cart_view' %}" class="view-cart">Καλάθι</a> <a href="{% url 'checkout_view' %}" class="checkout">checkout</a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,25 @@
+{% extends 'frontend/user_views/dashboard.html' %}
+
+
+
+{% block profile_content %}
+    <div class="col-lg-9">
+        <div class="dashboard-right">
+            <div class="dashboard">
+                <div class="page-title">
+                    <h2>Επεξεργασία Προφιλ... {{ user.username }}</h2>
+                </div>
+                <div class="box-account box-info">
+                    <form method="post" class="form">{% csrf_token %}
+                        {{ form }}
+                        <br>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Αποθηκευση </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
