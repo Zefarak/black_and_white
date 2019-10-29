@@ -186,7 +186,13 @@ class ProductView(DetailView, FormView):
         return context
 
     def form_valid(self, form):
+        print(form)
         product = get_object_or_404(Product, slug=self.kwargs['slug'])
+        if product.have_attr:
+            print('have_attr')
+            for form_data in form:
+                print(form_data)
+            return super().form_valid(form)
         qty = form.cleaned_data.get('qty', 1)
         attribute_id = self.request.POST.get('attribute', None)
         cart = check_or_create_cart(self.request)

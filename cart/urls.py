@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CartListView, CartUpdateView, check_cart_movement, ajax_cart_change_qty, create_order_from_cart_view
+from .views import (CartListView, CartUpdateView, check_cart_movement, ajax_cart_change_qty, create_order_from_cart_view)
 from .ajax_views import ajax_search_products_for_cart, ajax_order_item, ajax_add_product
 
 app_name = 'cart'

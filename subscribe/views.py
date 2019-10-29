@@ -7,7 +7,7 @@ from django.urls import reverse_lazy, reverse
 from .models import Subscribe, UserSubscribe
 from .forms import SubscribeForm, UserSubscribeForm
 from .tables import SubscribeTable, UserSubscribeTable
-
+from catalogue.models import Product
 
 @method_decorator(staff_member_required, name='dispatch')
 class SubscribeHomepageView(TemplateView):
@@ -55,16 +55,17 @@ class SubscribeCreateView(CreateView):
 
 @method_decorator(staff_member_required, name='dispatch')
 class SubscribeUpdateView(UpdateView):
-    template_name = 'subscribe/form_view.html'
+    template_name = 'subscribe/subscribe_detail.html'
     model = Subscribe
     form_class = SubscribeForm
     success_url = reverse_lazy('subscribe:subscribe_list_view')
     
     def get_context_data(self, **kwargs):
         context = super(SubscribeUpdateView, self).get_context_data(**kwargs)
-        context['page_title'] = f'επεξεργασια {self.object}'
+        context['page_title'] = f'Eπεξεργασια {self.object}'
         context['back_url'] = self.success_url
         context['delete_url'] = self.object.get_delete_url()
+        context['qs'] = Product.my_query.active()
         return context
     
     def form_valid(self, form):

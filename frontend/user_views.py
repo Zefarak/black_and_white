@@ -248,6 +248,13 @@ def user_subscription_view(request):
 
 
 @login_required
+def user_subscription_detail_view(request, pk):
+    subscription = get_object_or_404(Subscribe, id=pk)
+
+    return render(request, 'frontend/user_views/subscription_detail_view.html', context={'instance': subscription})
+
+
+@login_required
 def pdf_user_data_view(request):
     user = request.user
     profile = Profile.objects.get(user=user)
@@ -270,3 +277,4 @@ def delete_user_view(request):
     user.delete()
     messages.warning(request, 'Λυπούμαστε που διαγράψατε τον λογαριασμό σας, ελπίζουμε να μας ξαναπροτιμήσετε στο μέλλον')
     return HttpResponseRedirect('/')
+

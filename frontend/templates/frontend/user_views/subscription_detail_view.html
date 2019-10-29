@@ -1,0 +1,51 @@
+{% extends 'frontend/user_views/user_subscription_page.html' %}
+
+
+{% block profile_content %}
+    <div class="col-lg-9">
+        <div class="dashboard-right">
+            <div class="dashboard">
+                <div class="page-title">
+                    <h2>{{ instance }}</h2>
+                </div>
+                <div class="welcome-msg">
+                    <p>Καλώς ήρθες, {{ profile.full_name }}</p>
+                </div>
+                <div class="box-account box-info">
+                    <div class="box-head">
+                        <h2>Πληροφοριες</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="box">
+                                <div class="box-title">
+                                    <h3>Κόστος ==>  {{ instance.tag_value }}</h3>
+                                </div>
+                                <div class="box-content">
+                                    <h6>Χρησεις {{ instance.uses }}</h6>
+                                </div>
+                                <br>
+                                <a href="{% url 'add_subscribe_to_cart' instance.id %}" style="color:white" class="btn btn-success">Προσθηκη στο καλαθι</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="box">
+                                <div class="box-title">
+                                    <h3>Προϊόντα που καλυπτει</h3>
+                                </div>
+                                <div class="box-content">
+                                    {% for product in instance.products.all %}
+                                        <p>{{ product }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

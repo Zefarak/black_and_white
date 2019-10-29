@@ -7,16 +7,19 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.shortcuts import redirect, reverse
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from .mixins import SearchMixin
 
-from cart.models import CartItem, CartProfile
-from cart.tools import check_or_create_cart
+from cart.models import CartItem, CartProfile, CartItemGifts, CartSubscribe, CartSubscribeDiscount
+from cart.tools import check_or_create_cart, add_product_to_cart_movements
 from catalogue.models import Product
+from catalogue.product_attritubes import Attribute
 from site_settings.models import Shipping, PaymentMethod
 from cart.forms import CheckOutForm
 from point_of_sale.models import Order, OrderProfile, SendReceipt
 from voucher.models import Voucher
 
+from subscribe.models import Subscribe, UserSubscribe
 
 BUSSNESS_EMAIL = settings.SITE_EMAIL
 
@@ -33,6 +36,22 @@ class CartPageView(TemplateView):
         return context
 
 
+@login_required
+def add_subscribe_to_cart(request, pk):
+    instance = get_object_or_404(Subscribe, id=pk)
+    cart = check_or_create_cart(request)
+    check_sub, sub_qs = cart.check_and_get_active_subscribe()
+    if check_sub:
+        # checks if active subscription exists
+        messages.warning(request, 'Εχετε εωεργή συνδρομή')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if instance.cartsubscribe_set.exists():
+        instance.cartsubscribe_set.first().delete()
+    new_subscribe = CartSubscribe.objects.create(cart_related=cart, subscribe=instance, value=instance.value)
+    messages.success(request, f'Η συνδρομή {instance.title} προστεθηκε στο καλαθι.')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
 def add_product_to_cart(request, slug):
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
@@ -41,22 +60,18 @@ def add_product_to_cart(request, slug):
     session_id = request.session.get('cart_id')
     check_cart_owner = cart.cart_id == session_id
     if check_cart_owner:
-        cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
-        if created:
-            cart_item.qty = 1
-        else:
-            messages.warning(request, 'Λυπούμαστε δε υπάρχει επαρκή ποσότητα')
-        cart_item.save()
+        add_product_to_cart_movements(request, cart, product)
         messages.success(request, f'To Προϊόν {product.title} προστέθηκε επιτιχώς στο καλάθι!')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def add_product_with_attr_to_cart(request, slug):
     cart = check_or_create_cart(request)
-    qty = request.POST.get('qty', None)
-    attribute = request.POST.get('attribute', None)
     product = get_object_or_404(Product, slug=slug)
-    result, message = CartItem.create_cart_item(cart, product, int(qty), attribute)
+    cart_item, message = CartItem.create_cart_item_with_multi_attr(cart, product, request)
+    active_cart, qs = cart.check_and_get_active_subscribe()
+    if active_cart:
+        qs.first().update_cart(cart_item)
     messages.success(request, message)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -143,6 +158,8 @@ class CheckoutView(FormView):
         cart.refresh_from_db()
         self.new_eshop_order = Order.create_eshop_order(self.request, cart)
         OrderProfile.create_order_profile(self.request, self.new_eshop_order, cart)
+
+
         email = form.cleaned_data.get('email')
         send_mail('Καταχώρηση Παραγγελίας',
                   f'Σας ευχαριστούμε που μας προτιμήσατε! Η παραγγελία σας με κωδικο'
@@ -232,3 +249,13 @@ def delete_voucher_from_cart_view(request, pk):
     messages.warning(request, 'Το Κουπόνι αφαιρέθηκε από το καλάθι σας')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
+
+
+
+@login_required()
+def delete_subscription_view(request, pk):
+    instance = get_object_or_404(CartSubscribe, id=pk)
+    instance.delete()
+    messages.success(request, 'Η συνδρομη αφαιρεθηκε από το καλάθι.')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

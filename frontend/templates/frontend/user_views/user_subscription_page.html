@@ -76,7 +76,7 @@
                                         <div class="box-content">
                                             {% for subscribe in subscribes %}
                                                 <h6>{{ subscribe }} --> Aξία {{ subscribe.tag_value }}</h6>
-                                                <h6><a href="{% url 'change_password_view' %}">Αυτή Θελω</a></h6>
+                                                <h6><a href="{% url 'subscription_detail_view' subscribe.id %}">Αυτή Θελω</a></h6>
                                                 <br>
                                             {% endfor %}
 

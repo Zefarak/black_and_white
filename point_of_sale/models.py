@@ -22,10 +22,11 @@ from .abstract_models import DefaultOrderModel, DefaultOrderItemModel
 from site_settings.models import PaymentMethod, Shipping, Country
 from site_settings.constants import CURRENCY, ORDER_STATUS, ORDER_TYPES, ADDRESS_TYPES
 from site_settings.tools import clean_date_filter
-from cart.models import Cart, CartItem
+from cart.models import Cart, CartItem, CartItemGifts
 from .managers import OrderManager, OrderItemManager
 from accounts.models import Profile
 from voucher.models import Voucher
+from subscribe.models import Subscribe, UserSubscribe
 
 RETAIL_TRANSCATIONS, PRODUCT_ATTRIBUTE_TRANSCATIONS, WAREHOUSE_TRANSCATIONS = [settings.RETAIL_TRANSCATIONS,
                                                                                settings.PRODUCT_ATTRIBUTE_TRANSCATIONS,
@@ -341,7 +342,6 @@ def inform_onwer(sender, instance, created, **kwargs):
         print('created')
 
 
-
 class OrderItem(DefaultOrderItemModel):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items', verbose_name='Παραστατικό')
     cost = models.DecimalField(max_digits=6, decimal_places=2, default=0)
@@ -637,13 +637,45 @@ def update_warehouse(sender, instance, **kwargs):
     instance.order.save()
 
 
+class OrderSubscribeDiscount(models.Model):
+    order_related = models.OneToOneField(Order, on_delete=models.CASCADE)
+    subscription  = models.OneToOneField(UserSubscribe, on_delete=models.SET_NULL, null=True)
+    total_discount = models.DecimalField(max_digits=2, decimal_places=20, default=0)
+    uses = models.IntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        self.save(*args, **kwargs)
+
+    @staticmethod
+    def check_if_subscription_exists(user):
+        sub_exists, sub_qs = UserSubscribe.check_active_subscription(user)
+        if sub_exists:
+            return True, sub_qs.first()
+        return False, None
+
+    @staticmethod
+    def check_or_create_subscription(order, subscription):
+        value, uses = 0, 0
+        remaining_uses = subscription.uses
+        products = subscription.subsribe.products.all()
+        while remaining_uses > 0:
+            for order_item in order.order_items.all():
+                if order_item.product in products:
+                    value += order_item.total
+                    uses += order_item.uses
+                    remaining_uses -= order_item.uses
+        new_subscribe, created = OrderSubscribeDiscount.objects.create(order_related=order, subscription=subscription)
+        new_subscribe.total_discount = value
+        new_subscribe.uses = uses
+        new_subscribe.save()
 
 
+class OrderGift(models.Model):
+    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    cart_gift = models.ForeignKey(CartItemGifts, on_delete=models.CASCADE, null=True)
+    qty = models.PositiveIntegerField(default=1)
 
-
-
-
-
-
-
-
+    def __str__(self):
+        return f'Gift {self.order} --> {self.product}'

@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 User = get_user_model()
 
 CURRENCY = settings.CURRENCY
+from catalogue.models import Product
 
 
 class Subscribe(models.Model):
@@ -22,9 +23,15 @@ class Subscribe(models.Model):
     counter = models.PositiveIntegerField(default=0, verbose_name='Ποσότητα')
     category = models.CharField(max_length=1, choices=CATEGORY_CHOICES, verbose_name='Κατηγορία')
     ordering = models.PositiveIntegerField(default=1, verbose_name='Ταξινόμηση')
+    products = models.ManyToManyField(Product, blank=True, null=True)
+    uses = models.IntegerField(default=1, verbose_name='Χρησεις')
 
     class Meta:
         ordering = ['ordering']
+
+    def save(self, *args, **kwargs):
+        self.uses = self.counter if self.category == 'a' else self.counter*7 if self.category == 'b' else self.counter*30
+        super(Subscribe, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -47,7 +54,11 @@ class UserSubscribe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='my_subscribes')
     subscription = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(decimal_places=2, max_digits=20, default=0)
-    uses = models.IntegerField(default=0)
+    uses = models.IntegerField(default=1)
+    
+    def save(self, *args, **kwargs):
+        self.active = True if self.uses > 0 else False
+        super(UserSubscribe, self).save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.user} --> {self.subscription.title}'
@@ -67,7 +78,7 @@ class UserSubscribe(models.Model):
     @staticmethod
     def check_active_subscription(user):
         sub_qs = UserSubscribe.objects.filter(user=user, active=True)
-        return sub_qs
+        return sub_qs.exists()
 
     @staticmethod
     def update_subscription(instance):
@@ -77,6 +88,7 @@ class UserSubscribe(models.Model):
         instance.date_start = datetime.now().date()
         instance.date_end = datetime.now().date() + added_date
         instance.value = sub_category.value
+        
         instance.save()
 
     @staticmethod
@@ -87,6 +99,7 @@ class UserSubscribe(models.Model):
         new_object.date_end = datetime.now().date()
         new_object.date_end += timedelta(days=sub_category.value) if sub_category == 'a' else timedelta(weeks=sub_category.value) if sub_category == 'b' else timedelta(months=sub_category.value)
         days = new_object.date_end - new_object.date_start
+        new_object.uses = subscription.counter
         new_object.save()
         return True
 
@@ -96,4 +109,4 @@ def update_blank_fields(sender, instance, created, **kwargs):
     if created:
         UserSubscribe.update_subscription(instance)
 
-    
+

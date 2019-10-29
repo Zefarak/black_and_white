@@ -41,7 +41,7 @@
 
 
     <!--section start-->
-    <section class="cart-section section-b-space">
+    <section style="background-color: white" class="cart-section section-b-space">
         <div class="container">
             <div class="row">
                 <div class="col-sm-12" id="cart_items_container">
@@ -52,12 +52,44 @@
                 <div class="col-6"><a href="{% url 'homepage' %}" class="btn btn-solid">Επιστροφη</a></div>
                 <div class="col-6"><a href="{% url 'checkout_view' %}" class="btn btn-solid">Παραγγελια</a></div>
             </div>
+
+            <div class='row'>
+                <div class='col-12 col-md-12'>
+                <h4 style='center'>Δωρα</h4>
+                <table class="table table-bordered">
+                    <thead>
+                            <tr class="table-head">
+                                <th scope="col">#</th>
+                                <th scope="col">Προϊον</th>
+                                <th scope="col">Ποσοτητα</th>
+                                
+                            </tr>
+                    </thead>
+        
+                    <tbody>
+                            {% for gift in cart.gifts.all %}
+                                <tr>
+                                    <td><h5>{{ loop.counter }}</h5></td>
+                                    <td><h5>{{ gift }}</h5></td>
+                                    <td><h5>{{ gift.qty }}</h5></td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6">Δε υπαρχουν δωρα</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                </div>
+            </div>
+
         </div>
     </section>
     <!--section end-->
 
     <section class="authentication-page">
-    <div style="background-color: white" class="container">
+    <div  class="container">
         <section class="search-block">
             <div class="container">
                 <div class="row">

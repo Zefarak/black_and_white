@@ -1,0 +1,27 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Προϊον</th>
+        <th>Τιμή</th>
+        <th>#</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in object.products.all %}
+        <tr>
+            <td>{{ product }}</td>
+            <td>{{ product.tag_final_price }}</td>
+            <td>
+                <a class="btn btn-warning add_button"
+                   data-href="{% url 'subscribe:ajax_add_delete_product' object.id  product.id 'remove'%}" >
+                    <i class="fa fa-remove "></i>
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+ <script>
+
+ </script>

@@ -16,7 +16,7 @@ from catalogue.product_attritubes import Attribute
 from voucher.models import Voucher
 from decimal import Decimal
 
-from subscribe.models import Subscribe
+from subscribe.models import Subscribe, UserSubscribe
 
 User = get_user_model()
 
@@ -78,6 +78,7 @@ class Cart(models.Model):
                                 )
     discount_value = models.DecimalField(decimal_places=2, max_digits=10, default=0.00, verbose_name='Έκπτωση')
     voucher_discount = models.DecimalField(decimal_places=2, max_digits=10, default=0.00, verbose_name='Έκπτωση από Κουπόνια')
+    subscribe_value = models.DecimalField(decimal_places=2, max_digits=10, default=0.00, verbose_name='Κοστος Συνδρομης')
 
     class Meta:
         ordering = ['-id', ]
@@ -92,7 +93,7 @@ class Cart(models.Model):
         self.payment_method_cost = 0.00 if not self.payment_method else self.payment_method.estimate_additional_cost(self.value)
         self.shipping_method_cost = 0.00 if not self.shipping_method else self.shipping_method.estimate_additional_cost(self.value)
         self.final_value = Decimal(self.value) - Decimal(self.discount_value) - Decimal(self.voucher_discount)\
-                           + Decimal(self.payment_method_cost) + Decimal(self.shipping_method_cost)
+                           + Decimal(self.payment_method_cost) + Decimal(self.shipping_method_cost) + Decimal(self.subscribe_value)
         super().save(*args, **kwargs)
 
     def discount_from_vouchers(self):
@@ -102,6 +103,10 @@ class Cart(models.Model):
         if vouchers.exists():
             discount = Voucher.calculate_discount_value(instance=cart, vouchers=vouchers)
         return round(discount, 2)
+
+    def check_and_get_active_subscribe(self):
+        qs = self.user.my_subscribes.filter(active=True)
+        return self.user.my_subscribes.filter(active=True).exists(), qs
 
     def tag_final_value(self):
         return f'{self.final_value} {CURRENCY}'
@@ -207,6 +212,19 @@ class CartItem(models.Model):
         return self.attribute_item
 
     @staticmethod
+    def create_cart_item_with_multi_attr(cart, product, request):
+        qty = request.POST.get('qty', 1)
+        cart_item = CartItem.objects.create(cart=cart, product=product, qty=qty)
+        for field in request.POST:
+            if 'attr_' in field:
+                id = field.split('_')[1]
+                attr_id = request.POST.get(field)
+                attr = get_object_or_404(Attribute, id=attr_id)
+                CartItemAttribute.objects.create(attribute=attr, cart_item=cart_item)
+        result, message = True,  f'To προϊόν {product} προστέθηκε με επιτυχία'
+        return cart_item, message
+
+    @staticmethod
     def create_cart_item(cart, product, qty, attribute=None):
         result, message = False, ''
         if product.product_class.is_service or not product.product_class.have_transcations:
@@ -238,7 +256,6 @@ def update_order_on_delete(sender, instance, *args, **kwargs):
     cart = instance.cart
     for ele in instance.attribute_items.all():
         ele.delete()
-
     cart.save()
 
 
@@ -284,7 +301,44 @@ class CartItemAttribute(models.Model):
         return True, f'To Προϊόν {cart_item.product} με νούμερο {cart_item_attr.attribute} προστέθηκε με επιτυχία.'
 
 
+class CartSubscribeDiscount(models.Model):
+    # calculates the total discount value if sub exists
+    cart_related = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    total_uses = models.IntegerField(default=1)
+    total_discount = models.DecimalField(default=0, decimal_places=2, max_digits=20)
+
+    @staticmethod
+    def check_if_discount_exists(request, cart):
+        user = request.user
+        if not user.is_authenticated:
+            return False, None
+        if cart.cartsubscribe:
+            return True, cart.cartsubscribe
+        check_user_sub, sub_qs = UserSubscribe.check_active_subscription(user)
+        if check_user_sub:
+            return True, sub_qs.first()
+        return False, None
+
+    @staticmethod
+    def check_or_create_discount(cart, subscribe, remaining_uses):
+        products = subscribe.products.all()
+        value, uses = 0, 0
+        while remaining_uses > 0:
+            for cart_item in cart.order_items.all():
+                if cart_item.product in products:
+                    value += cart_item.total_value
+                    uses += cart_item.qty
+                    remaining_uses -= cart_item.qty
+        new_discount, created = CartSubscribeDiscount.objects.get_or_create(cart_related=cart)
+        new_discount.total_uses = uses
+        new_discount.total_discount = value
+        new_discount.save()
+        cart.discount_value = value
+        cart.save()
+
+    
 class CartSubscribe(models.Model):
+    # add to cart a new sub to buy
     cart_related = models.OneToOneField(Cart, on_delete=models.CASCADE)
     subscribe = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
@@ -292,6 +346,15 @@ class CartSubscribe(models.Model):
     def save(self, *args, **kwargs):
         self.value = self.subscribe.value
         super().save(*args, **kwargs)
+        self.cart_related.subscribe_value = self.value
+        self.cart_related.save()
+
+    def update_cart(self, cart_item):
+        cart = self.cart_related
+        subscribe = self.subscribe
+        if cart_item.product in subscribe.products.all():
+            cart.discount_value += cart_item.final_value
+            cart_item.save()
 
 
 class CartProfile(models.Model):
@@ -325,26 +388,27 @@ class CartProfile(models.Model):
 
 
 class CartItemGifts(models.Model):
-    cart_related = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    cart_related = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='gifts')
     cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(default=1)
     product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return self.product
+        return self.product.title
 
     @staticmethod
     def check_if_gift_exists(cart_item):
         product = cart_item.product
-        gift_qs = Gifts.objects.filter(active=True, product_related=product)
+        gift_qs = Gifts.objects.filter(status=True, product_related=product)
+        print('gift_qs', gift_qs)
         if gift_qs.exists():
             cart = cart_item.cart
-            for gift in cart_item:
+            for gift in gift_qs:
                 cart_item_gift, created = CartItemGifts.objects.get_or_create(cart_related=cart,
                                                                               cart_item=cart_item,
                                                                               )
-                cart_item_gift.product = gift.gift_product
-                cart_item_gift.qty = cart_item.qty if created else cart_item_gift+cart_item.qty
+                cart_item_gift.product = gift.products_gift
+                cart_item_gift.qty = cart_item.qty 
                 cart_item_gift.save()
 
 

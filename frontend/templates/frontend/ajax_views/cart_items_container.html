@@ -22,7 +22,16 @@
                         {% endif %}
                     </td>
                         <td>
-                            <a href="{{ cart_item.product.get_absolute_url }}">{{ cart_item }}</a>
+                            <a href="{{ cart_item.product.get_absolute_url }}">
+                                {{ cart_item }}
+                                <br>
+                                {% if cart_item.have_attributes %}
+                                    {% for attr in cart_item.attribute_items.all %}
+                                        <p>{{ attr.attribute.class_related.class_related }}  --> {{ attr.attribute }}<p>
+                                    {% endfor%}
+                            
+                                {% endif %}
+                            </a>
                             <div class="mobile-cart-content row">
                                 <div class="col-xs-3">
                                     <div class="qty-box">

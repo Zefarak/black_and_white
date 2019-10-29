@@ -12,7 +12,7 @@ class SubscribeTable(tables.Table):
     class Meta:
         model = Subscribe
         template_name = 'django_tables2/bootstrap.html'
-        fields = ['id', 'title', 'category', 'action', 'active']
+        fields = ['id', 'title', 'uses', 'category', 'action', 'active']
 
 
 class UserSubscribeTable(tables.Table):

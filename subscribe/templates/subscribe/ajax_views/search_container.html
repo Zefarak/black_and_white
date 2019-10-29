@@ -1,0 +1,26 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Προϊόν</th>
+        <th>Αξία</th>
+        <th>#</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for product in qs %}
+        <tr>
+            <td>{{ product }}</td>
+            <td>{{ product.tag_final_price }}</td>
+            <td><button class="btn btn-primary add_button" data-href="{% url 'subscribe:ajax_add_delete_product' object.id product.id 'add' %}"><i class="fa fa-plus"></i> </button> </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="3">Δε υπαρχουν δεδομενα </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<script>
+
+ </script>

@@ -5,7 +5,7 @@ from .views import (SubscribeHomepageView, SubscribeListView, SubscribeCreateVie
                     delete_user_subscribe_view
 
                     )
-
+from .ajax_views import ajax_add_or_delete_view, ajax_search_products_view
 
 app_name = 'subscribe'
 
@@ -22,6 +22,9 @@ urlpatterns = [
     path('user/create/', UserSubscribeCreateView.as_view(), name='user_subscribe_create'),
     path('user/update/<int:pk>/', UserSubscribeUpdateView.as_view(), name='user_subscribe_update'),
     path('user/delete/<int:pk>/', delete_user_subscribe_view, name='user_subscribe_delete_view'),
+
+    path('ajax/search-products/<int:pk>/', ajax_search_products_view, name='ajax_search_products'),
+    path('ajax/add-or-delete-product/<int:pk>/<int:dk>/<slug:action>/', ajax_add_or_delete_view, name='ajax_add_delete_product'),
 
 
 ]
