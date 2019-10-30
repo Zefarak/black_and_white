@@ -356,6 +356,14 @@ class CartSubscribe(models.Model):
             cart.discount_value += cart_item.final_value
             cart_item.save()
 
+    @staticmethod
+    def check_if_user_can_add_subscription(cart, subscribe, user):
+        new_sub = None
+        if user:
+            new_sub = CartSubscribe.objects.create(cart_related=cart, subscribe=subscribe)
+        return new_sub
+
+
 
 class CartProfile(models.Model):
     email = models.EmailField(blank=True)
@@ -389,7 +397,7 @@ class CartProfile(models.Model):
 
 class CartItemGifts(models.Model):
     cart_related = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='gifts')
-    cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE)
+    cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='cart_item_gift')
     qty = models.PositiveIntegerField(default=1)
     product = models.ForeignKey(Product, null=True, on_delete=models.SET_NULL)
 

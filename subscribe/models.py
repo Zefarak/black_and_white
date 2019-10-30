@@ -78,7 +78,7 @@ class UserSubscribe(models.Model):
     @staticmethod
     def check_active_subscription(user):
         sub_qs = UserSubscribe.objects.filter(user=user, active=True)
-        return sub_qs.exists()
+        return sub_qs.exists(), sub_qs
 
     @staticmethod
     def update_subscription(instance):

@@ -2,11 +2,12 @@ from django import forms
 from django.conf import settings
 
 from catalogue.product_attritubes import Attribute
-from .models import Order, OrderItem, OrderSubscribeDiscount, OrderProfile
+from .models import Order, OrderGift, OrderSubscribeDiscount, OrderProfile
 from subscribe.models import Subscribe, UserSubscribe
 
 from datetime import datetime
 from datetime import timedelta
+
 
 def generate_or_remove_queryset(form, title_list, queryset):
     fields_added = []
@@ -30,15 +31,17 @@ def checkout_process(request, cart, form):
         if not active_sub:
             user_sub = UserSubscribe.objects.create(
                 date_start=datetime.now(),
-                date_end=datetime.now() + timedelta(days=new_subscribe.uses),
+                date_end=datetime.now() + timedelta(days=new_subscribe.subscribe.uses.uses),
                 user=cart.user,
                 subscription=new_subscribe.subscribe,
-                value=new_subscribe.total_value,
-                uses=new_subscribe.uses
+                value=new_subscribe.value,
+                uses=new_subscribe.subscribe.uses
             )
+            eshop_order.subscribe_cost = new_subscribe.value
+            eshop_order.save()
         else:
             user_sub = UserSubscribe.objects.filter(active=True, user=cart.user).first()
-            sub_products = user_sub.subscription.products.all()
+        sub_products = user_sub.subscription.products.all()
         value, uses, total_uses = 0, 0, user_sub.uses
         while total_uses > 0:
             for item in cart.order_items.all():
@@ -51,6 +54,8 @@ def checkout_process(request, cart, form):
                         value += total_uses*item.final_value
                         uses += total_uses
                         total_uses = 0
+        user_sub.uses = total_uses
+        user_sub.save()
         OrderSubscribeDiscount.objects.create(total_discount=value, uses=uses, order_related=eshop_order)
 
 

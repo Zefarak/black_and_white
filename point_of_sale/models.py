@@ -75,6 +75,8 @@ class Order(DefaultOrderModel):
     voucher_discount = models.DecimalField(default=0.00, decimal_places=2, max_digits=10)
     guest_email = models.EmailField(blank=True)
     vouchers = models.ManyToManyField(Voucher, blank=True)
+    subscribe_cost = models.DecimalField(default=0, decimal_places=2, max_digits=20)
+    subscribe_discount_cost = models.DecimalField(default=0, decimal_places=2, max_digits=20)
 
     class Meta:
         verbose_name_plural = '1. Orders'
@@ -91,7 +93,8 @@ class Order(DefaultOrderModel):
         self.count_items = order_items.count() if order_items else 0
         self.voucher_discount = self.handle_vouchers()
         self.update_order()
-        self.final_value = self.shipping_method_cost + self.payment_cost + self.value - self.discount - self.voucher_discount
+        self.final_value = self.shipping_method_cost + self.payment_cost + self.value + self.subscribe_cost \
+                           - self.discount - self.voucher_discount - self.subscribe_discount_cost
         self.paid_value = self.final_value if self.is_paid else 0
         if self.id:
             self.title = f'{self.get_order_type_display()}- 000{self.id}' if not self.title else self.title
@@ -255,6 +258,13 @@ class Order(DefaultOrderModel):
                         attribute=cart_attribute.attribute,
                         qty=cart_attribute.qty,
                     )
+            for gift in item.cart_item.gift.all():
+                OrderGift.objects.create(order_item=new_item,
+                                         order=new_order,
+                                         qty=gift.qty,
+                                         product=gift.product,
+                                         cart_gift=gift
+                                         )
         new_order.save()
         for voucher in cart.vouchers.all():
             new_order.vouchers.add(voucher)
@@ -639,8 +649,8 @@ def update_warehouse(sender, instance, **kwargs):
 
 class OrderSubscribeDiscount(models.Model):
     order_related = models.OneToOneField(Order, on_delete=models.CASCADE)
-    subscription  = models.OneToOneField(UserSubscribe, on_delete=models.SET_NULL, null=True)
-    total_discount = models.DecimalField(max_digits=2, decimal_places=20, default=0)
+    subscription = models.OneToOneField(UserSubscribe, on_delete=models.SET_NULL, null=True)
+    total_discount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     uses = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
@@ -670,8 +680,16 @@ class OrderSubscribeDiscount(models.Model):
         new_subscribe.save()
 
 
+@receiver(post_save, sender=OrderSubscribeDiscount)
+def update_order_on_sub_create(sender, instance, created, **kwargs):
+    if created:
+        order = instance.order_related
+        order.subscribe_discount_cost = instance.total_discount
+        order.save()
+
+
 class OrderGift(models.Model):
-    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE)
+    order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, blank=True, null=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     cart_gift = models.ForeignKey(CartItemGifts, on_delete=models.CASCADE, null=True)
@@ -679,3 +697,6 @@ class OrderGift(models.Model):
 
     def __str__(self):
         return f'Gift {self.order} --> {self.product}'
+
+
+
