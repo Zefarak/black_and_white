@@ -27,7 +27,9 @@
                                 <br>
                                 {% if cart_item.have_attributes %}
                                     {% for attr in cart_item.attribute_items.all %}
-                                        <p>{{ attr.attribute.class_related.class_related }}  --> {{ attr.attribute }}<p>
+                                        {% for attr_s in attr.attribute.all %}
+                                            <p>{{ attr.attribute.class_related.class_related }}  --> {{ attr_s }}<p>
+                                        {% endfor %}
                                     {% endfor%}
                             
                                 {% endif %}

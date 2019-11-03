@@ -7,8 +7,11 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('frontend.urls')),
+    path('blog/', include('blog.urls')),
+
 
     path('accounts/', include('accounts.urls')),
+    path('blog/', include('blog.urls')),
 
     # admin  dashboard
 
@@ -21,6 +24,7 @@ urlpatterns = [
     path('dashboard-newsletter/', include('newsletter.urls')),
     path('dashboard-contact/', include('contact.urls')),
     path('dashboard-subscribe/', include('subscribe.urls')),
+    path('dashboard-blog/', include('blog.dashboard_urls')),
 
 
 

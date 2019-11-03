@@ -1,0 +1,114 @@
+{% extends 'index.html' %} {% load static %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="content">
+                                            <button type="button" class="btn btn-primary js-upload-photos"> Upload Photos</button>
+                                            <div class="well text-muted text-center" style="padding-top: 4rem; padding-bottom: 4rem;">
+                                                <span class="glyphicon glyphicon-arrow-down" style="font-size: 4rem;"></span>
+                                                <h3>Drop Photos Here to Upload</h3>
+                                            </div>
+                                            <input id="fileupload" type="file" name="image" multiple
+                                                   style="display: none;"
+                                                   data-url="{% url 'blog:ajax_add_images' object.id %}"
+                                                   data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="result_container">
+                                    {% include 'blog/ajax_views/result_container.html' %}
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <a href="{{ back_url }}" class="btn btn-warning">Επιστροφη</a>
+                                        <br>
+
+                                    </div>
+                                    <div class="card-body">
+                                        <h4>Επεξεργασια</h4>
+                                        <form class="form" method="post">
+                                            {% csrf_token %}
+                                            {{ form }}
+                                            <br>
+                                            <button class="btn btn-success" type="submit"><i class="fa fa-save"></i> </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script type="text/javascript">
+        $('.delete_button').click(function (evt) {
+            evt.preventDefault();
+            const thisBtn = $(this);
+            const url = thisBtn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                url: url,
+
+                success: function (data) {
+                    $('#result_container').html(data.result);
+                }
+
+            })
+        })
+    </script>
+
+      <script src="{% static 'dashboard/my_static/jquery-file-upload/js/vendor/jquery.ui.widget.js' %}"></script>
+    <script src="{% static 'dashboard/my_static/jquery-file-upload/js/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'dashboard/my_static/jquery-file-upload/js/jquery.fileupload.js' %}"></script>
+
+
+    <script>
+        $('.photo-button').click(function (event) {
+            event.preventDefault();
+            const btn = $(this);
+            const href = btn.attr('data-href');
+            $.ajax({
+                url: href,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
+    </script>
+
+    <script>
+        $(".js-upload-photos").click(function () {
+            console.log('clicked!');
+            $("#fileupload").click();
+        });
+
+        $('#fileupload').fileupload({
+            dataType: 'json',
+            success: function (data) {
+                $('#result_container').html(data.result)
+            }
+        })
+    </script>
+    {{ form.media }}
+{% endblock %}

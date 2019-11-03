@@ -21,7 +21,7 @@ def copy_product_view(request, pk):
     
     for attr_class in old_object.attr_class.all():
         all_attributes = attr_class.my_attributes.all()
-        attr_class.id= None
+        attr_class.id = None
         attr_class.product_related = object
         attr_class.save()
         attr_class.refresh_from_db()

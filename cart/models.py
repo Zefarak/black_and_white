@@ -12,7 +12,7 @@ from .validators import validate_positive_decimal
 from site_settings.models import Shipping, PaymentMethod
 from site_settings.constants import CURRENCY
 from catalogue.models import Product, Gifts
-from catalogue.product_attritubes import Attribute
+from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass
 from voucher.models import Voucher
 from decimal import Decimal
 
@@ -215,14 +215,24 @@ class CartItem(models.Model):
     def create_cart_item_with_multi_attr(cart, product, request):
         qty = request.POST.get('qty', 1)
         cart_item = CartItem.objects.create(cart=cart, product=product, qty=qty)
+        CartItemGifts.check_if_gift_exists(cart_item)
+        cart_item_attr = CartItemAttribute.objects.create(cart_item=cart_item)
         for field in request.POST:
             if 'attr_' in field:
                 id = field.split('_')[1]
-                attr_id = request.POST.get(field)
-                attr = get_object_or_404(Attribute, id=attr_id)
-                CartItemAttribute.objects.create(attribute=attr, cart_item=cart_item)
-        result, message = True,  f'To προϊόν {product} προστέθηκε με επιτυχία'
+                attr_class = get_object_or_404(AttributeProductClass, id=id)
+                if attr_class.class_related.is_radio_button:
+                    attr_id = request.POST.get(field)
+                    attr = get_object_or_404(Attribute, id=attr_id)
+                    cart_item_attr.attribute.add(attr)
+                else:
+                    attr_ids = request.POST.getlist(field)
+                    for attr in attr_ids:
+                        cart_item_attr.attribute.add(attr)
+        cart_item_attr.save()
+        result, message = True, f'To προϊόν {product} προστέθηκε με επιτυχία'
         return cart_item, message
+
 
     @staticmethod
     def create_cart_item(cart, product, qty, attribute=None):
@@ -268,7 +278,7 @@ def update_prices_on_create(sender, instance, created, **kwargs):
 
 
 class CartItemAttribute(models.Model):
-    attribute = models.ForeignKey(Attribute, on_delete=models.SET_NULL, null=True)
+    attribute = models.ManyToManyField(Attribute, blank=True,  null=True)
     cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='attribute_items')
     qty = models.IntegerField(default=1)
 
@@ -343,11 +353,17 @@ class CartSubscribe(models.Model):
     subscribe = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
 
+    def __str__(self):
+        return self.subscribe.title
+
     def save(self, *args, **kwargs):
         self.value = self.subscribe.value
         super().save(*args, **kwargs)
         self.cart_related.subscribe_value = self.value
         self.cart_related.save()
+
+    def tag_value(self):
+        return f'{self.value} {CURRENCY}'
 
     def update_cart(self, cart_item):
         cart = self.cart_related
@@ -362,7 +378,6 @@ class CartSubscribe(models.Model):
         if user:
             new_sub = CartSubscribe.objects.create(cart_related=cart, subscribe=subscribe)
         return new_sub
-
 
 
 class CartProfile(models.Model):
@@ -408,7 +423,6 @@ class CartItemGifts(models.Model):
     def check_if_gift_exists(cart_item):
         product = cart_item.product
         gift_qs = Gifts.objects.filter(status=True, product_related=product)
-        print('gift_qs', gift_qs)
         if gift_qs.exists():
             cart = cart_item.cart
             for gift in gift_qs:

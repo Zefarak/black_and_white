@@ -1,0 +1,68 @@
+{% extends 'frontend/index.html' %}
+
+{% block content %}
+    <!-- breadcrumb start -->
+<div style="margin-top: 7%" class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>blog</h2></div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'homepage' %}">Αρχικη Σελιδα</a>
+                        </li>
+                        <li class="breadcrumb-item active">blog</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb End -->
+
+
+<!-- section start -->
+<section class="section-b-space blog-page ratio2_3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% for post in object_list %}
+                    <div class="row blog-media">
+                    <div class="col-xl-6">
+                        <div class="blog-left">
+                            <a href="{{ post.get_absolute_url }}">
+                                <img src="{{ post.image.url }}" class="img-fluid blur-up lazyload bg-img" alt="">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="blog-right">
+                            <div>
+                                <h6>{{ post.timestamp }}</h6>
+                                <a href="{{ post.get_absolute_url }}">
+                                    <h4>{{ post }}</h4>
+                                </a>
+                                <ul class="post-social">
+                                    <li>Posted By : Admin Admin</li>
+                                    <li><i class="fa fa-heart"></i> 5 Hits</li>
+                                    <li><i class="fa fa-comments"></i> 10 Comment</li>
+                                </ul>
+                                <p>{{ post.text|truncatechars:30 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Section ends -->
+
+{% endblock %}

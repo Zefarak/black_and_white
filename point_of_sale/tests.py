@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test.client import RequestFactory
+from django.test import Client
 from .models import Product, Order, OrderItem, Profile, OrderGift
 
 from cart.models import Cart, CartItem, CartItemGifts, CartSubscribe
@@ -42,7 +43,7 @@ class TestOrderCreation(TestCase):
 class TestEshopOrder(TestCase):
 
     def setUp(self):
-        self.factory = RequestFactory()
+        self.c = Client()
         self.my_user = User.objects.create(username='Testuser')
         product_class = ProductClass.objects.create(title='No Chart', have_attribute=False)
         self.product = Product.objects.create(price=5, qty=10, title='Product A', product_class=product_class)
@@ -87,7 +88,7 @@ class TestEshopOrder(TestCase):
         self.assertEqual(new_cart.final_value, new_sub.value)
 
     def test_create_order(self):
-        request = self.factory('/')
+        request = self.c.get('/')
         request.user = self.my_user
         new_order = Order.objects.create(
             title='test',
@@ -114,10 +115,6 @@ class TestEshopOrder(TestCase):
                     uses += order_item.qty
                     value += order_item.total_value
         pass
-
-
-
-
         self.assertEqual(self.cart.final_value, 9)
 
         

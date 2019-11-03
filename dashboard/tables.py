@@ -107,7 +107,7 @@ class AttributeClassTable(tables.Table):
     class Meta:
         model = AttributeClass
         template_name = 'django_tables2/bootstrap.html'
-        fields = ['title', 'active']
+        fields = ['title', 'is_needed', 'is_radio_button']
 
 
 class ProductTable(tables.Table):

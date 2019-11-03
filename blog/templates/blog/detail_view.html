@@ -1,0 +1,55 @@
+{% extends 'frontend/index.html' %}
+
+{% block content %}
+<!-- breadcrumb start-->
+<div style='margin-top: 7%' class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="page-title">
+                    <h2>blog details</h2></div>
+            </div>
+            <div class="col-sm-6">
+                <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard_blog:list_view' %}">blog</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ object }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb end-->
+
+
+<!--section start-->
+<section class="blog-detail-page section-b-space ratio2_3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 blog-detail">
+                <img src="{{ object.image.url }}" class="img-fluid blur-up lazyload" alt="">
+                <h3>{{ object }}</h3>
+                <ul class="post-social">
+                    <li>{{ object.timestamp }}</li>
+                    <li>Posted By :Black</li>
+
+                </ul>
+                {{ object.text|safe }}
+            </div>
+        </div>
+        <div class="row section-b-space blog-advance">
+            {% for image in object.photos.all %}
+            <div class="col-lg-6"><div>
+                <img src="{{ image.image.url }}" class="img-fluid blur-up lazyload bg-img" alt=""></div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+    </div>
+</section>
+<!--Section ends-->
+
+{% endblock %}

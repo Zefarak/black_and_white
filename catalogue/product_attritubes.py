@@ -72,14 +72,16 @@ class ProductCharacteristics(models.Model):
 
 
 class AttributeClass(models.Model):
-    title = models.CharField(unique=True, max_length=150)
+    title = models.CharField(unique=True, max_length=150, verbose_name='Τιτλος')
     have_transcations = models.BooleanField(default=True, verbose_name='Υποστηρίζει Συναλλαγές')
+    is_needed = models.BooleanField(default=True, verbose_name='Απαιτειται')
+    is_radio_button = models.BooleanField(default=True, verbose_name='Μονη Επιλογη')
 
     class Meta:
         verbose_name_plural = 'Attribute Class Title'
 
     def __str__(self):
-        return self.title
+        return  self.title
 
     def get_edit_url(self):
         return reverse('dashboard:attribute_class_edit_view', kwargs={'pk': self.id})
@@ -90,6 +92,7 @@ class AttributeTitle(MPTTModel):
     attri_by = models.ForeignKey(AttributeClass, null=True, on_delete=models.CASCADE, related_name='my_values')
     name = models.CharField(max_length=120, verbose_name='Τίτλος')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    default_value = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ['name', 'attri_by']

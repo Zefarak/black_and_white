@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     {% block seo_data %}
-        <title>Οπτικα - Κοτσαλης | Αρχική Σελίδα</title>
+        <title>Black and White| Αρχική Σελίδα</title>
         <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, optika kotsalis. Εδώ θα βρείτε μεγάλη ποικιλία απο γυαλιά ηλιού και οράσεως.">
     {% endblock %}
     <meta name="keywords" content="Οπτικά, Μολαοι, Λακωνια, Rayban, γυαλιά ηλιόυ, οράσεως, Κότσαλης, Μονεμβάσια">
@@ -19,149 +19,22 @@
 
 {% include 'frontend/include/navbar.html' %}
 {% block extra_css %} {% endblock %}
-<!-- Your customer chat code -->
-<div class="fb-customerchat"
-  attribution=install_email
-  page_id="281664168590489">
-</div>
 {% block content %}
 
-<!-- Home slider -->
-<section class="p-0">
-    <div class="slide-1 home-slider">
-        {% for banner in big_banners %}
-            <div>
-                <div class="home text-center">
-                    <img src="{{ banner.image.url }}" alt="" class="bg-img blur-up lazyload">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <div class="slider-contain">
-                                    <div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-</section>
-<!-- Home slider end -->
 
-        <!-- Product slider -->
-    <section style="margin-top: 3%" class="ratio_square section-b-space">
-    <div class="container">
-        <div class="title3">
-            <h4>Δείτε τα</h4>
-            <h2 class="title-inner3">Προτεινομενα προϊοντα μας</h2>
-            <div class="owl-buttons"><div class="fa fa-arrow-left">/</div><div class="fa fa-arrow-right"></div></div>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <div class="product-4 product-m no-arrow">
-                    {% for product in featured_products %}
-                        {% include 'frontend/parts/product_card.html' %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-    </section>
-    <!-- Product slider end -->
-
-
-
-<!-- collection banner -->
-<section style="background-color:white;"  class="banner-padding banner-furniture ratio2_1">
-    <div class="container-fluid">
-        <div class="row partition3">
-            {% for banner in small_banners %}
-                {% if forloop.counter < 3 %}
-                <div class="col-md-6">
-                    <a href="#">
-                    <div class="collection-banner p-left text-left">
-                        <div class="img-part">
-                            <img src="{{ banner.image.url }}" alt="" class="img-fluid blur-up lazyload bg-img">
-                        </div>
-                        <div class="contain-banner">
+<!-- home slider start -->
+<div class="home-slider fullpage full-slider">
+    {% for banner in banners %}
+    <div>
+        <div class="home text-left p-left">
+            <img src="{{ banner.image.url }}" alt="" class="bg-img blur-up lazyload">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="slider-contain">
                             <div>
-                                {{ forloop.counter }}
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-</section>
-<!-- collection banner end -->
-
-
-
-
-<!-- collection banner -->
-<section style="background-color:white;"  class="banner-padding banner-furniture ratio2_1">
-    <div class="container-fluid">
-        <div class="row partition3">
-            {% for banner in small_banners %}
-                {% if forloop.counter > 2 %}
-                    <div class="col-md-6">
-                    <a {% if banner.url %} href="{{ banner.url }}" {% else %}href="" {% endif %}>
-                    <div class="collection-banner p-left text-left">
-                        <div class="img-part">
-                            <img src="{{ banner.image.url }}" alt="" class="img-fluid blur-up lazyload bg-img">
-                        </div>
-                        <div class="contain-banner">
-                            <div>
-
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-</section>
-<!-- collection banner end -->
-
-
-
-  <!-- Tab product -->
-    <div class="title1 section-t-space">
-        <h4>Δείτε επίσης</h4>
-        <h2 class="title-inner1">Τις προσφορες και τα νεα μας προϊοντα</h2>
-    </div>
-    <section class="ratio_square section-b-space">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <div class="theme-tab">
-                    <ul class="tabs tab-title">
-                        <li class="current"><a href="tab-4">Νεα Προϊοντα</a></li>
-                        <li class=""><a href="tab-6">Οι προσφορες μας</a></li>
-                    </ul>
-                    <div class="tab-content-cls">
-
-                        <div id="tab-4" class="tab-content active default">
-                            <div class="no-slider row">
-                                {% for product in new_products %}
-                                    {% include 'frontend/parts/product_card.html' %}
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                        <div id="tab-6" class="tab-content">
-                            <div class="no-slider row">
-                                {% for product in offers %}
-                                    {% include 'frontend/parts/product_card.html' %}
-                                {% endfor %}
+                                <h1>{{ banner.title }}</h1>
+                                {{ banner.text|safe }}
                             </div>
                         </div>
                     </div>
@@ -169,110 +42,11 @@
             </div>
         </div>
     </div>
-</section>
-<!-- Tab product end -->
+    {% endfor %}
 
+</div>
+<!-- home slider end -->
 
-
-
-<!-- Parallax banner
-<section class="p-0">
-    <div class="full-banner parallax text-center p-left">
-        <img src="{% static 'frontend/demo_images/little banner.jpg' %}" alt="" class="bg-img blur-up lazyload">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="banner-contain">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-Parallax banner end -->
-
-
-
-
-<!-- instagram section -->
-<section style="background-color:white;" class="instagram ratio_square">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12 p-0">
-                <h2 class="title-borderless"># instagram</h2>
-                <div class="slide-7 no-arrow slick-instagram">
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box">
-                                <img alt="" src="{% static 'frontend/demo_images/insta_1.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta7.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta_2.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta_3.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta_4.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta_5.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta_6.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta_1.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a target="_blank" href="https://www.instagram.com/optikakotsalis/?hl=el">
-                            <div class="instagram-box"><img alt="" src="{% static 'frontend/demo_images/insta_1.jpg' %}" class="bg-img" style="width:100%">
-                                <div class="overlay"><i class="fa fa-instagram" aria-hidden="true"></i></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br> <br>
-</section>
-<!-- instagram section end -->
 
 {% endblock %}
 

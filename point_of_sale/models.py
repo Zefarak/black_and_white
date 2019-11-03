@@ -245,26 +245,9 @@ class Order(DefaultOrderModel):
         if user:
             new_order.user = user
             new_order.profile = user.profile
+
         for item in cart.order_items.all():
-            new_item = OrderItem.objects.create(
-                order=new_order,
-                title=item.product,
-                qty=item.qty,
-            )
-            if item.have_attributes:
-                for cart_attribute in item.attribute_items.all():
-                    OrderItemAttribute.objects.create(
-                        order_item=new_item,
-                        attribute=cart_attribute.attribute,
-                        qty=cart_attribute.qty,
-                    )
-            for gift in item.cart_item.gift.all():
-                OrderGift.objects.create(order_item=new_item,
-                                         order=new_order,
-                                         qty=gift.qty,
-                                         product=gift.product,
-                                         cart_gift=gift
-                                         )
+            OrderItem.create_order_item_from_cart_item(new_order, item)
         new_order.save()
         for voucher in cart.vouchers.all():
             new_order.vouchers.add(voucher)
@@ -472,6 +455,20 @@ class OrderItem(DefaultOrderItemModel):
             product.save()
 
     @staticmethod
+    def create_order_item_from_cart_item(order, cart_item):
+        instance = OrderItem.objects.create(order=order,
+                                            title=cart_item.product,
+                                            qty=cart_item.qty,
+                                            value=cart_item.value,
+                                            discount_value=cart_item.product.price_discount,
+                                            cost=cart_item.product.price_buy
+                                            )
+        if cart_item.product.have_attr:
+            OrderItemAttribute.create_objects_from_cart(instance, cart_item)
+        for gift in cart_item.cart_item_gift.all():
+            OrderGift.create_gift_from_cart(instance, gift)
+
+    @staticmethod
     def create_or_edit_item(order, product, qty, transation_type):
         instance, created = OrderItem.objects.get_or_create(order=order, title=product)
         if transation_type == 'ADD':
@@ -482,6 +479,8 @@ class OrderItem(DefaultOrderItemModel):
                 instance.value = product.price
                 instance.discount_value = product.price_discount
                 instance.cost = product.price_buy
+            if product.have_attr:
+                OrderItemAttribute.create_objects_from_cart(instance, )
         if transation_type == 'REMOVE':
             instance.qty -= qty
             instance.qty = 1 if instance.qty <= 0 else instance.qty
@@ -501,7 +500,7 @@ def create_destroy_title():
 
 
 class OrderItemAttribute(models.Model):
-    attribute = models.ForeignKey(Attribute, on_delete=models.SET_NULL, null=True)
+    attribute = models.ManyToManyField(Attribute, null=True)
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, related_name='attributes')
     qty = models.DecimalField(default=1, decimal_places=2, max_digits=10)
     is_found = models.BooleanField(default=False)
@@ -512,6 +511,17 @@ class OrderItemAttribute(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.order_item.save()
+
+    @staticmethod
+    def create_objects_from_cart(order_item, cart_item):
+        qs = cart_item.attribute_items.all()
+        if qs.exists():
+            for cart_attibrute in cart_item.attribute_items.all():
+                for attribute in cart_attibrute.attribute.all():
+                    new_ = OrderItemAttribute.objects.create(order_item=order_item)
+                    new_.attribute.add(attribute)
+                    new_.save()
+
 
 
 class OrderProfile(models.Model):
@@ -697,6 +707,16 @@ class OrderGift(models.Model):
 
     def __str__(self):
         return f'Gift {self.order} --> {self.product}'
+
+    @staticmethod
+    def create_gift_from_cart(order_item, gift):
+        OrderGift.objects.create(order_item=order_item,
+                                 order=order_item.order,
+                                 product=gift.product,
+                                 cart_gift=gift,
+                                 qty=order_item.qty
+
+                                 )
 
 
 

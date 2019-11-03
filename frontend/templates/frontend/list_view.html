@@ -18,7 +18,7 @@
 {% block content %}
 
 <!-- breadcrumb start -->
-<div class="breadcrumb-section">
+<div style="margin-top: 7%" class="breadcrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
@@ -59,150 +59,9 @@
                                     </a>
                                     <div class="top-banner-content small-section">
                                         <h4>{{ page_title }}</h4>
-
                                     </div>
                                 </div>
                                 <div class="collection-product-wrapper">
-                                    <div class="product-top-filter">
-                                        <form method='get'>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="popup-filter">
-                                                    <div class="sidebar-popup"><a class="popup-btn">Φίλτρα</a></div>
-                                                    <div class="open-popup">
-                                                        <div class="collection-filter">
-                                                            <!-- side-bar colleps block stat -->
-                                                            <div class="collection-filter-block">
-                                                                <!-- brand filter start -->
-                                                                <div class="collection-mobile-back">
-                                                                    <span class="filter-back">
-                                                                        <i class="fa fa-angle-left" aria-hidden="true">
-                                                                        </i> Επιστροφή
-                                                                    </span>
-                                                                </div>
-
-                                                                <div class="collection-collapse-block">
-                                                                    <a class="btn btn-warning" href="{{ request.path }}">Καθαρισμος</a>
-                                                                    <h3 class="collapse-block-title">Κατηγοριες</h3>
-                                                                    <div class="collection-collapse-block-content">
-                                                                        <div class="collection-brand-filter">
-                                                                            {% for category in categories %}
-                                                                                <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                                                                    <input value="{{ category.slug }}" name='cate_name' type="checkbox" class="custom-control-input" id="cate_{{ category.id }}"
-                                                                                    {% if category.slug|stringformat:"s" in request.GET|get_item:'cate_name' %} checked {% endif %}
-                                                                                    >
-                                                                                    <label class="custom-control-label" for="cate_{{ category.id }}">{{ category }}</label>
-                                                                                </div>
-                                                                                {% empty %}
-                                                                                <p>Δε υπάρχουν διαθεσιμες Κατηγορίες</p>
-                                                                            {% endfor %}
-                                                                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="collection-collapse-block">
-                                                                    <h3 class="collapse-block-title">brand</h3>
-                                                                    <div class="collection-collapse-block-content">
-                                                                        <div class="collection-brand-filter">
-                                                                            {% for brand in brands %}
-                                                                                <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                                                                    <input name="brand_name" value="{{ brand.slug }}"  type="checkbox" class="custom-control-input" id="brand_{{ brand.id}}"
-                                                                                    {% if brand.slug|stringformat:"s" in request.GET|get_item:'brand_name' %} checked {% endif %}
-                                                                                    >
-                                                                                    <label class="custom-control-label" for="brand_{{ brand.id }}">{{ brand }}</label>
-                                                                                </div>
-                                                                                {% empty %}
-                                                                                <p>Δε υπάρχουν διαθεσιμες Brands</p>
-                                                                            {% endfor %}
-                                                                           <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                                                    <input onclick="this.form.submit()" name="offer_name" value="1"  type="checkbox" class="custom-control-input" id="offer_name"
-                                                                        {% if request.GET.offer_name == '1'  %} checked {% endif %}>
-                                                                        <label class="custom-control-label" for="offer_name">Σε προσφορα</label>
-                                                                </div>
-                                                                <br>
-                                                                <div class="custom-control">
-                                                                    <input id="demo_2" type="text" name="price_name" value="" class="irs-hidden-input" tabindex="-1" readonly="" hidden>
-                                                                </div>
-                                                                <div class="collection-collapse-block">
-                                                                    <h3 class="collapse-block-title">Χρωμα</h3>
-                                                                    <div class="collection-collapse-block-content">
-                                                                        <div class="collection-brand-filter">
-                                                                            {% for color in colors %}
-                                                                                <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                                                                    <input name="color_name" value="{{ color.title }}"  type="checkbox" class="custom-control-input" id="color_{{ color.id}}"
-                                                                                    {% if color.title|stringformat:"s" in request.GET|get_item:'color_name' %} checked {% endif %}
-                                                                                    >
-                                                                                    <label class="custom-control-label" for="color_{{ color.id }}">{{ color }}</label>
-                                                                                </div>
-                                                                                {% empty %}
-                                                                                <p>Δε υπάρχουν διαθεσιμα Χρωματα</p>
-                                                                            {% endfor %}
-                                                                           <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- price filter start here -->
-
-                                                                <br>
-                                                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                                                <br>
-                                                                {% for characteristic in chars_filters %}
-                                                                    <div class="collection-collapse-block">
-                                                                        <h3 class="collapse-block-title">{{ characteristic.0 }}</h3>
-                                                                        <div class="collection-collapse-block-content">
-                                                                            <div class="collection-brand-filter">
-                                                                                {% for char in characteristic.1 %}
-                                                                                    <div class="custom-control custom-checkbox collection-filter-checkbox">
-                                                                                        <input name="char_name" value="{{ char.0 }}"  type="checkbox" class="custom-control-input" id="char_{{ char.0}}"
-                                                                                        {% if char.0|stringformat:"s" in request.GET|get_item:'char_name' %} checked {% endif %}
-                                                                                        >
-                                                                                        <label class="custom-control-label" for="char_{{ char.0 }}">{{ char.1 }}</label>
-                                                                                    </div>
-                                                                                    {% empty %}
-                                                                                    <p>Δε υπάρχουν διαθεσιμες {{ characteristic }} αξίες</p>
-                                                                                {% endfor %}
-                                                                               <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                {% endfor %}
-                                                            </div>
-                                                            <!-- silde-bar colleps block end here -->
-                                                        </div>
-                                                    </div>
-                                                    <div class="collection-view">
-
-                                                    </div>
-                                                    <div class="collection-grid-view">
-
-                                                    </div>
-                                                    <div class="product-page-per-view">
-
-                                                    </div>
-                                                    <div class="product-page-filter">
-                                                         <select onchange="this.form.submit()" name="order_by">
-                                                            {% if request.get.order_by %}
-
-                                                            {% else %}
-                                                                <option value="menu_order" selected="selected">Προεπιλογή</option>
-                                                            {% endif %}
-                                                            <option value="final_price" {% if request.get.order_by == 'final_price' %} selected="selected"  {% endif %}>Αυξουσα Τιμή</option>
-                                                            <option value="-final_price" {% if request.get.order_by == '-final_price' %} selected="selected"  {% endif %}>Φθίνουσα Τιμή</option>
-                                                            <option value="title" {% if request.get.order_by == 'title' %} selected="selected"  {% endif %}>Αλφαβιτική Σειρά Α->Ω</option>
-                                                            <option value="-title" {% if request.get.order_by == '-title' %} selected="selected"  {% endif %}>Αλφαβιτική Σειρά Ω->Α</option>
-                                                        </select>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </form>
-                                    </div>
                                     <div class="product-wrapper-grid">
                                         <div class="row infinite-container">
                                             {% for product in object_list %}
@@ -218,8 +77,6 @@
                                             <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a>
                                         {% endif %}
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
