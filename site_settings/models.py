@@ -23,6 +23,17 @@ def validate_positive_decimal(value):
     return value
 
 
+class SiteSettings(models.Model):
+    is_open = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        if not self.pk and SiteSettings.objects.exists():
+            # if you'll not check for self.pk
+            # then error will also raised in update of exists model
+            raise ValidationError('There is can be only one JuicerBaseSettings instance')
+        return super().save(*args, **kwargs)
+
+
 class Company(models.Model):
     company_name = models.CharField(max_length=120, null=True)
     company_address = models.CharField(max_length=200, null=True)
@@ -204,6 +215,7 @@ class Banner(models.Model):
         qs = qs.filter(active=True) if active_name == '1' else qs.filter(active=False) if active_name =='2' else qs
         qs = qs.filter(title__contains=search_name) if search_name else qs
         return qs
+
 
 class SeoDataModel(models.Model):
     CHOICES = (

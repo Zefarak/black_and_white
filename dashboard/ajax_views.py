@@ -274,3 +274,27 @@ def ajax_modify_gift_view(request, pk, dk, action):
                                           'object': gift
                                       })
     return JsonResponse(data)
+
+
+def ajax_attribute_show_or_hide(request, pk):
+    instance = get_object_or_404(AttributeProductClass, id=pk)
+    product = instance.product_related
+    class_related = instance.class_related
+    qs = class_related.attribute_selected.all()
+    data = dict()
+    if qs.exists():
+        instance = qs.first()
+        attr_related = instance.attribute_related
+        id = AttributeProductClass.objects.get(product_related=product, class_related=attr_related).id
+        data['id'] = id
+    return JsonResponse(data)
+
+
+@staff_member_required
+def ajax_quick_change_qty_to_product(request, pk):
+    instance = get_object_or_404(Product, id=pk)
+    new_qty = request.GET.get('new_qty', instance.qty)
+    instance.qty = new_qty
+    instance.save()
+    return JsonResponse({'success': True})
+

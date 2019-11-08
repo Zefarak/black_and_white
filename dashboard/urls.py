@@ -10,7 +10,7 @@ from .views import (DashBoard, ProductsListView, ProductCreateView,
                     ProductAttriClassManagerView, RelatedProductsView, product_characteristic_delete_view,
                     WarehouseCategoryCreateView, WarehouseCategoryListView, WarehouseCategoryUpdateView,
                     warehouse_category_delete, delete_product_attribute_view, ProductWithDifferentColorListView,
-                    GiftListView, GiftCreateView, GiftUpdateView, delete_gift_view
+                    GiftListView, GiftCreateView, GiftUpdateView, delete_gift_view, QuickChangeProductWithQtyView
                     )
 
 from .settings_view import (ProductClassView, ProductClassCreateView,
@@ -20,13 +20,15 @@ from .settings_view import (ProductClassView, ProductClassCreateView,
                             characteristic_delete_view, CharValueEditView, delete_char_value_view,
                             AttributeClassListView, attribute_class_edit_view, attribute_class_delete_view,
                             AttributeClassCreateView, attribute_title_delete_view, AttributeTitleEditView,
-                            ColorCreateView, ColorListView, ColorUpdateView, color_delete_view
+                            ColorCreateView, ColorListView, ColorUpdateView, color_delete_view,
+                            AttributeRelatedCreateView, AttributeRelatedListView, AttributeRelatedUpdateView, attribute_related_delete_view
                             )
-from .dashboard_actions import copy_product_view, add_gift_action_view
+from .dashboard_actions import copy_product_view, add_gift_action_view, reset_qty_to_products_view, change_site_setting_status_view
 from .ajax_views import (ajax_category_site, ajax_product_images, ajax_add_or_delete_attribute,
                          ajax_change_qty_on_attribute, ajax_products_discount_add, ajax_product_discount_delete,
                          popup_category, popup_brand, popup_vendor, popup_color,ajax_different_color_product_view,
-                         ajax_product_calculate_view, ajax_related_products_view, ajax_modify_gift_view
+                         ajax_product_calculate_view, ajax_related_products_view, ajax_modify_gift_view, ajax_attribute_show_or_hide,
+                         ajax_quick_change_qty_to_product,
                          )
 app_name = 'dashboard'
 
@@ -78,6 +80,7 @@ urlpatterns = [
     path('ajax/discount/add-products/<int:pk>/', ajax_products_discount_add, name='ajax_products_discount_add'),
     path('ajax/discount/delete-product/<int:pk>/<int:dk>/', ajax_product_discount_delete, name='ajax_products_discount_delete'),
     path('ajax-modify-gift/<int:pk>/<int:dk>/<slug:action>/', ajax_modify_gift_view, name='ajax_modify_gift'),
+    path('ajax/add-or-hide-attr/<int:pk>/', ajax_attribute_show_or_hide, name='ajax_show_or_hide_attr'),
 
 
     path('product/characteristic-manager/<int:pk>/', CharacteristicsManagerView.as_view(), name='char_manager_view'),
@@ -128,5 +131,16 @@ urlpatterns = [
     path('gift-actions/<int:pk>/<int:dk>/', add_gift_action_view, name='add_gift_view'),
 
 
+    path('attribute-related/list/', AttributeRelatedListView.as_view(), name='attr_related_list'),
+    path('attribute-related/create/', AttributeRelatedCreateView.as_view(), name='attr_related_create'),
+    path('attribute-related/update/<int:pk>/', AttributeRelatedUpdateView.as_view(), name='attr_related_update'),
+    path('attribute-related/delete/<int:pk>/', attribute_related_delete_view, name='attr_related_delete'),
+
+    #  handle qty views
+    path('handle-qty-queryset/', QuickChangeProductWithQtyView.as_view(), name='handle_product_qty'),
+    path('reset-qty-products/', reset_qty_to_products_view, name='reset_qty_products'),
+    path('ajax/change-product-qty/<int:pk>/', ajax_quick_change_qty_to_product, name='ajax_change_product_qty'),
+
+    path('change-site-status-view/', change_site_setting_status_view, name='change_site_status_view')
 
     ]

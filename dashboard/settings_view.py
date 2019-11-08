@@ -18,9 +18,10 @@ from catalogue.forms import (CreateProductClassForm, CategorySiteForm,
                              CharacteristicsForm, AttributeClassForm, AttributeTitleForm
                              )
 from catalogue.product_attritubes import (Characteristics, CharacteristicsValue,
-                                           AttributeTitle, AttributeClass
+                                           AttributeTitle, AttributeClass, AttributeRelated
                                           )
-from .tables import ProductClassTable, CategorySiteTable, BrandTable, CharacteristicsTable, AttributeClassTable, ColorTable
+from .forms import AttributeRelatedForm
+from .tables import ProductClassTable, CategorySiteTable, BrandTable, CharacteristicsTable, AttributeClassTable, ColorTable, AttributeRelatedTable
 from catalogue.forms import ColorForm
 CURRENCY = settings.CURRENCY
 
@@ -468,4 +469,61 @@ def color_delete_view(request, pk):
     return redirect(reverse('dashboard:color_list_view'))
 
 
+@method_decorator(staff_member_required, name='dispatch')
+class AttributeRelatedListView(ListView):
+    model = AttributeRelated
+    template_name = 'dashboard/list_page.html'
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(AttributeRelatedListView, self).get_context_data(**kwargs)
+        context['create_url'] = reverse('dashboard:attr_related_create')
+        context['queryset_table'] = AttributeRelatedTable(self.object_list)
+        context['page_title'] = 'Συσχετιση Μεγεθολογίων'
+        return context
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AttributeRelatedCreateView(CreateView):
+    model = AttributeRelated
+    form_class = AttributeRelatedForm
+    template_name = 'dashboard/form.html'
+    success_url = reverse_lazy('dashboard:attr_related_list')
+
+    def get_context_data(self, **kwargs):
+        context = super(AttributeRelatedCreateView, self).get_context_data(**kwargs)
+        context['back_url'] = self.success_url
+        context['page_title'] = 'Δημιουργια Νεου Συσχετισμου'
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+@method_decorator(staff_member_required, name='dispatch')
+class AttributeRelatedUpdateView(UpdateView):
+    form_class = AttributeRelatedForm
+    model = AttributeRelated
+    template_name = 'dashboard/form.html'
+    success_url = reverse_lazy('dashboard:attr_related_list')
+
+    def form_valid(self, form):
+        form.save()
+        return super(AttributeRelatedUpdateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['back_url'] = self.success_url
+        context['delete_url'] = self.object.get_delete_url()
+        context['page_title'] = f'επεξεργασια {self.object}'
+
+        return context
+
+
+@staff_member_required
+def attribute_related_delete_view(request, pk):
+    instance = get_object_or_404(AttributeRelated, id=pk)
+    instance.delete()
+    return redirect(reverse('dashboard:attr_related_list'))
 

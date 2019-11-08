@@ -80,6 +80,11 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{% url 'dashboard:attr_related_list' %}">
+                            <span class="pcoded-mtext">Συσχετιση Χαρακτηριστικων</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{% url 'dashboard:discount_manager' %}">
                             <span class="pcoded-mtext">Διαχείριση Εκπτώσεων</span>
                         </a>
@@ -90,6 +95,13 @@
                 <a href="{% url 'dashboard:gift_list' %}">
                     <span class="pcoded-micon"><i class="feather icon-home"></i></span>
                     <span class="pcoded-mtext">Δωρα</span>
+                </a>
+            </li>
+
+            <li class="">
+                <a href="{% url 'dashboard:handle_product_qty' %}">
+                    <span class="pcoded-micon"><i class="feather icon-home"></i></span>
+                    <span class="pcoded-mtext">Διαχειριση Ποσοτήτων</span>
                 </a>
             </li>
         </ul>

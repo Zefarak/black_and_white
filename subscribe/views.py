@@ -9,6 +9,15 @@ from .forms import SubscribeForm, UserSubscribeForm
 from .tables import SubscribeTable, UserSubscribeTable
 from catalogue.models import Product
 
+
+class FrontEndSubscribeListView(ListView):
+    template_name = 'subscribe/SubscribeView.html'
+    model = Subscribe
+
+    def get_queryset(self):
+        return Subscribe.objects.filter(active=True)
+
+
 @method_decorator(staff_member_required, name='dispatch')
 class SubscribeHomepageView(TemplateView):
     template_name = 'subscribe/homepage.html'

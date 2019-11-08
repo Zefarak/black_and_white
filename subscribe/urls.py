@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (SubscribeHomepageView, SubscribeListView, SubscribeCreateView, SubscribeUpdateView,
                     delete_subscribe_view, UserSubscribeListView, UserSubscribeCreateView, UserSubscribeUpdateView,
-                    delete_user_subscribe_view
+                    delete_user_subscribe_view, FrontEndSubscribeListView
 
                     )
 from .ajax_views import ajax_add_or_delete_view, ajax_search_products_view
@@ -12,6 +12,7 @@ app_name = 'subscribe'
 
 urlpatterns = [
     path('homepage/', SubscribeHomepageView.as_view(), name='homepage'),
+    path('συνδρομες/', FrontEndSubscribeListView.as_view(), name='frontend_subscribe_list'),
 
     path('list-view/', SubscribeListView.as_view(), name='subscribe_list_view'),
     path('create/', SubscribeCreateView.as_view(), name='subscribe_create'),

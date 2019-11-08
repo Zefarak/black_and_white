@@ -1,0 +1,119 @@
+{% extends 'catalogue_index.html' %}
+
+{% block extra_css %}
+    <style>
+        tr[data-delivery='positive'] {
+            background-color: #f2dede;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>{{ page_title }}</h5>
+                                        <br><br>
+                                        <a href="{{ create_url }}" class="btn btn-info btn-round">Ανανέωση</a>
+
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive" id="result_table">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Προϊόν</th>
+                                                        <th>#</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for product in object_list %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>{{ product }}</td>
+                                                            <td><input
+                                                                    data-href="{% url 'dashboard:ajax_change_product_qty' product.id %}"
+                                                                    class="form-control add_input" type="number" min="0" value="{{ product.qty }}">
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="col-md-2">
+                                 <div class="card">
+                                     <div class="card-header">
+                                         <a href="{% url 'dashboard:home' %}" class="btn btn-warning btn-round" style="float: right;">Επιστροφή</a>
+                                     </div>
+                                     <div class="card-block">
+                                         <a href="{% url 'dashboard:reset_qty_products' %}" class="btn btn-round btn-info"><i class="fa fa-file"></i>Μηδενισμός Ποσοτήτων </a>
+                                     </div>
+                                 </div>
+                                <br>
+                                {% if reports %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4>Reports</h4>
+                                            <button data-href="{{ report_url }}" class="btn btn-success btn-round report_button">Υπολογισμός</button>
+                                            <br> <br>
+                                            <button data-href='{{ report_url }}' type="button" class="btn btn-primary btn-round" data-toggle="modal" data-target="#report_modal">Δες τα</button>
+                                            <!-- Modal -->
+                                            <div class="modal fade bd-example-modal-lg" id="report_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Report</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body" id="report_result">Χρησιμοποίησε τον υπολογισμό πρώτα</div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+{% block extra_js %}
+    <script>
+        $('.add_input').change(function (evt) {
+            evt.preventDefault();
+            const myInput = $(this);
+            const url = myInput.attr('data-href');
+            const value = myInput.val();
+            $.ajax({
+                method: 'get',
+                url: url + '?new_qty='+ value,
+                dataType: 'json',
+
+                success: function (data) {
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
+    </script>
+{% endblock %}

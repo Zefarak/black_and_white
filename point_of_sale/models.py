@@ -523,7 +523,6 @@ class OrderItemAttribute(models.Model):
                     new_.save()
 
 
-
 class OrderProfile(models.Model):
     email = models.EmailField(blank=True)
     first_name = models.CharField(max_length=100, verbose_name='Ονομα')
@@ -700,7 +699,7 @@ def update_order_on_sub_create(sender, instance, created, **kwargs):
 
 class OrderGift(models.Model):
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='gifts')
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     cart_gift = models.ForeignKey(CartItemGifts, on_delete=models.CASCADE, null=True)
     qty = models.PositiveIntegerField(default=1)

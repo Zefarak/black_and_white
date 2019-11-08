@@ -1,6 +1,7 @@
 from django import forms
 from .models import ProductDiscount
 from site_settings.forms import BaseForm
+from catalogue.product_attritubes import AttributeRelated
 
 
 class ProductDiscountForm(BaseForm, forms.ModelForm):
@@ -18,3 +19,10 @@ class ProductDiscountForm(BaseForm, forms.ModelForm):
             if date_start > date_end:
                 raise forms.ValidationError('Έχετε βάλει λάθος ημερομηνίες')
         return date_end
+
+
+class AttributeRelatedForm(BaseForm, forms.ModelForm):
+
+    class Meta:
+        model = AttributeRelated
+        fields = "__all__"

@@ -31,72 +31,52 @@
                             </div>
                             <br>
                             <form method="post" class="form" action='{% url "add_to_cart_with_attr" product.slug %}'>{% csrf_token %}
-                                {% for attr_header in product.attr_class.all %}
-                                    <div class='container_{{ attr_header.id }}'>
-                                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                            <span class="text-muted">{{ attr_header }}</span>
-                                        </h4>
-                                        {% if attr_header.class_related.is_radio_button %}
-                                        <ul class="list-group mb-3">
-                                            {% for attr in attr_header.my_attributes.all %}
-                                                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                                    <div>
-                                                        <div class="custom-control custom-radio">
-                                                            <input value='{{ attr.id }}' name='attr_{{ attr_header.id }}' type="radio"
-                                                                   class="custom-control-input attr_{{ attr_header.id }}"
-                                                                   id="defaultUnchecked_{{ attr.id }}_{{ attr_header_id }}"
-                                                                   {% if attr_header.class_related.is_needed %} required {% endif %}
-
-                                                            >
-                                                            <label class="custom-control-label" for="defaultUnchecked_{{ attr.id }}_{{ attr_header_id }}">{{ attr }}</label>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% else %}
-                                            <ul class="list-group mb-3">
-                                            {% for attr in attr_header.my_attributes.all %}
-                                                <li class="list-group-item d-flex justify-content-between lh-condensed">
-                                                    <div>
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input value='{{ attr.id }}' name='attr_{{ attr_header.id }}' type="checkbox" class="custom-control-input attr_{{ attr_header.id }}" id="defaultUnchecked_{{ attr.id }}_{{ attr_header_id }}">
-                                                            <label class="custom-control-label" for="defaultUnchecked_{{ attr.id }}_{{ attr_header_id }}">{{ attr }}</label>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% endif %}
-                                        <br>
-                                    </div>
-                                {% endfor %}
-                                <div class="product-description border-product">
-                                    <h6 class="product-title">Ποσότητα</h6>
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
-                                            <input type="text" name="qty" class="form-control input-number" value="1"> <span class="input-group-prepend">
-                                            <button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-buttons">
-                                    <button type="submit" data-target="#addtocart" class="btn btn-solid">Προσθηκη στο Καλαθι</button>
-                                    <br /> <br />
-                                </div>
+                                   {% for attr_header in product.attr_class.all %}
+                                       <div class='container_{{ attr_header.id }}'>
+                                           <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                               <span class="text-muted">{{ attr_header }}</span>
+                                           </h4>
+                                           <ul class="list-group mb-3">
+                                               {% for attr in attr_header.my_attributes.all %}
+                                                   <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                                       <div>
+                                                           <div class="custom-control custom-radio">
+                                                               <input value='{{ attr.id }}' name='attr_{{ attr_header.id }}' type="radio" class="custom-control-input attr_input" id="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}"
+                                                                       {% if attr.title.take_action %}
+                                                                      data-extra="{{ attr_header.id }}"
+                                                                      data-href="{% url 'dashboard:ajax_show_or_hide_attr' attr_header.id %}"
+                                                                       {% endif %}
+                                                               >
+                                                               <label class="custom-control-label"
+                                                                      for="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}">{{ attr }}
+                                                               </label>
+                                                           </div>
+                                                       </div>
+                                                   </li>
+                                               {% endfor %}
+                                           </ul>
+                                           <br>
+                                       </div>
+                                   {% endfor %}
+                                   <div class="product-description border-product">
+                                       <h6 class="product-title">Ποσότητα</h6>
+                                       <div class="qty-box">
+                                           <div class="input-group">
+                                               <span class="input-group-prepend">
+                                                   <button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
+                                               <input type="text" name="qty" class="form-control input-number" value="1"> <span class="input-group-prepend">
+                                               <button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="product-buttons">
+                                       <button type="submit" data-target="#addtocart" class="btn btn-solid">Προσθηκη στο Καλαθι</button>
+                                       <br /> <br />
+                                   </div>
                             </form>
-
                             <br>
-
-
-
-
                             <div class="product-buttons">
                                 <a href="{{ product.get_absolute_url }}" class="btn btn-solid">Λεπτομεριες</a>
-                                <a href="{% url 'add_to_cart' product.slug %}"  class="btn btn-success btn-solid"> <i class="fa fa-cart-plus"></i> Προσθηκη</a>
-
                             </div>
                         </div>
                     </div>
@@ -107,16 +87,48 @@
 </div>
 <!-- Quick-view modal popup end-->
 
+
+
 <script>
-    $('.attr_5').change(function(evt){
-        console.log('hey brother!')
+    $('.attr_input').click(function(evt){
         const my_input = $(this);
-        const value  = my_input.val()
-        if (value === '3'){
-            console.log('thats correct boy string')
-            $('.container_2').hide()
-        } else {
-            $('.container_2').show()
+        const new_val = my_input.attr('data-extra');
+        const url = my_input.attr('data-href');
+
+        if (new_val !== undefined){
+            $.ajax({
+                dataType: 'json',
+                method: 'get',
+                url: url,
+                success: function (data) {
+                    const my_class = '.container_'+ data.id;
+                    $(my_class).hide();
+                    $(".container_"+ new_val+ " :input").attr('data-remove', new_val);
+                    $(".container_"+ new_val+ " :input").attr('data-remove-href', url);
+                }
+            })
+        }
+
+    });
+
+    $('.attr_input').click(function (evt) {
+        const myInput = $(this);
+        const removeData = myInput.attr('data-remove');
+        const url = myInput.attr('data-remove-href');
+        console.log(removeData);
+        if (removeData !== undefined){
+            $.ajax({
+                dataType: 'json',
+                method: 'get',
+                url: url,
+                success: function (data) {
+                    const my_class = '.container_'+ data.id;
+                    $(my_class).show('success')
+                }
+            });
+            $(".container_"+ removeData + " :input").removeAttr('data-remove');
+            $(".container_"+ removeData + " :input").removeAttr('data-remove-href');
+            console.log(removeData)
         }
     })
 </script>

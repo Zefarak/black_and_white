@@ -43,6 +43,7 @@
                                         </li>
                                         {% endfor %}
                                         <li><a href="{% url 'blog:homepage' %}">Blog</a> </li>
+                                        <li><a href="{% url 'subscribe:frontend_subscribe_list' %}">Συνδρομη</a> </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -82,17 +83,15 @@
                                     <li class="onhover-div mobile-setting">
                                         <div><img src="{% static 'frontend' %}/assets/images/icon/setting.png" class="img-fluid blur-up lazyload" alt=""> <i class="ti-settings"></i></div>
                                         <div class="show-div setting">
-                                            <h6>language</h6>
+                                            <h6>Account</h6>
                                             <ul>
-                                                <li><a href="#">english</a></li>
-                                                <li><a href="#">french</a></li>
-                                            </ul>
-                                            <h6>currency</h6>
-                                            <ul class="list-inline">
-                                                <li><a href="#">euro</a></li>
-                                                <li><a href="#">rupees</a></li>
-                                                <li><a href="#">pound</a></li>
-                                                <li><a href="#">doller</a></li>
+                                                {% if request.user.is_authenticated %}
+                                                <li><a href="{% url 'user_profile' %}">{{ request.user }}</a></li>
+                                                {% else %}
+                                                <li>
+                                                   <a data-toggle="modal" data-target="#login_modal">Συνδεση</a>
+                                                </li>
+                                                {% endif %}
                                             </ul>
                                         </div>
                                     </li>

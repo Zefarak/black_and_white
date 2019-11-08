@@ -16,6 +16,7 @@ from django.contrib import messages
 from accounts.models import Profile, Wishlist
 from accounts.forms import LoginForm, SignUpForm, ProfileFrontEndForm, UpdatePasswordForm, ForgotPasswordForm
 from accounts.token import account_activation_token
+from cart.models import CartItem, Cart
 from point_of_sale.models import Order
 from catalogue.models import Product
 from django.contrib.auth import get_user_model
@@ -188,6 +189,19 @@ class UserProfileOrderListView(ListView):
         user = self.request.user
         qs = Order.my_query.get_queryset().eshop_orders_by_user(user)
         return qs
+
+
+@method_decorator(login_required, name='dispatch')
+class UserCartItemsView(ListView):
+    model = CartItem
+    template_name = 'frontend/user_views/cart_items.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        user = self.request.user
+        carts = Cart.objects.filter(user=user)
+        cart_items = CartItem.objects.filter(cart__in=carts)
+        return cart_items
 
 
 @method_decorator(login_required, name='dispatch')

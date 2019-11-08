@@ -105,7 +105,7 @@ class Cart(models.Model):
         return round(discount, 2)
 
     def check_and_get_active_subscribe(self):
-        qs = self.user.my_subscribes.filter(active=True)
+        qs = self.user.my_subscribes.filter(active=True) if self.user else Subscribe.objects.none()
         return self.user.my_subscribes.filter(active=True).exists(), qs
 
     def tag_final_value(self):
@@ -322,8 +322,9 @@ class CartSubscribeDiscount(models.Model):
         user = request.user
         if not user.is_authenticated:
             return False, None
-        if cart.cartsubscribe:
-            return True, cart.cartsubscribe
+        cart_sub = CartSubscribe.objects.filter(cart_related=cart)
+        if cart_sub.exists():
+            return True, cart_sub.first()
         check_user_sub, sub_qs = UserSubscribe.check_active_subscription(user)
         if check_user_sub:
             return True, sub_qs.first()
@@ -349,7 +350,7 @@ class CartSubscribeDiscount(models.Model):
     
 class CartSubscribe(models.Model):
     # add to cart a new sub to buy
-    cart_related = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    cart_related = models.OneToOneField(Cart, on_delete=models.CASCADE, related_name='cart_subscribe')
     subscribe = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
 

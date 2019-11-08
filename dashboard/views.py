@@ -14,7 +14,7 @@ from catalogue.models import Product, ProductPhotos, WarehouseCategory, Gifts
 from catalogue.categories import Category
 from catalogue.product_details import Brand, Vendor
 from catalogue.forms import CreateProductForm, ProductPhotoUploadForm, ProductCharacteristicForm, WarehouseCategoryForm, GiftForm
-from .product_forms import ProductForm
+from .product_forms import ProductForm, ProductFormWithQty
 from .tables import TableProduct, WarehouseCategoryTable, ProductTable, ProductDiscountTable, GiftTable
 from point_of_sale.tables import OrderTable
 from catalogue.product_attritubes import ProductCharacteristics, Characteristics, CharacteristicsValue, Attribute, AttributeTitle, AttributeClass, AttributeProductClass
@@ -24,6 +24,7 @@ from point_of_sale.models import Order, OrderItem
 from contact.models import Contact
 from newsletter.models import NewsLetter
 
+from site_settings.models import SiteSettings
 
 CURRENCY = settings.CURRENCY
 WAREHOUSE_ORDERS_TRANSCATIONS = settings.WAREHOUSE_ORDERS_TRANSCATIONS
@@ -44,7 +45,7 @@ class DashBoard(TemplateView):
         active_products = Product.objects.all().filter(active=True)[:10]
 
         currency = CURRENCY
-
+        site_setting = SiteSettings.objects.first()
         context.update(locals())
         return context
 
@@ -145,11 +146,13 @@ class ProductCreateView(CreateView):
 @staff_member_required
 def product_detail(request, pk):
     instance = get_object_or_404(Product, id=pk)
+    have_transcations = instance.product_class.have_transcations
+    print('product_class', instance.product_class.have_transcations)
     products, currency, page_title = True, CURRENCY, '%s' % instance.title
     images = instance.get_all_images()
-    form = ProductForm(instance=instance)
+    form = ProductFormWithQty(instance=instance) if have_transcations else ProductForm(instance=instance)
     if '_save' in request.POST:
-        form = ProductForm(request.POST, instance=instance) if instance.product_class.have_attribute else ProductForm(request.POST, instance=instance)
+        form = ProductFormWithQty(request.POST, instance=instance) if have_transcations else ProductForm(request.POST or None, instance=instance)
         if form.is_valid():
             form.save()
             messages.success(request, 'The products %s is saves!')
@@ -158,7 +161,8 @@ def product_detail(request, pk):
             print('form_invalid', form.errors)
 
     if '_update' in request.POST:
-        form = ProductForm(request.POST, instance=instance) if instance.product_class.have_attribute else ProductForm(request.POST, instance=instance)
+        form = ProductFormWithQty(request.POST, instance=instance) if have_transcations else ProductForm(
+            request.POST or None, instance=instance)
         if form.is_valid():
             form.save()
             messages.success(request, f'Το Προϊόν {instance.title} τροποποιήθηκε.')
@@ -628,4 +632,14 @@ def delete_gift_view(request, pk):
     instance.delete()
     return redirect(reverse(''))
 
+
+@method_decorator(staff_member_required, name='dispatch')
+class QuickChangeProductWithQtyView(ListView):
+    template_name = 'dashboard/quick_change_product_with_qty.html'
+    model = Product
+    paginate_by = 100
+
+    def get_queryset(self):
+        qs = Product.objects.filter(product_class__have_transcations=True)
+        return qs
 

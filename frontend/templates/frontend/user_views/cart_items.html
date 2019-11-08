@@ -1,0 +1,57 @@
+{% extends 'frontend/user_views/dashboard.html' %}
+
+{% block profile_content %}
+    <div class="col-lg-9">
+        <div class="dashboard-right">
+            <div class="dashboard">
+                <div class="page-title">
+                    <h2>Προϊόντα που έχεις παραγγείλει.</h2>
+                </div>
+                <div class="welcome-msg">
+                  <br />
+                </div>
+                <div class="box-account box-info">
+                    <div>
+                        <div class="box">
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Προϊόν</th>
+                                                <th>Λεπτομεριες</th>
+                                                <th>Παράγγειλέ το!</th>
+                                                <th>Διαγραφή </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for product in object_list %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ product }}</td>
+                                                        <td></td>
+                                                        <td>
+                                                            <a href="" class="btn btn-round btn-success" title="Add to Cart">
+                                                                <span>Το ξαναθελω</span>
+                                                            </a>
+                                                        </td>
+                                                        <td><a href='' class='btn btn-warning'><i class='fa fa-remove'></i></a>
+                                                {% empty %}
+                                                    <tr><td colspan="5">Δε έχετε προσθέσει Προϊόντα στην Wishlist</td></tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+

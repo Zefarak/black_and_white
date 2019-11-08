@@ -86,10 +86,13 @@ class Product(DefaultBasicModel):
     def save(self, *args, **kwargs):
         self.final_price = self.price_discount if self.price_discount > 0 else self.price
         self.is_offer = True if self.price_discount > 0 else False
-        if self.have_attr:
-            self.qty = self.calculate_qty_if_attributes()
+        '''
+        if self.product_class.have_transcations:
+            if self.have_attr:
+                self.qty = self.calculate_qty_if_attributes()
         if WAREHOUSE_ORDERS_TRANSCATIONS:
             self.qty = self.qty_add - self.qty_remove
+        '''
         super(Product, self).save(*args, **kwargs)
 
     def calculate_qty_if_attributes(self):

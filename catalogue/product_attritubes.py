@@ -93,6 +93,7 @@ class AttributeTitle(MPTTModel):
     name = models.CharField(max_length=120, verbose_name='Τίτλος')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     default_value = models.BooleanField(default=False)
+    take_action = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ['name', 'attri_by']
@@ -179,4 +180,22 @@ def update_qty_on_product(sender, instance, **kwargs):
     class_related = instance.class_related
     product = class_related.product_related
     product.save()
+
+
+class AttributeRelated(models.Model):
+    ACTIONS = (
+        ('HIDE', 'Hide'),
+    )
+    attribute_selected = models.ForeignKey(AttributeClass, on_delete=models.CASCADE, related_name='attribute_selected')
+    attribute_related = models.ForeignKey(AttributeClass, on_delete=models.CASCADE, related_name='attribute_related')
+    action_related = models.CharField(choices=ACTIONS, max_length=20)
+
+    def __str__(self):
+        return f'{self.attribute_selected} ==> {self.get_action_related_display} => {self.attribute_related}'
+
+    def get_edit_url(self):
+        return reverse('dashboard:attr_related_update', kwargs={'pk': self.id})
+
+    def get_delete_url(self):
+        return reverse('dashboard:attr_related_delete', kwargs={'pk': self.id})
 

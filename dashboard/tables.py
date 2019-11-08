@@ -4,7 +4,7 @@ from catalogue.models import Product, ProductClass, Gifts
 from catalogue.categories import WarehouseCategory, Category
 
 from catalogue.product_details import Brand, Color
-from catalogue.product_attritubes import Characteristics, Attribute, AttributeClass
+from catalogue.product_attritubes import Characteristics, Attribute, AttributeClass, AttributeRelated
 from .models import ProductDiscount
 
 
@@ -159,3 +159,14 @@ class GiftTable(tables.Table):
         model = Gifts
         template_name = 'django_tables2/bootstrap.html'
         fields = ['title']
+
+
+class AttributeRelatedTable(tables.Table):
+    action = tables.TemplateColumn(
+        "<a href='{{ record.get_edit_url }}' class='btn btn-primary'><i class='fa fa-edit'></i></a>",
+        orderable=False)
+
+    class Meta:
+        model = AttributeRelated
+        template_name = 'django_tables2/bootstrap.html'
+        fields = ['attribute_selected']

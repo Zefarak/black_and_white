@@ -1,7 +1,8 @@
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, reverse
 from django.contrib.admin.views.decorators import staff_member_required
 
 from catalogue.models import Product, Gifts
+from site_settings.models import SiteSettings
 from catalogue.product_attritubes import Attribute, AttributeProductClass
 
 
@@ -41,3 +42,19 @@ def add_gift_action_view(request, pk, dk):
     gift.products_gift = instance
     gift.save()
     return redirect(gift.get_edit_url())
+
+
+@staff_member_required
+def reset_qty_to_products_view(request):
+    qs = Product.objects.filter(product_class__have_transcations=True)
+    qs.update(qty=0)
+    return redirect(reverse('dashboard:handle_product_qty'))
+
+
+@staff_member_required
+def change_site_setting_status_view(request):
+    instance = SiteSettings.objects.first()
+    is_open = instance.is_open
+    instance.is_open = False if is_open else True
+    instance.save()
+    return redirect(reverse('dashboard:home'))
