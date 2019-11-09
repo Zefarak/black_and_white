@@ -1,33 +1,54 @@
-{% extends 'site_settings/dashboard.html' %}
+{% extends 'frontend/index.html' %}
 
 
 {% block content %}
 
-    <!-- collection banner -->
-<section class="banner-padding banner-furniture ratio2_1">
-    <div class="container-fluid">
-        <div class="row partition3">
-            {% for category in object_list %}
-            <div class="col-md-6">
-                <a href="#">
-                    <div class="collection-banner p-left text-left">
-                        <div class="img-part">
-                            <img src="../assets/images/fashion/1.jpg" alt="" class="img-fluid blur-up lazyload bg-img">
-                        </div>
-                        <div class="contain-banner">
-                            <div>
-                                <h4>save 30%</h4>
-                                <h2>women</h2>
-                            </div>
-                        </div>
+    <div style="margin-top: 7%" class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title">
+                        <h2>Οι κατηγοριες μας!</h2>
                     </div>
-                </a>
+                </div>
+                <div class="col-sm-6">
+                    <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'homepage' %}">Αρχικη Σελιδα</a>
+                            </li>
+                            <li class="breadcrumb-item active">Κατηγοριες Blog</li>
+                        </ol>
+                    </nav>
+                </div>
             </div>
-            {% endfor %}
-
         </div>
     </div>
-</section>
+
+    <!-- collection banner -->
+    <section class="banner-padding banner-furniture ratio2_1">
+        <div class="container-fluid">
+            <div class="row">
+                {% for category in object_list %}
+                    <div style="margin-bottom: 5%" class="col-md-6">
+                        <a href="{{ category.get_absolute_url }}">
+                            <div class="collection-banner p-left text-left">
+                                <div class="img-part">
+                                    <img src="{{ category.image.url }}" alt="" class="img-fluid blur-up lazyload bg-img">
+                                </div>
+                                <div class="contain-banner">
+                                    <div>
+                                        <h4>Δειτα τα post της κατηγοριας</h4>
+                                        <h2>{{ category }}</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
 <!-- collection banner end -->
 
 

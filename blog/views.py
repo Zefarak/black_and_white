@@ -10,20 +10,30 @@ from .tables import PostTable, PostCategoryTable
 from .forms import PostForm, PostCategoryForm
 
 
-class BlogCategoryListView(ListView):
+class BlogHomepageView(ListView):
     template_name = 'blog/blog_categories.html'
     model = PostCategory
+    paginate_by = 10
 
     def get_queryset(self):
         qs = PostCategory.objects.filter(active=True)
-        print('hello world!')
         return qs
 
 
-class BlogHomepageView(ListView):
+class CategoryDetailView(ListView):
     template_name = 'blog/homepage.html'
     model = Post
     paginate_by = 10
+
+    def get_queryset(self):
+        self.category = get_object_or_404(PostCategory, slug=self.kwargs['slug'])
+        qs = Post.objects.filter(status=True, category=self.category)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(CategoryDetailView, self).get_context_data(**kwargs)
+        context['category'] = self.category
+        return context
 
 
 class BlogDetailView(DetailView):
@@ -163,3 +173,11 @@ def post_category_delete_view(request, pk):
 
 
 
+class BlogCategoryListView(ListView):
+    template_name = 'blog/blog_categories.html'
+    model = PostCategory
+
+    def get_queryset(self):
+        qs = PostCategory.objects.filter(active=True)
+        print('hello world!')
+        return qs

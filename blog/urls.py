@@ -1,6 +1,8 @@
 from django.urls import path
 
-from .views import (BlogHomepageView, BlogDetailView,BlogCategoryListView,
+
+from .views import (BlogHomepageView, CategoryDetailView,
+                    BlogDetailView,BlogCategoryListView,
 
 
                     )
@@ -8,8 +10,8 @@ from .ajax_views import ajax_delete_photo, ajax_add_images
 app_name = 'blog'
 
 urlpatterns = [
-    path('', BlogCategoryListView.as_view(), name='blog_category'),
-    path('κατηγορια/<slug/slug>/', BlogHomepageView.as_view(), name='category_detail'),
+    path('', BlogHomepageView.as_view(), name='homepage'),
+    path('κατηγορια/<str:slug>/', CategoryDetailView.as_view(), name='category_detail_view'),
 
     path('post/<slug:slug>/', BlogDetailView.as_view(), name='detail'),
 

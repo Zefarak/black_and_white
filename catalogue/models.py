@@ -279,7 +279,6 @@ class Product(DefaultBasicModel):
         if attr_name:
             queryset = queryset.filter(product_class__have_attribute=True)
 
-
         order_by = request.GET.get('order_by', None)
         queryset = queryset.order_by(order_by) if order_by in ['title', '-title', 'final_price', '-final_price'] else queryset
         return queryset

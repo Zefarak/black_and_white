@@ -55,18 +55,17 @@
 
             <div class='row'>
                 <div class='col-12 col-md-12'>
-                <h4 style='text-align: center'>Δωρα</h4>
-                <table class="table table-bordered">
-                    <thead>
+                    <h4 style='text-align: center'>Δωρα</h4>
+                    <table class="table table-bordered">
+                        <thead>
                             <tr class="table-head">
                                 <th scope="col">#</th>
                                 <th scope="col">Προϊον</th>
                                 <th scope="col">Ποσοτητα</th>
-                                
                             </tr>
-                    </thead>
+                        </thead>
         
-                    <tbody>
+                        <tbody>
                             {% for gift in cart.gifts.all %}
                                 <tr>
                                     <td><h5>{{ loop.counter }}</h5></td>
@@ -81,9 +80,34 @@
                         </tbody>
                     </table>
                 </div>
-                </div>
             </div>
 
+            {% if cart.cart_subscribe %}
+            <div style="margin-top: 7%" class='row'>
+                <div class='col-12 col-md-12'>
+                    <h4 style='text-align: center'>Συνδρομη</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="table-head">
+                                <th scope="col">Συνδρομή</th>
+                                <th scope="col">Αξία</th>
+                                <th scope="col">#</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td><h5>{{ cart.cart_subscribe }}</h5></td>
+                            <td><h5>{{ cart.cart_subscribe.tag_value }}</h5></td>
+                            <td><a style="color: white" href="" class="btn btn-danger btn-round btn-block"><i class="fa fa-remove"></i> Διαγραφη </a> </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
+        </div>
         </div>
     </section>
     <!--section end-->

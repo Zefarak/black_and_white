@@ -12,13 +12,16 @@ def upload_image(instance, filename):
 
 
 class PostCategory(models.Model):
-    active = models.BooleanField(default=True)
-    title = models.CharField(unique=True, max_length=200)
-    image = models.ImageField(upload_to='blog/categories/')
+    active = models.BooleanField(default=True, verbose_name='Κατασταση')
+    title = models.CharField(unique=True, max_length=200, verbose_name='Τιτλος')
+    image = models.ImageField(upload_to='blog/categories/', verbose_name='Εικονα')
     slug = models.SlugField(allow_unicode=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:category_detail_view', kwargs={'slug': self.slug})
 
     def get_edit_url(self):
         return reverse('dashboard_blog:post_category_update', kwargs={'pk': self.id})
@@ -47,15 +50,15 @@ def create_post_category_slug(sender, instance, **kwargs):
 
 
 class Post(models.Model):
-    status = models.BooleanField(default=False)
+    status = models.BooleanField(default=False, verbose_name='Κατασταση')
     timestamp = models.DateTimeField(auto_now_add=True)
-    date = models.DateTimeField(blank=True, null=True)
-    title = models.CharField(unique=True, max_length=220)
-    image = models.ImageField(upload_to='blog/')
-    text = HTMLField(blank=True)
+    date = models.DateTimeField(blank=True, null=True, verbose_name='Ημερομηνια')
+    title = models.CharField(unique=True, max_length=220, verbose_name='Ονομασια')
+    image = models.ImageField(upload_to='blog/posts/main/', verbose_name='Εικονα')
+    text = HTMLField(blank=True, verbose_name='Κειμενο')
     slug = models.SlugField(blank=True, allow_unicode=True)
-    show_custom_date = models.BooleanField(default=False)
-    category = models.ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True)
+    show_custom_date = models.BooleanField(default=False, verbose_name='Χρησιμοποιησε την ημερομηνια')
+    category = models.ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True, verbose_name='Κατηγορια')
 
     def __str__(self):
         return self.title
@@ -87,7 +90,7 @@ class Post(models.Model):
 @receiver(post_save, sender=Post)
 def create_slug(sender, instance, **kwargs):
     if not instance.slug:
-        slug = slugify.slugify(instance.title)
+        slug = slugify(instance.title, allow_unicode=True)
         qs = Post.objects.filter(slug=slug)
         if qs.exists():
             slug = slug + '-'+ instance.id
@@ -105,4 +108,4 @@ class YouTubeVideo(models.Model):
 
 class Photo(models.Model):
     post_related = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='photos')
-    image = models.ImageField(upload_to=upload_image,)
+    image = models.ImageField(upload_to=upload_image)
