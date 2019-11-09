@@ -4,24 +4,66 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db.models import Q
 from tinymce.models import HTMLField
-
-import slugify
+from django.utils.text import slugify
 
 
 def upload_image(instance, filename):
     return f'blog/{instance.post_related.id}/{filename}'
 
 
+class PostCategory(models.Model):
+    active = models.BooleanField(default=True)
+    title = models.CharField(unique=True, max_length=200)
+    image = models.ImageField(upload_to='blog/categories/')
+    slug = models.SlugField(allow_unicode=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_edit_url(self):
+        return reverse('dashboard_blog:post_category_update', kwargs={'pk': self.id})
+
+    def get_delete_url(self):
+        return reverse('dashboard_blog:post_category_delete', kwargs={'pk': self.id})
+
+    @staticmethod
+    def filter_data(request, qs):
+        search_name = request.GET.get('search_name', None)
+        active_name = request.GET.get('active_name', None)
+
+        qs = qs.filter(active=True) if active_name else qs
+        qs = qs.filter(title__icontains=search_name) if search_name else qs
+        return qs
+
+
+@receiver(post_save, sender=PostCategory)
+def create_post_category_slug(sender, instance, **kwargs):
+    if not instance.slug:
+        if not instance.slug:
+            new_slug = slugify(instance.title, allow_unicode=True)
+            qs_exists = PostCategory.objects.filter(slug=new_slug).exists()
+            instance.slug = f'{new_slug}-{instance.id}' if qs_exists else new_slug
+            instance.save()
+
+
 class Post(models.Model):
     status = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(blank=True, null=True)
     title = models.CharField(unique=True, max_length=220)
     image = models.ImageField(upload_to='blog/')
     text = HTMLField(blank=True)
     slug = models.SlugField(blank=True, allow_unicode=True)
+    show_custom_date = models.BooleanField(default=False)
+    category = models.ForeignKey(PostCategory, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.title
+
+    def tag_date(self):
+        if self.show_custom_date and self.date:
+            return self.date
+        return self.timestamp
 
     def get_absolute_url(self):
         return reverse('blog:detail', kwargs={'slug': self.slug})

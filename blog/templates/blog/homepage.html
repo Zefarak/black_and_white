@@ -42,16 +42,15 @@
                     <div class="col-xl-6">
                         <div class="blog-right">
                             <div>
-                                <h6>{{ post.timestamp }}</h6>
+                                <h6>{{ post.tag_date }}</h6>
                                 <a href="{{ post.get_absolute_url }}">
                                     <h4>{{ post }}</h4>
                                 </a>
                                 <ul class="post-social">
-                                    <li>Posted By : Admin Admin</li>
-                                    <li><i class="fa fa-heart"></i> 5 Hits</li>
-                                    <li><i class="fa fa-comments"></i> 10 Comment</li>
+                                    <li>Posted By : Black&White</li>
+                                    <li><i class="fa fa-heart"></i> Δημιουργήθηκε... {{ post.timestamp }}</li>
                                 </ul>
-                                <p>{{ post.text|truncatechars:30 }}</p>
+                                <p>{{ post.text|truncatechars:30|safe }}</p>
                             </div>
                         </div>
                     </div>

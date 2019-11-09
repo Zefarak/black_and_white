@@ -10,25 +10,9 @@ from .tables import PostTable, PostCategoryTable
 from .forms import PostForm, PostCategoryForm
 
 
-class BlogCategoryListView(ListView):
-    template_name = 'blog/blog_categories.html'
-    model = PostCategory
-
-    def get_queryset(self):
-        qs = PostCategory.objects.filter(active=True)
-        print('hello world!')
-        return qs
-
-
-class BlogHomepageView(ListView):
-    template_name = 'blog/homepage.html'
-    model = Post
-    paginate_by = 10
-
-
-class BlogDetailView(DetailView):
-    template_name = 'blog/detail_view.html'
-    model = Post
+@method_decorator(staff_member_required, name='dispatch')
+class BlogHomepageView(TemplateView):
+    template_name = 'blog/dashboard/index.html'
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -89,7 +73,6 @@ class CreatePostView(CreateView):
         context = super(CreatePostView, self).get_context_data(**kwargs)
         context['back_url'] = self.success_url
         context['page_title'] = 'Δημιουργια Νέου Post'
-
         return context
 
 
@@ -113,8 +96,9 @@ class PostCategoryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Κατηγοριες Blog'
-        context['back_url'] = reverse('site_settings:dashboard')
+        context['back_url'] = reverse('dashboard_blog:homepage')
         context['queryset_table'] = PostCategoryTable(self.object_list)
+        context['create_url'] = reverse('dashboard_blog:post_category_create')
         return context
 
 
@@ -122,8 +106,8 @@ class PostCategoryListView(ListView):
 class PostCategoryCreateView(CreateView):
     model = PostCategory
     form_class = PostCategoryForm
-    template_name = 'site_settings/form.html'
-    success_url = reverse_lazy('blog:post_category_list')
+    template_name = 'blog/dashboard/form_view.html'
+    success_url = reverse_lazy('dashboard_blog:post_category_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -140,8 +124,8 @@ class PostCategoryCreateView(CreateView):
 class PostCategoryUpdateView(UpdateView):
     model = PostCategory
     form_class = PostCategoryForm
-    success_url = reverse_lazy('blog:post_category_list')
-    template_name = 'site_settings/form.html'
+    success_url = reverse_lazy('dashboard_blog:post_category_list')
+    template_name = 'blog/dashboard/form_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -159,7 +143,7 @@ class PostCategoryUpdateView(UpdateView):
 def post_category_delete_view(request, pk):
     instance = get_object_or_404(PostCategory, id=pk)
     instance.delete()
-    return redirect(reverse('blog:post_category_list'))
+    return redirect(reverse('dashboard_blog:post_category_list'))
 
 
 
