@@ -5,7 +5,7 @@ from django.contrib import messages
 from catalogue.categories import Category
 from catalogue.product_details import Brand
 from catalogue.product_attritubes import Attribute, Characteristics, ProductCharacteristics, CharacteristicsValue
-from catalogue.models import Product
+from catalogue.models import Product, Gifts
 
 from site_settings.models import Banner
 from .mixins import ListViewMixin
@@ -94,7 +94,6 @@ class CategoryView(ListView):
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
         qs = Product.objects.filter(category_site=self.category)
         self.initial_queryset = qs
-
         qs = self.initial_queryset
         qs = Product.filters_data(self.request, qs)
         return qs
@@ -116,9 +115,11 @@ class SearchView(ListViewMixin, ListView):
     def get_queryset(self):
         search_name = self.request.GET.get('search_name', None)
         qs = Product.my_query.active_for_site()
-        qs = Product.filters_data(self.request, qs) if len(search_name) > 2 else Product.objects.none()
+        if search_name:
+            qs = Product.filters_data(self.request, qs) if len(search_name) > 2 else Product.objects.none()
+        else:
+            qs = Product.objects.none()
         self.initial_queryset = qs
-
         return qs
 
     def get_context_data(self, **kwargs):
@@ -136,7 +137,6 @@ class BrandListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(BrandListView, self).get_context_data(**kwargs)
-        
         seo_title = 'Σελίδα Brands'
         context.update(locals())
         return context
@@ -180,16 +180,14 @@ class ProductView(DetailView, FormView):
         same_cate_products = Product.my_query.active_for_site().filter(category_site__in=categories_p).exclude(id=self.object.id)[:4]
         related_products = Product.my_query.active_for_site().filter(related_products=product)
         different_color_products = Product.my_query.active_for_site().filter(different_color_products=product)
-
+        gifts = Gifts.objects.filter(product_related=product)
         ask_form = AskForm()
         context.update(locals())
         return context
 
     def form_valid(self, form):
-        print(form)
         product = get_object_or_404(Product, slug=self.kwargs['slug'])
         if product.have_attr:
-            print('have_attr')
             for form_data in form:
                 print(form_data)
             return super().form_valid(form)

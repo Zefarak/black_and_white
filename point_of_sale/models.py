@@ -376,9 +376,6 @@ class OrderItem(DefaultOrderItemModel):
         return self.attribute
 
     def save(self, *args, **kwargs):
-        if self.attribute:
-            attributes = self.attributes.all()
-            self.qty = attributes.aggregate(Sum('qty'))['qty__sum'] if attributes.exists() else 0
         self.value = self.title.price if self.title else 0
         self.discount_value = self.title.price_discount if self.title else 0
         self.cost = self.title.price_buy if self.title else 0

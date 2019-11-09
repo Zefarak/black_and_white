@@ -20,7 +20,7 @@ from point_of_sale.models import Order, OrderProfile, SendReceipt
 from voucher.models import Voucher
 
 from subscribe.models import Subscribe, UserSubscribe
-
+from site_settings.models import SiteSettings
 BUSSNESS_EMAIL = settings.SITE_EMAIL
 
 
@@ -38,9 +38,13 @@ class CartPageView(TemplateView):
 
 @login_required
 def add_subscribe_to_cart(request, pk):
+    site_setting = get_object_or_404(SiteSettings, id=1)
+    if not site_setting.is_open:
+        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     instance = get_object_or_404(Subscribe, id=pk)
     cart = check_or_create_cart(request)
-    check_sub, sub_qs = cart.check_and_get_active_subscribe()
+    check_sub, sub_qs = cart.check_and_get_active_subscribe(request)
     if check_sub:
         # checks if active subscription exists
         messages.warning(request, 'Εχετε εωεργή συνδρομή')
@@ -53,24 +57,39 @@ def add_subscribe_to_cart(request, pk):
 
 
 def add_product_to_cart(request, slug):
+    site_setting = get_object_or_404(SiteSettings, id=1)
+    if not site_setting.is_open:
+        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
+    if product.support_transcations and product.qty <= 0:
+        # check if product support transcations and check exist qty
+        messages.warning(request, 'Δυστηχώς δε υπάρχει επαρκή ποσότητα')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     if product.have_attr:
+        # check if product support attributes and cancel the order
         messages.warning(request, 'Κάτι πήγε λάθος!')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     session_id = request.session.get('cart_id')
     check_cart_owner = cart.cart_id == session_id
-    if check_cart_owner:
+    if check_cart_owner and product.active:
+        # checks again if still the product is active and the user
         add_product_to_cart_movements(request, cart, product)
         messages.success(request, f'To Προϊόν {product.title} προστέθηκε επιτιχώς στο καλάθι!')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def add_product_with_attr_to_cart(request, slug):
+    site_setting = get_object_or_404(SiteSettings, id=1)
+    if not site_setting.is_open:
+        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
     cart_item, message = CartItem.create_cart_item_with_multi_attr(cart, product, request)
-    active_cart, qs = cart.check_and_get_active_subscribe()
-    if active_cart:
+    active_cart, qs = cart.check_and_get_active_subscribe(request)
+    if active_cart and qs:
         qs.first().update_cart(cart_item)
     messages.success(request, message)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -85,6 +104,9 @@ def delete_product_from_cart(request, pk):
 
 
 def ajax_change_cart_item_qty(request, pk, action):
+    site_setting = get_object_or_404(SiteSettings, id=1)
+    if not site_setting.is_open:
+        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
     cart_item = get_object_or_404(CartItem, id=pk)
     cart = cart_item.cart
     session_id = request.SESSION.get('cart_id')

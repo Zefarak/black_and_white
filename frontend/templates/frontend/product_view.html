@@ -234,7 +234,8 @@
         <div class="row">
             <div  class="col-sm-12 col-lg-12">
                 <ul  class="nav nav-tabs nav-material" id="top-tab" role="tablist">
-                    <li class="nav-item"><a class="nav-link active" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-selected="false">Χαρακτηριστικα</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-selected="false">Δωρα</a>
                         <div class="material-border"></div>
                     </li>
                     <li class="nav-item"><a class="nav-link " id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-selected="true">Επιπλεον Χρωματα</a>
@@ -284,32 +285,31 @@
                         <div style="margin-top: 2%" class="row">
 
                             <div class="col-md-12 col-lg-6 col-sm-12">
-                                <h5>Χαρακτηριστικα</h5>
+                                <h5>Δωρα</h5>
                                 <table style="background-color: white;margin-top: 3%" class="table table-bordered">
-                            <thead>
-                                <tr>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for characteristic in object.characteristics.all %}
-                                <tr>
-                                    <td>{{ characteristic.title }}</td>
-                                    <td>{{ characteristic.value }}</td>
-                                </tr>
-                                {% empty %}
-                                <tr>
-                                    <td colspan="2">Δυστυχώς δε υπάρχουν επιπλέον χαρακτηριστικά</td>
-                                </tr>
-                            {% endfor %}
-
-                            </tbody>
-                        </table>
+                                    <thead>
+                                        <tr>
+                                            <th>Τίτλος</th>
+                                            <th>Δώρο</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for gift in gifts %}
+                                        <tr>
+                                            <td>{{ gift }}</td>
+                                            <td>{{ gift.products_gift }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="2">Δυστυχώς δε υπάρχουν ενεργα δώρα γαυτό το προϊόν.</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="col-6"></div>
                         </div>
-
                     </div>
-
                 </div>
             </div>
         </div>

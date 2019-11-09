@@ -104,9 +104,13 @@ class Cart(models.Model):
             discount = Voucher.calculate_discount_value(instance=cart, vouchers=vouchers)
         return round(discount, 2)
 
-    def check_and_get_active_subscribe(self):
-        qs = self.user.my_subscribes.filter(active=True) if self.user else Subscribe.objects.none()
-        return self.user.my_subscribes.filter(active=True).exists(), qs
+    @staticmethod
+    def check_and_get_active_subscribe(request):
+        user = request.user
+        if not user.is_authenticated:
+            return False, UserSubscribe.objects.none()
+        qs = user.my_subscribes.filter(active=True)
+        return user.my_subscribes.filter(active=True).exists(), qs
 
     def tag_final_value(self):
         return f'{self.final_value} {CURRENCY}'
@@ -215,6 +219,9 @@ class CartItem(models.Model):
     def create_cart_item_with_multi_attr(cart, product, request):
         qty = request.POST.get('qty', 1)
         cart_item = CartItem.objects.create(cart=cart, product=product, qty=qty)
+        if cart_item.qty <=0:
+            cart_item.qty = 1
+            cart_item.save()
         CartItemGifts.check_if_gift_exists(cart_item)
         cart_item_attr = CartItemAttribute.objects.create(cart_item=cart_item)
         for field in request.POST:
@@ -232,7 +239,6 @@ class CartItem(models.Model):
         cart_item_attr.save()
         result, message = True, f'To προϊόν {product} προστέθηκε με επιτυχία'
         return cart_item, message
-
 
     @staticmethod
     def create_cart_item(cart, product, qty, attribute=None):
@@ -420,6 +426,11 @@ class CartItemGifts(models.Model):
     def __str__(self):
         return self.product.title
 
+    def save(self, *args, **kwargs):
+        if self.cart_item:
+            self.qty = self.cart_item.qty
+        super(CartItemGifts, self).save(*args, **kwargs)
+
     @staticmethod
     def check_if_gift_exists(cart_item):
         product = cart_item.product
@@ -431,7 +442,8 @@ class CartItemGifts(models.Model):
                                                                               cart_item=cart_item,
                                                                               )
                 cart_item_gift.product = gift.products_gift
-                cart_item_gift.qty = cart_item.qty 
+                cart_item_gift.qty = cart_item.qty
+                print('h posothta einai... ', cart_item.qty)
                 cart_item_gift.save()
 
 

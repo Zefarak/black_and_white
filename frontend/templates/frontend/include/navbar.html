@@ -67,9 +67,9 @@
                                                     <div class="container">
                                                         <div class="row">
                                                             <div class="col-xl-12">
-                                                                <form>
+                                                                <form action="{% url 'search_page' %}">
                                                                     <div class="form-group">
-                                                                        <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Search a Product">
+                                                                        <input name="search_name" type="text" class="form-control" id="exampleInputPassword1" placeholder="Search a Product">
                                                                     </div>
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                                                 </form>
@@ -112,7 +112,7 @@
                                                     </a>
                                                     <div class="media-body">
                                                         <a href="#">
-                                                            <h4>{{ cart_item }}</h4>
+                                                            <h4>{{ cart_item.product }}</h4>
                                                         </a>
                                                         <h4><span>{{ cart_item.qty }} x {{ cart_item.tag_final_value }}</span></h4>
                                                     </div>

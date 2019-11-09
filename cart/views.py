@@ -15,6 +15,7 @@ from .forms import CartForm
 from .tables import CartTable, ProductCartTable, CartItemTable
 from .tools import add_to_cart, add_to_cart_with_attr, remove_from_cart_with_attr
 from point_of_sale.models import OrderItem, Order
+
 from django_tables2 import RequestConfig
 
 
