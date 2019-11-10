@@ -90,6 +90,7 @@ class Cart(models.Model):
         cart_items = self.order_items.all()
         self.value = cart_items.aggregate(Sum('total_value'))['total_value__sum'] if cart_items else 0
         self.voucher_discount = self.discount_from_vouchers()
+        self.discount_value = self.calculate_discount_from_subs()
         self.payment_method_cost = 0.00 if not self.payment_method else self.payment_method.estimate_additional_cost(self.value)
         self.shipping_method_cost = 0.00 if not self.shipping_method else self.shipping_method.estimate_additional_cost(self.value)
         self.final_value = Decimal(self.value) - Decimal(self.discount_value) - Decimal(self.voucher_discount)\
@@ -103,6 +104,11 @@ class Cart(models.Model):
         if vouchers.exists():
             discount = Voucher.calculate_discount_value(instance=cart, vouchers=vouchers)
         return round(discount, 2)
+
+    def calculate_discount_from_subs(self):
+        discount_subs = self.cartsubscribediscount_set.all()
+        total_discount = discount_subs.aggregate(Sum('total_value'))['total_value__sum'] if discount_subs.exists() else 0.00
+        return total_discount
 
     @staticmethod
     def check_and_get_active_subscribe(request, cart):
@@ -229,9 +235,7 @@ class CartItem(models.Model):
             qty = int(qty)
         except:
             qty = Decimal(qty)
-        print('qty', qty)
         cart_item = CartItem.objects.create(cart=cart, product=product, qty=qty)
-        print(cart_item.qty, 'after')
         CartItemGifts.check_if_gift_exists(cart_item)
         cart_item_attr = CartItemAttribute.objects.create(cart_item=cart_item)
         for field in request.POST:
@@ -329,9 +333,13 @@ class CartItemAttribute(models.Model):
 
 class CartSubscribeDiscount(models.Model):
     # calculates the total discount value if sub exists
-    cart_related = models.OneToOneField(Cart, on_delete=models.CASCADE)
+    cart_related = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    subscribe_related = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
     total_uses = models.IntegerField(default=1)
     total_discount = models.DecimalField(default=0, decimal_places=2, max_digits=20)
+
+    class Meta:
+        unique_together = ['cart_related', 'subscribe_related']
 
     @staticmethod
     def check_if_discount_exists(request, cart):
@@ -360,7 +368,6 @@ class CartSubscribeDiscount(models.Model):
         new_discount.total_uses = uses
         new_discount.total_discount = value
         new_discount.save()
-        cart.discount_value = value
         cart.save()
 
     
@@ -388,6 +395,7 @@ class CartSubscribe(models.Model):
         if cart_item.product in subscribe.products.all():
             cart_discount, created = CartSubscribeDiscount.objects.get_or_create(
                 cart_related=cart,
+                subscribe_related=subscribe
             )
             if created:
                 cart_discount.total_uses = subscribe.uses if cart_item.qty > subscribe.uses else cart_item.qty
@@ -396,7 +404,6 @@ class CartSubscribe(models.Model):
                 cart_discount.total_uses = subscribe.uses if cart_discount.uses + cart_item.qty > subscribe.uses else cart_discount.total_uses + cart_item.qty
                 cart_discount.total_discount = cart_discount.total_uses * cart_item.final_value
             cart_discount.save()
-
 
     @staticmethod
     def check_if_user_can_add_subscription(cart, subscribe, user):
