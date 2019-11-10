@@ -166,7 +166,13 @@
                                     <div class="row">
                                      <div class="col-lg-12">
                                          <div class="modal-bg">
-                                            <form method="post" class="form" action='{% url "add_to_cart_with_attr" object.slug %}'>{% csrf_token %}
+                                            <form method="post" class="form"
+                                                  {% if product.have_attr %}
+                                                    action='{% url "add_to_cart_with_attr" object.slug %}'
+                                                  {% else %}
+                                                    action="{% url 'add_to_cart' object.slug %}"
+                                                  {% endif %}
+                                            >{% csrf_token %}
                                                 {% for attr_header in object.attr_class.all %}
                                                     <div class='container_{{ attr_header.id }}'>
                                                         <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -174,15 +180,17 @@
                                                         </h4>
                                                         <ul class="list-group mb-3">
                                                             {% for attr in attr_header.my_attributes.all %}
+                                                                {% if attr_header.class_related.is_radio_button %}
                                                                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                                                                     <div>
                                                                         <div class="custom-control custom-radio">
-                                                                            <input value='{{ attr.id }}' name='attr_{{ attr_header.id }}' type="radio" class="custom-control-input attr_input" id="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}"
+                                                                            <input value='{{ attr.id }}'
+                                                                                   name='attr_{{ attr_header.id }}' type="radio" class="custom-control-input attr_input" id="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}"
                                                                             {% if attr.title.take_action %}
                                                                                    data-extra="{{ attr_header.id }}"
                                                                                    data-href="{% url 'dashboard:ajax_show_or_hide_attr' attr_header.id %}"
-
                                                                             {% endif %}
+                                                                            {% if attr_header.class_related.is_needed %} required {% endif %}
                                                                             >
                                                                             <label class="custom-control-label"
                                                                                    for="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}">{{ attr }}
@@ -190,6 +198,25 @@
                                                                         </div>
                                                                     </div>
                                                                 </li>
+                                                                {% else %}
+                                                                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                                                    <div>
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input value='{{ attr.id }}'
+                                                                                   name='attr_{{ attr_header.id }}' type="checkbox" class="custom-control-input attr_input" id="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}"
+                                                                            {% if attr.title.take_action %}
+                                                                                   data-extra="{{ attr_header.id }}"
+                                                                                   data-href="{% url 'dashboard:ajax_show_or_hide_attr' attr_header.id %}"
+                                                                            {% endif %}
+                                                                            {% if attr_header.class_related.is_needed %} required {% endif %}
+                                                                            >
+                                                                            <label class="custom-control-label"
+                                                                                   for="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}">{{ attr }}
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                {% endif %}
                                                             {% endfor %}
                                                         </ul>
                                                         <br>
@@ -238,7 +265,7 @@
                         <a class="nav-link active" id="profile-top-tab" data-toggle="tab" href="#top-profile" role="tab" aria-selected="false">Δωρα</a>
                         <div class="material-border"></div>
                     </li>
-                    <li class="nav-item"><a class="nav-link " id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-selected="true">Επιπλεον Χρωματα</a>
+                    <li class="nav-item"><a class="nav-link " id="top-home-tab" data-toggle="tab" href="#top-home" role="tab" aria-selected="true">Συνδρομές</a>
                         <div class="material-border"></div>
                     </li>
 
@@ -252,18 +279,43 @@
                                         <div class="collection-content col">
                                             <div class="page-main-content">
                                                 <div class="row">
+                                                    <div class="col-md-12 col-lg-6 col-sm-12">
+                                                        <h5>Δείτε όλες τις Συνδρομές που Περιέχουν το Προϊον</h5>
+                                                        <table style="background-color: white;margin-top: 3%" class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Συνδρομη</th>
+                                                                    <th>Κόστος</th>
+                                                                    <th>Επιλογή</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            {% for sub in subscribes %}
+                                                                <tr>
+                                                                    <td>{{ sub }}</td>
+                                                                    <td>{{ sub.tag_value }}</td>
+                                                                    <td><a href="{% url 'add_subscribe_to_cart' sub.id %}" class="btn btn-success"><i class="fa fa-plus-circle"></i> </a> </td>
+                                                                </tr>
+                                                            {% empty %}
+                                                                <tr>
+                                                                    <td colspan="3">δε είναι μέρος καμίας συνδρομής</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                     <div class="col-sm-12">
                                                         <div class="collection-product-wrapper">
                                                             <div class="row">
                                                                 <div class="col-12">
                                                                     <div class="col-12 product-related">
-                                                                        <h4>Επιπλέον Χρωματα</h4>
+                                                                        <h4>Δείτε όλες τις Συνδρομές που Περιέχουν το Προϊον</h4>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="product-wrapper-grid">
                                                                 <div class="row infinite-container">
-                                                                    {% for product in different_color_products %}
+                                                                    {% for sub in subscribes %}
                                                                     <div class="col-xl-3 col-md-6 col-grid-box infinite-item">
                                                                         {% include 'frontend/parts/product_card.html' %}
                                                                     </div>

@@ -99,7 +99,9 @@
                         <tr>
                             <td><h5>{{ cart.cart_subscribe }}</h5></td>
                             <td><h5>{{ cart.cart_subscribe.tag_value }}</h5></td>
-                            <td><a style="color: white" href="" class="btn btn-danger btn-round btn-block"><i class="fa fa-remove"></i> Διαγραφη </a> </td>
+                            <td>
+                                <a style="color: white" href="{% url 'delete_subscribe_from_cart' cart.cart_subscribe.id %}" class="btn btn-danger btn-round btn-block"><i class="fa fa-remove"></i> Διαγραφη </a>
+                            </td>
                         </tr>
 
                         </tbody>

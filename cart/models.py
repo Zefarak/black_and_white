@@ -105,12 +105,16 @@ class Cart(models.Model):
         return round(discount, 2)
 
     @staticmethod
-    def check_and_get_active_subscribe(request):
+    def check_and_get_active_subscribe(request, cart):
         user = request.user
         if not user.is_authenticated:
             return False, UserSubscribe.objects.none()
         qs = user.my_subscribes.filter(active=True)
-        return user.my_subscribes.filter(active=True).exists(), qs
+        if qs.exists():
+            return True, qs.first()
+        if cart.cart_subscribe:
+            return True, cart.cart_subscribe
+        return False, None
 
     def tag_final_value(self):
         return f'{self.final_value} {CURRENCY}'
@@ -123,6 +127,9 @@ class Cart(models.Model):
 
     def tag_voucher_discount(self):
         return f'{self.voucher_discount} {CURRENCY}'
+
+    def tag_subscribe_value(self):
+        return f'{self.subscribe_value} {CURRENCY}'
 
     def get_edit_url(self):
         return reverse('cart:cart_detail', kwargs={'pk': self.id})
@@ -182,12 +189,12 @@ class CartItem(models.Model):
     def save(self, *args, **kwargs):
         self.final_value = self.price_discount if self.price_discount > 0 else self.value
         self.have_attributes = True if self.product.have_attr else False
-        self.qty = self.calculate_qty()
         self.total_value = self.get_total_value()
         super().save(*args, **kwargs)
         self.cart.save()
 
     def calculate_qty(self):
+        # deprecicated
         if self.have_attributes:
             qs = self.attribute_items.all()
             qty = qs.aggregate(Sum('qty'))['qty__sum'] if qs.exists() else 0
@@ -218,10 +225,13 @@ class CartItem(models.Model):
     @staticmethod
     def create_cart_item_with_multi_attr(cart, product, request):
         qty = request.POST.get('qty', 1)
+        try:
+            qty = int(qty)
+        except:
+            qty = Decimal(qty)
+        print('qty', qty)
         cart_item = CartItem.objects.create(cart=cart, product=product, qty=qty)
-        if cart_item.qty <=0:
-            cart_item.qty = 1
-            cart_item.save()
+        print(cart_item.qty, 'after')
         CartItemGifts.check_if_gift_exists(cart_item)
         cart_item_attr = CartItemAttribute.objects.create(cart_item=cart_item)
         for field in request.POST:
@@ -376,8 +386,17 @@ class CartSubscribe(models.Model):
         cart = self.cart_related
         subscribe = self.subscribe
         if cart_item.product in subscribe.products.all():
-            cart.discount_value += cart_item.final_value
-            cart_item.save()
+            cart_discount, created = CartSubscribeDiscount.objects.get_or_create(
+                cart_related=cart,
+            )
+            if created:
+                cart_discount.total_uses = subscribe.uses if cart_item.qty > subscribe.uses else cart_item.qty
+                cart_discount.total_discount = cart_discount.total_uses * cart_item.final_value
+            else:
+                cart_discount.total_uses = subscribe.uses if cart_discount.uses + cart_item.qty > subscribe.uses else cart_discount.total_uses + cart_item.qty
+                cart_discount.total_discount = cart_discount.total_uses * cart_item.final_value
+            cart_discount.save()
+
 
     @staticmethod
     def check_if_user_can_add_subscription(cart, subscribe, user):
@@ -385,6 +404,13 @@ class CartSubscribe(models.Model):
         if user:
             new_sub = CartSubscribe.objects.create(cart_related=cart, subscribe=subscribe)
         return new_sub
+
+
+@receiver(post_delete, sender=CartSubscribe)
+def update_cart_on_subscribe_delete(sender, instance, **kwargs):
+    cart = instance.cart_related
+    cart.subscribe_value = 0
+    cart.save()
 
 
 class CartProfile(models.Model):
@@ -443,7 +469,6 @@ class CartItemGifts(models.Model):
                                                                               )
                 cart_item_gift.product = gift.products_gift
                 cart_item_gift.qty = cart_item.qty
-                print('h posothta einai... ', cart_item.qty)
                 cart_item_gift.save()
 
 

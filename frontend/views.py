@@ -16,6 +16,7 @@ from cart.models import CartItem
 from newsletter.models import NewsLetter
 from contact.forms import ContactFrontEndForm
 from .forms import AskForm
+from subscribe.models import Subscribe
 import datetime
 
 
@@ -181,6 +182,7 @@ class ProductView(DetailView, FormView):
         related_products = Product.my_query.active_for_site().filter(related_products=product)
         different_color_products = Product.my_query.active_for_site().filter(different_color_products=product)
         gifts = Gifts.objects.filter(product_related=product)
+        subscribes = Subscribe.objects.filter(products=product)
         ask_form = AskForm()
         context.update(locals())
         return context

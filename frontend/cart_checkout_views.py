@@ -88,9 +88,9 @@ def add_product_with_attr_to_cart(request, slug):
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
     cart_item, message = CartItem.create_cart_item_with_multi_attr(cart, product, request)
-    active_cart, qs = cart.check_and_get_active_subscribe(request)
-    if active_cart and qs:
-        qs.first().update_cart(cart_item)
+    cart_have_sub, subscribe = cart.check_and_get_active_subscribe(request, cart)
+    if cart_have_sub:
+        subscribe.update_cart(cart_item)
     messages.success(request, message)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -272,12 +272,12 @@ def delete_voucher_from_cart_view(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-
-
-
 @login_required()
 def delete_subscription_view(request, pk):
     instance = get_object_or_404(CartSubscribe, id=pk)
-    instance.delete()
-    messages.success(request, 'Η συνδρομη αφαιρεθηκε από το καλάθι.')
+    if not request.user == instance.cart_related.user:
+        messages.warning(request, 'Κατι πήγε λάθος')
+    else:
+        instance.delete()
+        messages.success(request, 'Η συνδρομη αφαιρεθηκε από το καλάθι.')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

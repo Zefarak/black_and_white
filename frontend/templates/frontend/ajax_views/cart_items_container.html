@@ -10,7 +10,7 @@
                 <th scope="col">Συνολο</th>
             </tr>
         </thead>
-        
+
         <tbody>
             {% for cart_item in cart.order_items.all %}
                 <tr>
@@ -31,7 +31,7 @@
                                             <p>{{ attr.attribute.class_related.class_related }}  --> {{ attr_s }}<p>
                                         {% endfor %}
                                     {% endfor%}
-                            
+
                                 {% endif %}
                             </a>
                             <div class="mobile-cart-content row">
@@ -69,21 +69,44 @@
                         <td>
                             <h2 class="td-color">{{ cart_item.tag_total_value }}</h2></td>
                 </tr>
-                        {% empty %}
+            {% empty %}
                         <tr>
                             <td colspan="6">Δε έχετε επιλέξει Προϊόντα</td>
                         </tr>
-                    {% endfor %}
-                </table>
-<table class="table cart-table table-responsive-md">
-                    <tfoot>
-                    <tr>
-                        <td>Συνολική Αξία :</td>
-                        <td>
-                            <h2>{{ cart.tag_value }}</h2></td>
-                    </tr>
-                    </tfoot>
-                </table>
+            {% endfor %}
+
+    </table>
+    <table class="table cart-table table-responsive-md">
+        <tfoot>
+        <tr>
+            <td>Αξία Προϊόντων</td>
+            <td>
+                <h2>{{ cart.tag_value }}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>Αξία Συνδρομης</td>
+            <td>
+                <h2>{{ cart.tag_subscribe_value }}</h2>
+            </td>
+        </tr>
+        <tr>
+            <td>Εκπτωση από κουπόνια :</td>
+            <td>
+                <h2>{{ cart.tag_voucher_discount }}</h2></td>
+        </tr>
+        <tr>
+            <td>Εκπτωση Από Συνδρομες :</td>
+            <td>
+                <h2>{{ cart.tag_discount_value }}</h2></td>
+        </tr>
+        <tr>
+            <td>Συνολική Αξία :</td>
+            <td>
+                <h2>{{ cart.tag_final_value }}</h2></td>
+        </tr>
+        </tfoot>
+    </table>
 
 {% include 'frontend/include/cart_js.html' %}
 
