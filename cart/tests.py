@@ -8,7 +8,7 @@ from accounts.models import User
 from cart.models import Cart, CartItem, CartSubscribe
 from subscribe.models import Subscribe, UserSubscribe
 from site_settings.models import Shipping, PaymentMethod
-from point_of_sale.models import Order, OrderSubscribeDiscount, OrderItem, OrderGift
+from point_of_sale.models import Order, OrderSubscribeDiscount, OrderItem, OrderGift, OrderSubscribe
 
 class TestCartAndOrder(TestCase):
 
@@ -48,7 +48,14 @@ class TestCartAndOrder(TestCase):
         )
 
         for sub in self.cart_subscribe.all():
+            OrderSubscribe.objects.create(
+                order_related=new_order,
+                subscribe=sub.subscribe,
+                value=sub.value,
+                cart_related=sub
+            )
             UserSubscribe.objects.create(user=self.user, subscription=sub.subscribe)
+
         for sub_discount in self.cart.cartsubscribediscount_set.all():
             OrderSubscribeDiscount.objects.create(
                 order_related=new_order,
@@ -56,4 +63,5 @@ class TestCartAndOrder(TestCase):
                 total_discount=sub_discount.total_discount,
                 uses=sub_discount.uses
             )
+
 

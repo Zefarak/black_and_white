@@ -16,5 +16,6 @@ def frontend_site_data(request):
         'cart': cart,
         'currency': CURRENCY,
         'featured_products': Product.my_query.featured_products(),
-        'login_form': LoginForm()
+        'login_form': LoginForm(),
+        'site_title': 'Black&White'
     }

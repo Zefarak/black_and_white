@@ -8,7 +8,7 @@ class SubscribeForm(BaseForm, forms.ModelForm):
 
     class Meta:
         model = Subscribe
-        fields = ['active', 'title', 'category', 'counter', 'value', 'ordering']
+        fields = ['active', 'title', 'category', 'category_type', 'counter', 'value', 'ordering']
 
 
 class UserSubscribeForm(BaseForm, forms.ModelForm):

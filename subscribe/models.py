@@ -12,6 +12,10 @@ from catalogue.models import Product
 
 
 class Subscribe(models.Model):
+    CATEGORY_TYPE = (
+        ('a', 'Καφέδες'),
+        ('b', 'Φαγητό')
+    )
     CATEGORY_CHOICES = {
         ('a', 'Μέρες'),
         ('b', 'Εβδομαδες'),
@@ -22,6 +26,7 @@ class Subscribe(models.Model):
     value = models.DecimalField(decimal_places=2, max_digits=20, verbose_name='Αξία Καλαθιού')
     counter = models.PositiveIntegerField(default=0, verbose_name='Ποσότητα')
     category = models.CharField(max_length=1, choices=CATEGORY_CHOICES, verbose_name='Κατηγορία')
+    category_type = models.CharField(max_length=1, choices=CATEGORY_TYPE, verbose_name='Ειδος Συνδρομης')
     ordering = models.PositiveIntegerField(default=1, verbose_name='Ταξινόμηση')
     products = models.ManyToManyField(Product, blank=True, null=True)
     uses = models.IntegerField(default=1, verbose_name='Χρησεις')
@@ -76,9 +81,14 @@ class UserSubscribe(models.Model):
         return reverse('subscribe:user_subscribe_delete_view', kwargs={'pk': self.id})
 
     @staticmethod
-    def check_active_subscription(user):
-        sub_qs = UserSubscribe.objects.filter(user=user, active=True)
-        return sub_qs.exists(), sub_qs
+    def check_active_subscription(user, subscription):
+        if not user.is_authenticated:
+            return True
+        sub_qs = UserSubscribe.objects.filter(user=user,
+                                              subscription__category_type=subscription.category_type,
+                                              active=True
+                                              )
+        return sub_qs.exists()
 
     @staticmethod
     def update_subscription(instance):

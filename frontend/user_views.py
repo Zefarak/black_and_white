@@ -17,6 +17,7 @@ from accounts.models import Profile, Wishlist
 from accounts.forms import LoginForm, SignUpForm, ProfileFrontEndForm, UpdatePasswordForm, ForgotPasswordForm
 from accounts.token import account_activation_token
 from cart.models import CartItem, Cart
+from cart.tools import check_or_create_cart
 from point_of_sale.models import Order
 from catalogue.models import Product
 from django.contrib.auth import get_user_model
@@ -60,7 +61,6 @@ def register_view(request):
 
 
 def login_view(request):
-
     user = request.user
     if user.is_authenticated:
         return HttpResponseRedirect('/')
@@ -74,6 +74,10 @@ def login_view(request):
         user = authenticate(username=username, password=raw_password)
         if user:
             login(request, user)
+            cart = check_or_create_cart(request)
+            if not cart.user:
+                cart.user = user
+                cart.save()
             return redirect('user_profile')
         else:
             messages.warning(request, 'Ο κωδικός ή το email είναι λάθος.')

@@ -16,7 +16,7 @@ from catalogue.models import Product
 from catalogue.product_attritubes import Attribute
 from site_settings.models import Shipping, PaymentMethod
 from cart.forms import CheckOutForm
-from point_of_sale.models import Order, OrderProfile, SendReceipt
+from point_of_sale.models import Order, OrderProfile, SendReceipt, OrderSubscribe
 from voucher.models import Voucher
 
 from subscribe.models import Subscribe, UserSubscribe
@@ -44,9 +44,7 @@ def add_subscribe_to_cart(request, pk):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     instance = get_object_or_404(Subscribe, id=pk)
     cart = check_or_create_cart(request)
-    check_sub, sub = CartSubscribe.check_and_create_cart_subscribe(request, cart, instance)
-    if check_sub:
-        CartSubscribeDiscount.calculate_discount_from_subs(cart)
+    check_if_can_add = CartSubscribe.check_and_create_cart_subscribe(request, cart, instance)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -123,6 +121,13 @@ class CheckoutView(FormView):
     template_name = 'frontend/checkout.html'
     success_url = reverse_lazy('decide_payment_process')
 
+    def get(self, request, *args, **kwargs):
+        cart = check_or_create_cart(self.request)
+        if not cart.order_items.exists():
+            messages.warning(self.request, 'Πρεπει να προσθεσετε Προϊόντα για να παραγγειλετε!')
+            return HttpResponseRedirect(self.request.META.get('HTTP_REFERER'))
+        return super(CheckoutView, self).get(request, *args, **kwargs)
+
     def get_initial(self):
         initial = super(CheckoutView, self).get_initial()
         cart = self.cart = check_or_create_cart(self.request)
@@ -170,8 +175,8 @@ class CheckoutView(FormView):
         cart.save()
         cart.refresh_from_db()
         self.new_eshop_order = Order.create_eshop_order(self.request, cart)
+        self.new_eshop_order.create_subs_from_eshop_order(cart, self.request.user)
         OrderProfile.create_order_profile(self.request, self.new_eshop_order, cart)
-
 
         email = form.cleaned_data.get('email')
         send_mail('Καταχώρηση Παραγγελίας',
@@ -266,6 +271,7 @@ def delete_voucher_from_cart_view(request, pk):
 @login_required()
 def delete_subscription_view(request, pk):
     instance = get_object_or_404(CartSubscribe, id=pk)
+    cart = check_or_create_cart(request)
     if not request.user == instance.cart_related.user:
         messages.warning(request, 'Κατι πήγε λάθος')
     else:

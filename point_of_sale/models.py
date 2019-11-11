@@ -226,6 +226,37 @@ class Order(DefaultOrderModel):
         qs = Order.objects.filter(vouchers=voucher)
         return True if qs.exists() else False
 
+    def create_subs_from_eshop_order(self, cart, user):
+        for cart_subscribe in cart.cart_subscribe.all():
+            check_if_exists = UserSubscribe.check_active_subscription(user, cart_subscribe.subscribe)
+            if not check_if_exists:
+                UserSubscribe.objects.create(
+                    subscription=cart_subscribe.subscribe,
+                    user=user,
+                    value=cart_subscribe.value,
+                    uses=cart_subscribe.uses
+                )
+        for cart_subscribe in cart.cart_subscribe.all():
+            OrderSubscribe.objects.create(
+                subscribe=cart_subscribe.subscribe,
+                order_related=self,
+                value=cart_subscribe.value,
+                cart_related=cart
+            )
+        qs = OrderSubscribe.objects.filter(order_related=self)
+        add_value = qs.aggregate(Sum('value'))['value__sum'] if qs.exists() else 0.00
+        self.subscribe_cost = add_value
+        self.save()
+
+    def create_sub_discounts_from_eshop_order(self, cart, user):
+        for discount_order in cart.cartsubscribediscount_set.all():
+            OrderSubscribeDiscount.objects.create(
+                order_related=self,
+                uses=discount_order.uses,
+                total_discount=discount_order.total_discount,
+
+            )
+
     @staticmethod
     def create_eshop_order(request, cart):
         profile = cart.cart_profile
@@ -657,7 +688,7 @@ class OrderSubscribe(models.Model):
     order_related = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_subscribe')
     subscribe = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
-    cart_related = models.ForeignKey(CartSubscribe, on_delete=models.SET_NULL, null=True)
+    cart_related = models.OneToOneField(CartSubscribe, on_delete=models.SET_NULL, null=True)
 
 
 class OrderSubscribeDiscount(models.Model):
