@@ -22,7 +22,7 @@ from .abstract_models import DefaultOrderModel, DefaultOrderItemModel
 from site_settings.models import PaymentMethod, Shipping, Country
 from site_settings.constants import CURRENCY, ORDER_STATUS, ORDER_TYPES, ADDRESS_TYPES
 from site_settings.tools import clean_date_filter
-from cart.models import Cart, CartItem, CartItemGifts
+from cart.models import Cart, CartItem, CartItemGifts, CartSubscribe
 from .managers import OrderManager, OrderItemManager
 from accounts.models import Profile
 from voucher.models import Voucher
@@ -653,9 +653,16 @@ def update_warehouse(sender, instance, **kwargs):
     instance.order.save()
 
 
+class OrderSubscribe(models.Model):
+    order_related = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_subscribe')
+    subscribe = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
+    value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
+    cart_related = models.ForeignKey(CartSubscribe, on_delete=models.SET_NULL, null=True)
+
+
 class OrderSubscribeDiscount(models.Model):
-    order_related = models.OneToOneField(Order, on_delete=models.CASCADE)
-    subscription = models.OneToOneField(UserSubscribe, on_delete=models.SET_NULL, null=True)
+    order_related = models.ForeignKey(Order, on_delete=models.CASCADE)
+    subscription = models.ForeignKey(UserSubscribe, on_delete=models.SET_NULL, null=True)
     total_discount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     uses = models.IntegerField(default=0)
 

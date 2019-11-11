@@ -96,13 +96,15 @@
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <td><h5>{{ cart.cart_subscribe }}</h5></td>
-                            <td><h5>{{ cart.cart_subscribe.tag_value }}</h5></td>
-                            <td>
-                                <a style="color: white" href="{% url 'delete_subscribe_from_cart' cart.cart_subscribe.id %}" class="btn btn-danger btn-round btn-block"><i class="fa fa-remove"></i> Διαγραφη </a>
-                            </td>
-                        </tr>
+                        {% for sub in cart.cart_subscribe.all %}
+                            <tr>
+                                <td><h5>{{ sub }}</h5></td>
+                                <td><h5>{{ subtag_value }}</h5></td>
+                                <td>
+                                    <a style="color: white" href="{% url 'delete_subscribe_from_cart' sub.id %}" class="btn btn-danger btn-round btn-block"><i class="fa fa-remove"></i> Διαγραφη </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
 
                         </tbody>
                     </table>

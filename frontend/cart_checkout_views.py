@@ -44,15 +44,9 @@ def add_subscribe_to_cart(request, pk):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     instance = get_object_or_404(Subscribe, id=pk)
     cart = check_or_create_cart(request)
-    check_sub, sub_qs = cart.check_and_get_active_subscribe(request)
+    check_sub, sub = CartSubscribe.check_and_create_cart_subscribe(request, cart, instance)
     if check_sub:
-        # checks if active subscription exists
-        messages.warning(request, 'Εχετε εωεργή συνδρομή')
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    if instance.cartsubscribe_set.exists():
-        instance.cartsubscribe_set.first().delete()
-    new_subscribe = CartSubscribe.objects.create(cart_related=cart, subscribe=instance, value=instance.value)
-    messages.success(request, f'Η συνδρομή {instance.title} προστεθηκε στο καλαθι.')
+        CartSubscribeDiscount.calculate_discount_from_subs(cart)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -75,7 +69,7 @@ def add_product_to_cart(request, slug):
     check_cart_owner = cart.cart_id == session_id
     if check_cart_owner and product.active:
         # checks again if still the product is active and the user
-        add_product_to_cart_movements(request, cart, product)
+        CartItem.add_product_to_cart(request, cart, product)
         messages.success(request, f'To Προϊόν {product.title} προστέθηκε επιτιχώς στο καλάθι!')
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
@@ -88,9 +82,6 @@ def add_product_with_attr_to_cart(request, slug):
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
     cart_item, message = CartItem.create_cart_item_with_multi_attr(cart, product, request)
-    cart_have_sub, subscribe = cart.check_and_get_active_subscribe(request, cart)
-    if cart_have_sub:
-        subscribe.update_cart(cart_item)
     messages.success(request, message)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
