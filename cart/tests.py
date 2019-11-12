@@ -46,22 +46,8 @@ class TestCartAndOrder(TestCase):
             order_type='e',
             shipping_method=self.shipping_method,
         )
-
-        for sub in self.cart_subscribe.all():
-            OrderSubscribe.objects.create(
-                order_related=new_order,
-                subscribe=sub.subscribe,
-                value=sub.value,
-                cart_related=sub
-            )
-            UserSubscribe.objects.create(user=self.user, subscription=sub.subscribe)
-
-        for sub_discount in self.cart.cartsubscribediscount_set.all():
-            OrderSubscribeDiscount.objects.create(
-                order_related=new_order,
-                subscription='',
-                total_discount=sub_discount.total_discount,
-                uses=sub_discount.uses
-            )
+        new_order.create_subs_from_eshop_order(self.cart, self.user)
+        new_order.create_sub_discounts_from_eshop_order(self.cart, self.user)
+        new_order.create_gifts(self.cart)
 
 

@@ -52,14 +52,14 @@ class Subscribe(models.Model):
 
 
 class UserSubscribe(models.Model):
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True, verbose_name='Κατασταση')
     is_paid = models.BooleanField(default=False)
     date_start = models.DateField(blank=True, null=True)
     date_end = models.DateField(blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='my_subscribes')
     subscription = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(decimal_places=2, max_digits=20, default=0)
-    uses = models.IntegerField(default=1)
+    uses = models.IntegerField(default=1, verbose_name='Υπόλοιπο Χρησεων')
     
     def save(self, *args, **kwargs):
         self.active = True if self.uses > 0 else False
@@ -82,6 +82,7 @@ class UserSubscribe(models.Model):
 
     @staticmethod
     def check_active_subscription(user, subscription):
+
         if not user.is_authenticated:
             return True
         sub_qs = UserSubscribe.objects.filter(user=user,

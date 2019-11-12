@@ -76,7 +76,6 @@
                                         <h6 class="title">Κωδικός.. {{ object.number }}</h6>
                                         <br>
                                         <a href="{{ object.get_print_url }}" target="_blank" class="btn btn-primary"><i class="fa fa-print"></i> Εκτύπωση </a>
-                                        <a href="" class="btn btn-primary"><i class="fa fa-mail-reply"></i> Στείλε email</a>
                                         <br><br>
                                         <div id="change_status_container">
                                             <form class="form">{{ form }}</form>
@@ -112,7 +111,33 @@
                                         </table>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="card">
+                                        <div class="card-header">
+                                            <h4>Συνδρομες</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Συνδρομή</th>
+                                                        <th>Αξία</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for sub in object.order_subscribe.all %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>{{ sub }}</td>
+                                                            <td>{{ sub.tag_value }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                             <div class="col-md-4">
                                 <div class="card">
                                     <div class="card-header">

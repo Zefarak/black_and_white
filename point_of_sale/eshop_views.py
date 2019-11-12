@@ -50,6 +50,7 @@ class EshopOrderDetailView(DetailView):
         context = super(EshopOrderDetailView, self).get_context_data(**kwargs)
         order_profile, created = OrderProfile.objects.get_or_create(order_related=self.object)
         form = EshopOrderStatusForm(initial={'status': self.object.status})
+
         context.update(locals())
         return context
 

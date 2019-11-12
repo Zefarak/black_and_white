@@ -26,4 +26,4 @@ class UserSubscribeTable(tables.Table):
     class Meta:
         model = UserSubscribe
         template_name = 'django_tables2/bootstrap.html'
-        fields = ['subscription', 'user', 'tag_value', 'duration', 'active']
+        fields = ['subscription', 'user', 'tag_value', 'duration', 'active', 'uses']

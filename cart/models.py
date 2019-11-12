@@ -269,7 +269,7 @@ class CartItem(models.Model):
     @staticmethod
     def add_product_to_cart(request, cart, product):
         # only for products without attrs
-        qty = 1
+        qty = request.POST.get('qty', 1)
         try:
             qty = int(qty)
         except:
@@ -356,8 +356,6 @@ class CartSubscribe(models.Model):
     def save(self, *args, **kwargs):
         self.value = self.subscribe.value
         super().save(*args, **kwargs)
-        self.cart_related.subscribe_value = self.value
-        self.cart_related.save()
 
     def tag_value(self):
         return f'{self.value} {CURRENCY}'
@@ -397,6 +395,7 @@ class CartSubscribeDiscount(models.Model):
 
     class Meta:
         unique_together = ['cart_related', 'subscribe_related', 'cart_type']
+
 
     @staticmethod
     def check_if_discount_exists(request, cart):

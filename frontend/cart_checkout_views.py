@@ -53,16 +53,19 @@ def add_product_to_cart(request, slug):
     if not site_setting.is_open:
         messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
     if product.support_transcations and product.qty <= 0:
         # check if product support transcations and check exist qty
         messages.warning(request, 'Δυστηχώς δε υπάρχει επαρκή ποσότητα')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     if product.have_attr:
         # check if product support attributes and cancel the order
         messages.warning(request, 'Κάτι πήγε λάθος!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
     session_id = request.session.get('cart_id')
     check_cart_owner = cart.cart_id == session_id
     if check_cart_owner and product.active:
@@ -176,6 +179,8 @@ class CheckoutView(FormView):
         cart.refresh_from_db()
         self.new_eshop_order = Order.create_eshop_order(self.request, cart)
         self.new_eshop_order.create_subs_from_eshop_order(cart, self.request.user)
+        self.new_eshop_order.create_sub_discounts_from_eshop_order(cart, self.request.user)
+        self.new_eshop_order.create_gifts(cart)
         OrderProfile.create_order_profile(self.request, self.new_eshop_order, cart)
 
         email = form.cleaned_data.get('email')

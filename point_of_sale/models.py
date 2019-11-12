@@ -234,14 +234,14 @@ class Order(DefaultOrderModel):
                     subscription=cart_subscribe.subscribe,
                     user=user,
                     value=cart_subscribe.value,
-                    uses=cart_subscribe.uses
+                    uses=cart_subscribe.subscribe.uses
                 )
         for cart_subscribe in cart.cart_subscribe.all():
             OrderSubscribe.objects.create(
                 subscribe=cart_subscribe.subscribe,
                 order_related=self,
                 value=cart_subscribe.value,
-                cart_related=cart
+                cart_related=cart_subscribe
             )
         qs = OrderSubscribe.objects.filter(order_related=self)
         add_value = qs.aggregate(Sum('value'))['value__sum'] if qs.exists() else 0.00
@@ -250,11 +250,22 @@ class Order(DefaultOrderModel):
 
     def create_sub_discounts_from_eshop_order(self, cart, user):
         for discount_order in cart.cartsubscribediscount_set.all():
-            OrderSubscribeDiscount.objects.create(
+            new_order_discount = OrderSubscribeDiscount.objects.create(
                 order_related=self,
-                uses=discount_order.uses,
+                uses=discount_order.total_uses,
                 total_discount=discount_order.total_discount,
+            )
+            if discount_order.user_subscribe:
+                new_order_discount.subscription = discount_order.user_subscribe
+                new_order_discount.save()
 
+    def create_gifts(self, cart):
+        for gift in cart.gifts.all():
+            OrderGift.objects.create(
+                order=self,
+                product=gift.product,
+                cart_gift=gift,
+                qty=gift.qty
             )
 
     @staticmethod
@@ -357,13 +368,6 @@ def create_unique_number(sender, instance, **kwargs):
         instance.save()
     if instance.profile:
         instance.profile.save()
-
-
-@receiver(post_save, sender=Order)
-def inform_onwer(sender, instance, created, **kwargs):
-    print('order signal')
-    if created and instance.order_type == 'e':
-        print('created')
 
 
 class OrderItem(DefaultOrderItemModel):
@@ -690,15 +694,18 @@ class OrderSubscribe(models.Model):
     value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
     cart_related = models.OneToOneField(CartSubscribe, on_delete=models.SET_NULL, null=True)
 
+    def __str__(self):
+        return self.subscribe.title
+
+    def tag_value(self):
+        return f'{self.value} {CURRENCY}'
+
 
 class OrderSubscribeDiscount(models.Model):
     order_related = models.ForeignKey(Order, on_delete=models.CASCADE)
     subscription = models.ForeignKey(UserSubscribe, on_delete=models.SET_NULL, null=True)
     total_discount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     uses = models.IntegerField(default=0)
-
-    def save(self, *args, **kwargs):
-        self.save(*args, **kwargs)
 
     @staticmethod
     def check_if_subscription_exists(user):
