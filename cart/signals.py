@@ -2,7 +2,8 @@ from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 
-from .models import Cart, CartSubscribeDiscount, CartItem, CartSubscribe
+from .models import Cart, CartItem
+from .subscribe_models import CartSubscribeDiscount, CartSubscribe
 from subscribe.models import UserSubscribe
 
 

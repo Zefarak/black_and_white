@@ -10,7 +10,8 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from .mixins import SearchMixin
 
-from cart.models import CartItem, CartProfile, CartItemGifts, CartSubscribe, CartSubscribeDiscount
+from cart.models import CartItem, CartProfile, CartItemGifts
+from cart.subscribe_models import  CartSubscribe, CartSubscribeDiscount
 from cart.tools import check_or_create_cart, add_product_to_cart_movements
 from catalogue.models import Product
 from catalogue.product_attritubes import Attribute

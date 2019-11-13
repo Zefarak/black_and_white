@@ -147,6 +147,7 @@ class UserDashboardView(ListView):
         context = super(UserDashboardView, self).get_context_data(**kwargs)
         user = self.request.user
         profile = user.profile
+        orders = user.orders.filter(favorite_order=True)
         context.update(locals())
         return context
 

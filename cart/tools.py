@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, reverse
 from string import ascii_letters
-from .models import Cart, CartItem, CartItemGifts, CartSubscribeDiscount, CartSubscribe
+from .models import Cart, CartItem, CartItemGifts
+from .subscribe_models import CartSubscribeDiscount, CartSubscribe
 import random
 from decimal import Decimal
 

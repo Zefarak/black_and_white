@@ -1,6 +1,7 @@
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from catalogue.models import Product
 from catalogue.product_attritubes import Attribute
@@ -10,6 +11,7 @@ from cart.tools import check_or_create_cart
 from voucher.models import Voucher
 from site_settings.models import Shipping, PaymentMethod
 from contact.forms import ContactFrontEndForm
+
 from .forms import AskForm
 
 
@@ -199,3 +201,5 @@ def ajax_update_cate_shipping_method_view(request):
                                       }
                                       )
     return JsonResponse(data)
+
+

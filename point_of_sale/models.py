@@ -22,7 +22,8 @@ from .abstract_models import DefaultOrderModel, DefaultOrderItemModel
 from site_settings.models import PaymentMethod, Shipping, Country
 from site_settings.constants import CURRENCY, ORDER_STATUS, ORDER_TYPES, ADDRESS_TYPES
 from site_settings.tools import clean_date_filter
-from cart.models import Cart, CartItem, CartItemGifts, CartSubscribe
+from cart.models import Cart, CartItem, CartItemGifts
+from cart.subscribe_models import CartSubscribe
 from .managers import OrderManager, OrderItemManager
 from accounts.models import Profile
 from voucher.models import Voucher
@@ -41,6 +42,7 @@ User = get_user_model()
 
 class Order(DefaultOrderModel):
     number = models.SlugField(max_length=128, db_index=True, blank=True)
+    favorite_order = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=ORDER_STATUS, default='1', verbose_name="Κατάσταση")
     order_type = models.CharField(max_length=1, choices=ORDER_TYPES, default='r', verbose_name='Είδος')
     total_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0,
@@ -255,7 +257,7 @@ class Order(DefaultOrderModel):
                 uses=discount_order.total_uses,
                 total_discount=discount_order.total_discount,
             )
-            if discount_order.user_subscribe:
+            if discount_order.subscribe:
                 new_order_discount.subscription = discount_order.user_subscribe
                 new_order_discount.save()
 
