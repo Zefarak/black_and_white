@@ -159,6 +159,7 @@ class Order(DefaultOrderModel):
         return '%s %s' % (self.final_value, CURRENCY)
     tag_final_value.short_description = 'Value'
 
+
     def taxes(self):
         return round(Decimal(self.final_value) * (Decimal(self.get_taxes_modifier_display())/100), 2)
 
@@ -247,7 +248,7 @@ class Order(DefaultOrderModel):
             )
         qs = OrderSubscribe.objects.filter(order_related=self)
         add_value = qs.aggregate(Sum('value'))['value__sum'] if qs.exists() else 0.00
-        self.subscribe_cost = add_value
+        self.subscribe_cost = Decimal(add_value)
         self.save()
 
     def create_sub_discounts_from_eshop_order(self, cart, user):
@@ -455,6 +456,11 @@ class OrderItem(DefaultOrderItemModel):
 
     def tag_value(self):
         return '%s %s' % (self.value, CURRENCY)
+
+    def tag_current_value(self):
+        # return the value with current product value
+        value = self.qty * self.title.final_price if self.value else 0
+        return f'{value} {CURRENCY}'
 
     def tag_found(self):
         return 'Found' if self.is_find else 'Not Found'
