@@ -45,6 +45,11 @@ class CheckOutForm(BaseForm):
 
     agree = forms.BooleanField(label='Συμφωνώ με τους όρους χρήσης *', widget=forms.CheckboxInput())
 
+    def __init__(self, *args, **kwargs):
+        super(CheckOutForm, self).__init__(*args, **kwargs)
+        self.fields['city'].widget.attrs['readonly'] = True
+        self.fields['zip_code'].widget.attrs['readonly'] = True
+
     def clean_cellphone(self):
         cellphone = self.cleaned_data.get('cellphone')
         if not str(cellphone).startswith('69'):

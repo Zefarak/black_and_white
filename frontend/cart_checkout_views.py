@@ -142,8 +142,7 @@ class CheckoutView(FormView):
             initial['last_name'] = profile.last_name
             initial['email'] = user.email
             initial['address'] = profile.shipping_address
-            initial['city'] = profile.shipping_city
-            initial['zip_code'] = profile.shipping_zip_code
+
             initial['cellphone'] = profile.cellphone
             initial['phone'] = profile.phone
         if CartProfile.objects.filter(cart_related=cart).exists():
@@ -158,6 +157,8 @@ class CheckoutView(FormView):
             initial['phone'] = cart_profile.phone
         initial['shipping_method'] = cart.shipping_method
         initial['payment_method'] = cart.payment_method
+        initial['city'] = 'Μολαοι'
+        initial['zip_code'] = 23052
         return initial
 
     def form_valid(self, form):

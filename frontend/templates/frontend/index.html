@@ -8,9 +8,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     {% block seo_data %}
         <title>{{ site_title }} | Αρχική Σελίδα</title>
-        <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, optika kotsalis. Εδώ θα βρείτε μεγάλη ποικιλία απο γυαλιά ηλιού και οράσεως.">
+        <meta name="description" content="Στο Black&White θα βρείτε μεγάλη ποικιλία σε καφέδες....">
     {% endblock %}
-    <meta name="keywords" content="Οπτικά, Μολαοι, Λακωνια, Rayban, γυαλιά ηλιόυ, οράσεως, Κότσαλης, Μονεμβάσια">
+    <meta name="keywords" content="Καφές, Παραγγελία ,Μολαοι, Λακωνια, Club Sandwich, φαγητά, espresso, capuccino">
     {% include 'frontend/include/head.html' %}
 </head>
 
@@ -24,6 +24,24 @@
 
 <!-- home slider start -->
 <div class="home-slider fullpage full-slider">
+    {% if request.user.is_authenticated %}
+        <div class="home text-left p-left">
+            <img src="{% static 'frontend/demo_images/no_image.png' %}" alt="" class="bg-img blur-up lazyload">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="slider-contain">
+                            <div>
+                                <h1>Δειτε τις Παραγγελίίες σας!</h1>
+                                <a href="{% url 'user_profile' %}" class="btn btn-solid">Account</a>
+                                <a href="{% url 'user_profile' %}" class="btn btn-solid">Account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% for banner in banners %}
     <div>
         <div class="home text-left p-left">

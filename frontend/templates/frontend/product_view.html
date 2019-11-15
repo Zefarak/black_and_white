@@ -1,12 +1,10 @@
 {% extends 'frontend/index.html' %} {% load static %}
+
 {% block seo_data %}
-    <title>Οπτικα - Κοτσαλης | {{ object }}</title>
-    <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, Οπτικά Κότσαλης .Όλες οι λεπτομέριες για το προϊόν {{ object }} βρίσκονται εδώ.">
-
-
-
-
+    <title>{{ site_title }} | {{ object }}</title>
+     <meta name="description" content="Στο Black&White θα βρείτε μεγάλη ποικιλία σε καφέδες....">
 {% endblock %}
+
 {% block content %}
     <meta property="og:type"          content="website" />
     <meta property="og:title"         content="{{ object.title }}" />
@@ -176,7 +174,7 @@
                                                 {% for attr_header in object.attr_class.all %}
                                                     <div class='container_{{ attr_header.id }}'>
                                                         <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                                            <span class="text-muted">{{ attr_header }} -- {{ attr_header.id}}</span>
+                                                            <span class="text-muted">{{ attr_header }}</span>
                                                         </h4>
                                                         <ul class="list-group mb-3">
                                                             {% for attr in attr_header.my_attributes.all %}
@@ -427,7 +425,6 @@
 
     <script>
         $('.attr_input').click(function(evt){
-            console.log('hit me man');
             const my_input = $(this);
             const new_val = my_input.attr('data-extra');
             const url = my_input.attr('data-href');
@@ -452,23 +449,19 @@
             const myInput = $(this);
             const removeData = myInput.attr('data-remove');
             const url = myInput.attr('data-remove-href');
-            console.log(removeData);
-            if (removeData !== undefined){
-                console.log('i am here!')
+            const new_val = myInput.attr('data-extra')
+            if (removeData !== undefined && new_val == undefined){
                 $.ajax({
                     dataType: 'json',
                     method: 'get',
                     url: url,
                     success: function (data) {
                         const my_class = '.container_'+ data.id;
-                        $(my_class).show('success')
-                        console.log('')
+                        $(my_class).show('success');
                     }
-                })
+                });
                 $(".container_"+ removeData + " :input").removeAttr('data-remove');
                 $(".container_"+ removeData + " :input").removeAttr('data-remove-href')
-                console.log(removeData)
-
             }
         })
     </script>

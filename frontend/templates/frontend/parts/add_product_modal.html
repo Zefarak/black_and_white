@@ -111,12 +111,12 @@
 
 
 
-<script>
+<script type="text/javascript">
+
     $('.attr_input').click(function(evt){
         const my_input = $(this);
         const new_val = my_input.attr('data-extra');
         const url = my_input.attr('data-href');
-
         if (new_val !== undefined){
             $.ajax({
                 dataType: 'json',
@@ -127,6 +127,7 @@
                     $(my_class).hide();
                     $(".container_"+ new_val+ " :input").attr('data-remove', new_val);
                     $(".container_"+ new_val+ " :input").attr('data-remove-href', url);
+
                 }
             })
         }
@@ -136,9 +137,10 @@
     $('.attr_input').click(function (evt) {
         const myInput = $(this);
         const removeData = myInput.attr('data-remove');
+        const new_val = myInput.attr('data-extra');
         const url = myInput.attr('data-remove-href');
         console.log(removeData);
-        if (removeData !== undefined){
+        if (removeData !== undefined && new_val == undefined){
             $.ajax({
                 dataType: 'json',
                 method: 'get',
@@ -150,7 +152,6 @@
             });
             $(".container_"+ removeData + " :input").removeAttr('data-remove');
             $(".container_"+ removeData + " :input").removeAttr('data-remove-href');
-            console.log(removeData)
         }
     })
 </script>

@@ -110,7 +110,7 @@ class Cart(models.Model):
     def calculate_discount_from_subs(self):
         cart_items = self.order_items.all()
         subs = self.cart_subscribe.all()
-        user_subs = self.user.my_subscribes.filter(active=True) if self.user else None
+        user_subs = self.user.my_subscribes.filter(active=True) if self.user else Subscribe.objects.none()
         cart_discounts = self.cartsubscribediscount_set.all()
         for cart_d in cart_discounts:
             # resets all the data
@@ -253,6 +253,7 @@ class CartItem(models.Model):
     def check_if_product_in_subscribe(self, sub):
         if self.product in sub.subscribe.products.all():
             return True
+        return False
 
     def get_delete_frontend_url(self):
         return reverse('delete_from_cart', kwargs={'pk': self.id})

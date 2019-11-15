@@ -159,7 +159,6 @@ class Order(DefaultOrderModel):
         return '%s %s' % (self.final_value, CURRENCY)
     tag_final_value.short_description = 'Value'
 
-
     def taxes(self):
         return round(Decimal(self.final_value) * (Decimal(self.get_taxes_modifier_display())/100), 2)
 
@@ -505,8 +504,6 @@ class OrderItem(DefaultOrderItemModel):
                                             )
         if cart_item.product.have_attr:
             OrderItemAttribute.create_objects_from_cart(instance, cart_item)
-        for gift in cart_item.cart_item_gift.all():
-            OrderGift.create_gift_from_cart(instance, gift)
 
     @staticmethod
     def create_or_edit_item(order, product, qty, transation_type):
@@ -546,7 +543,7 @@ class OrderItemAttribute(models.Model):
     is_found = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.order_item} - {self.attribute}'
+        return f'{self.order_item}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -757,15 +754,7 @@ class OrderGift(models.Model):
     def __str__(self):
         return f'Gift {self.order} --> {self.product}'
 
-    @staticmethod
-    def create_gift_from_cart(order_item, gift):
-        OrderGift.objects.create(order_item=order_item,
-                                 order=order_item.order,
-                                 product=gift.product,
-                                 cart_gift=gift,
-                                 qty=order_item.qty
 
-                                 )
 
 
 

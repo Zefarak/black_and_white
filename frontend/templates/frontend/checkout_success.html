@@ -16,6 +16,8 @@
                     <h2>Σας ευχαριστουμε!</h2>
                     <p>Η παραγγελία σας ολοκληρώθηκε επιτυχώς. Θα σας αποστείλουμε τα προϊόντα μετά απο τηλεφωνική επικοινωνία. Σας ευχαριστούμε για την προτίμησή σας</p>
                     <p>Transaction ID: {{ order.number }}</p>
+                    <hr>
+                    <h4>{{ order.title }}</h4>
                     <hr><br>
                     <button type="button" data-toggle="modal" data-target="#reOrderModal"  class="btn btn-success">Επαναληψη Παραγγελιας</button>
                     <br> <br> <br>
@@ -28,6 +30,7 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#nameModal">
                       Δωσε το δικο σου ονομα.
                     </button>
+
                     <!-- Modal -->
                     <div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -164,7 +167,6 @@
                             </tbody>
                         </table>
                     </div>
-
                     <div class="total-sec">
                         <ul>
                             <li>Αξία Προϊόντων <span>{{ order.tag_value }}</span></li>
@@ -174,7 +176,28 @@
                         </ul>
                     </div>
                     <div class="final-total">
-                        <h3>Συνολο <span>{{ order.tag_final_value }}</span></h3></div>
+                        <h3>Συνολο <span>{{ order.tag_final_value }}</span></h3>
+                    </div>
+                    <hr>
+                    <h3>Δωρα</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Προϊόν</th>
+                                <th>Ποσότητα</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for gift in order.gifts.all %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ gift.product }}</td>
+                                    <td>{{ gift.qty }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -213,21 +236,59 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top: 5%" class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-12">
-                {% if order.payment_method.payment_type == 'b' %}
-                    <h4>Παρακαλούμε μόλις καταθέσετε τα χρήματα να μας ενημερώσετε τηλεφωνικά στο 2732022566 για άμεση αποστολή των προϊόντων.</h4>
-                    <br>
-                    <p>Εθνική Τράπεζα --> &nbsp;&nbsp;&nbsp;&nbsp; GR 0501104180000041893101182</p>
-                    <p>Τράπεζα Πειραιώς --> GR 5401405650565002101028488</p>
-                    <p>Alpha Bank --> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GR 3001713410006341128057491</p>
-                    <p>Δικαιούχως -->  Κότσαλης Δημήτρης</p>
+        <div class="row">
+            <div class="col-md-12">
+                <br> <br><hr>
+                <h3>Αναλυση</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    {% for order_item in order.order_items.all %}
+                        <a {% if forloop.first %}
+                                class="list-group-item list-group-item-action active"
+                           {% else %}
+                                class="list-group-item list-group-item-action"
+                           {% endif %}
+                           id="list-home_{{ order_item.id }}"
+                           data-toggle="list"
+                           href="#list-home-list_{{ order_item.id }}"
+                           role="tab"
+                           aria-controls="home_{{ order_item.id }}">
+                            {{ order_item.title }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content" id="nav-tabContent">
+                    {% for order_item in order.order_items.all %}
+                        <div {% if forloop.first %}
+                                class="tab-pane fade show active"
+                            {% else %}
+                                    class="tab-pane fade"
+                            {% endif %}
+                                 id="list-home-list_{{ order_item.id }}"
+                                 role="tabpanel"
+                                 aria-labelledby="list-home_{{ order_item.id }}"
+                            >
+                            <h4>Λεπτομεριες</h4>
+                            <ul class="list-group list-group-flush">
 
-                {%  endif %}
+                                {% for attr in order_item.attributes.all %}
+                                    {% for item in attr.attribute.all %}
+                                        <li class="list-group-item">{{ item.class_related.class_related }}  ==> {{ item.title }}</li>
+                                    {% endfor %}
+                                    {% empty %}
+                                    <li class="list-group-item">Δε υπάρχουν στοιχεία</li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                    {% endfor %}
+
+                </div>
             </div>
         </div>
-    </div>
 </section>
 <!-- Section ends -->
 

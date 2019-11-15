@@ -1,5 +1,10 @@
 {% extends 'frontend/index.html' %} {% load static %} {% load zefarak_tags %}
 
+{% block seo_data %}
+    <title>{{ site_title }} | {{ page_title }}</title>
+    <meta name="description" content="Στο Black&White θα βρείτε μεγάλη ποικιλία σε καφέδες....">
+{% endblock %}
+
 {% block extra_css %}
 <!--Plugin CSS file with desired skin-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.0/css/ion.rangeSlider.min.css"/>
@@ -10,10 +15,6 @@
     </style>
 {% endblock %}
 
-{% block seo_data %}
-    <title>{{ site_title }} | {{ page_title }}</title>
-    <meta name="description" content="{{ description }}">
-{% endblock %}
 
 {% block content %}
 

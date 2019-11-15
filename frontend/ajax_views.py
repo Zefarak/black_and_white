@@ -6,7 +6,7 @@ from django.contrib import messages
 from catalogue.models import Product
 from catalogue.product_attritubes import Attribute
 from catalogue.product_details import Brand
-from cart.models import CartItem, CartItemAttribute
+from cart.models import CartItem, CartItemAttribute, CartItemGifts
 from cart.tools import check_or_create_cart
 from voucher.models import Voucher
 from site_settings.models import Shipping, PaymentMethod
@@ -55,14 +55,25 @@ def ajax_delete_cart_item(request, pk, action):
 def ajax_change_cart_item_qty(request, pk):
     qty = request.GET.get('qty', 1)
     cart_item = get_object_or_404(CartItem, id=pk)
+    print(qty)
     try:
         qty = int(qty)
     except:
+        print('why the fack')
         qty = cart_item.qty
-    if qty == 1:
-        cart_item.qty = qty
+    gift_qs = CartItemGifts.objects.filter(cart_item=cart_item)
+    if gift_qs.exists():
+        gift = gift_qs.first()
+        gift.qty = qty
+        gift.save()
+    cart_item.qty = qty
     cart_item.save() if cart_item.qty > 0 else cart_item.delete()
     cart = cart_item.cart
+    gift_qs = CartItemGifts.objects.filter(cart_item=cart_item)
+    if gift_qs.exists():
+        gift = gift_qs.first()
+        gift.qty = qty
+        gift.save()
     cart.refresh_from_db()
     data = dict()
     shipping_methods = Shipping.browser.active()

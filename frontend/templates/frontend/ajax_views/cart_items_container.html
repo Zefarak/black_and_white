@@ -23,7 +23,7 @@
                     </td>
                         <td>
                             <a href="{{ cart_item.product.get_absolute_url }}">
-                                {{ cart_item }}
+                                {{ cart_item.product }}
                                 <br>
                                 {% if cart_item.have_attributes %}
                                     {% for attr in cart_item.attribute_items.all %}
