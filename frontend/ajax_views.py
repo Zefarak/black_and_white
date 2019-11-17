@@ -55,11 +55,9 @@ def ajax_delete_cart_item(request, pk, action):
 def ajax_change_cart_item_qty(request, pk):
     qty = request.GET.get('qty', 1)
     cart_item = get_object_or_404(CartItem, id=pk)
-    print(qty)
     try:
         qty = int(qty)
     except:
-        print('why the fack')
         qty = cart_item.qty
     gift_qs = CartItemGifts.objects.filter(cart_item=cart_item)
     if gift_qs.exists():

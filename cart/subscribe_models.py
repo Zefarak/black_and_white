@@ -1,21 +1,7 @@
 from django.db import models
-from django.db.models import Sum
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from django.db.models.signals import post_delete, post_save
-from django.dispatch import receiver
-from django.utils.translation import ugettext_lazy as _
-from django.urls import reverse
-from django.shortcuts import get_object_or_404
-from .managers import CartManager
-from .validators import validate_positive_decimal
-
 from site_settings.constants import CURRENCY
-from catalogue.models import Product, Gifts
-from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass
-from voucher.models import Voucher
-from decimal import Decimal
-
 from subscribe.models import Subscribe, UserSubscribe
 
 User = get_user_model()

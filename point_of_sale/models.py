@@ -19,6 +19,7 @@ from site_settings.constants import TAXES_CHOICES
 from catalogue.models import Product
 from catalogue.product_attritubes import Attribute, AttributeClass
 from .abstract_models import DefaultOrderModel, DefaultOrderItemModel
+from .subscribe_models import *
 from site_settings.models import PaymentMethod, Shipping, Country
 from site_settings.constants import CURRENCY, ORDER_STATUS, ORDER_TYPES, ADDRESS_TYPES
 from site_settings.tools import clean_date_filter
@@ -94,9 +95,11 @@ class Order(DefaultOrderModel):
         order_items = self.order_items.all()
         self.count_items = order_items.count() if order_items else 0
         self.voucher_discount = self.handle_vouchers()
+        self.subscribe_cost = self.calculate_value_from_subs()
+        self.subscribe_discount_cost = self.calculate_sub_discount()
         self.update_order()
         self.final_value = self.shipping_method_cost + self.payment_cost + self.value + self.subscribe_cost \
-                           - self.discount - self.voucher_discount - self.subscribe_discount_cost
+                           - self.discount - Decimal(self.voucher_discount) - Decimal(self.subscribe_discount_cost)
         self.paid_value = self.final_value if self.is_paid else 0
         if self.id:
             self.title = f'{self.get_order_type_display()}- 000{self.id}' if not self.title else self.title
@@ -228,38 +231,23 @@ class Order(DefaultOrderModel):
         qs = Order.objects.filter(vouchers=voucher)
         return True if qs.exists() else False
 
+    def calculate_value_from_subs(self):
+        qs = OrderSubscribe.objects.filter(order_related=self)
+        value = qs.aggregate(Sum('value'))['value__sum'] if qs.exists() else 0.00
+        return value
+
+    def calculate_sub_discount(self):
+        qs = OrderSubscribeDiscount.objects.filter(order_related=self)
+        value = qs.aggregate(Sum('total_discount'))['total_discount__sum'] if qs.exists() else 0.00
+        return value
+
     def create_subs_from_eshop_order(self, cart, user):
         for cart_subscribe in cart.cart_subscribe.all():
-            check_if_exists = UserSubscribe.check_active_subscription(user, cart_subscribe.subscribe)
-            if not check_if_exists:
-                UserSubscribe.objects.create(
-                    subscription=cart_subscribe.subscribe,
-                    user=user,
-                    value=cart_subscribe.value,
-                    uses=cart_subscribe.subscribe.uses
-                )
-        for cart_subscribe in cart.cart_subscribe.all():
-            OrderSubscribe.objects.create(
-                subscribe=cart_subscribe.subscribe,
-                order_related=self,
-                value=cart_subscribe.value,
-                cart_related=cart_subscribe
-            )
-        qs = OrderSubscribe.objects.filter(order_related=self)
-        add_value = qs.aggregate(Sum('value'))['value__sum'] if qs.exists() else 0.00
-        self.subscribe_cost = Decimal(add_value)
-        self.save()
+            OrderSubscribe.create_sub_from_cart(cart_subscribe, self)
 
     def create_sub_discounts_from_eshop_order(self, cart, user):
-        for discount_order in cart.cartsubscribediscount_set.all():
-            new_order_discount = OrderSubscribeDiscount.objects.create(
-                order_related=self,
-                uses=discount_order.total_uses,
-                total_discount=discount_order.total_discount,
-            )
-            if discount_order.subscribe:
-                new_order_discount.subscription = discount_order.user_subscribe
-                new_order_discount.save()
+        for cart_discount in cart.cartsubscribediscount_set.all():
+            OrderSubscribeDiscount.create_discount_from_cart(cart_discount, self)
 
     def create_gifts(self, cart):
         for gift in cart.gifts.all():
@@ -358,18 +346,6 @@ class Order(DefaultOrderModel):
 
     def paid_color(self):
         return 'success' if self.is_paid else 'primary'
-
-
-@receiver(post_save, sender=Order)
-def create_unique_number(sender, instance, **kwargs):
-    if not instance.number:
-        MAX_NUMBERS = 8
-        len_num = len(str(instance.id))
-        filling_len = MAX_NUMBERS-len_num
-        instance.number = filling_len*'0'+ str(instance.id)
-        instance.save()
-    if instance.profile:
-        instance.profile.save()
 
 
 class OrderItem(DefaultOrderItemModel):
@@ -624,124 +600,6 @@ class SendReceipt(models.Model):
     email = models.EmailField(blank=True)
     shipping_code = models.CharField(max_length=240, blank=True)
     shipping_method = models.ForeignKey(Shipping, on_delete=models.SET_NULL, null=True)
-
-
-@receiver(post_save, sender=OrderItemAttribute)
-def update_warehouse_on_create_attr(sender, instance, created, **kwargs):
-    if created:
-        order_item = instance.order_item
-        attribute = instance.attribute
-        if RETAIL_TRANSCATIONS:
-            attribute.save()
-        else:
-            if MANUAL_RETAIL_TRANSCATIONS:
-                if order_item.order.order_type in POSITIVE_ORDER_TYPES:
-                    attribute.qty += instance.qty
-                else:
-                    attribute.qty -= instance.qty
-                attribute.save()
-        if RETAIL_TRANSCATIONS or MANUAL_RETAIL_TRANSCATIONS:
-            order_item.save()
-
-
-@receiver(post_delete, sender=OrderItemAttribute)
-def update_order_item_on_delete(sender, instance, **kwargs):
-    order_item = instance.order_item
-    attribute = instance.attribute
-    if RETAIL_TRANSCATIONS:
-        attribute.save()
-    else:
-        if MANUAL_RETAIL_TRANSCATIONS:
-            if order_item.order.order_type in POSITIVE_ORDER_TYPES:
-                attribute.qty += instance.qty
-            else:
-                attribute.qty -= instance.qty
-            attribute.save()
-    if RETAIL_TRANSCATIONS or MANUAL_RETAIL_TRANSCATIONS:
-        order_item.save()
-
-
-@receiver(post_save, sender=OrderItem)
-def update_warehouse_on_create_order_item(sender, instance, created, **kwargs):
-    if created:
-        product = instance.title
-        if RETAIL_TRANSCATIONS:
-            product.save()
-        else:
-            if MANUAL_RETAIL_TRANSCATIONS:
-                if not instance.attribute:
-                    if instance.order.order_type in POSITIVE_ORDER_TYPES:
-                        product.qty -= instance.qty
-                    else:
-                        product.qty += instance.qty
-                    product.save()
-
-
-@receiver(post_delete, sender=OrderItem)
-def update_warehouse(sender, instance, **kwargs):
-    product = instance.title
-    if RETAIL_TRANSCATIONS:
-        product.save()
-    else:
-        if MANUAL_RETAIL_TRANSCATIONS:
-            if not instance.attribute:
-                if instance.order.order_type in POSITIVE_ORDER_TYPES:
-                    product.qty += instance.qty
-                else:
-                    product.qty -= instance.qty
-                product.save()
-    instance.order.save()
-
-
-class OrderSubscribe(models.Model):
-    order_related = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_subscribe')
-    subscribe = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
-    value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
-    cart_related = models.OneToOneField(CartSubscribe, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return self.subscribe.title
-
-    def tag_value(self):
-        return f'{self.value} {CURRENCY}'
-
-
-class OrderSubscribeDiscount(models.Model):
-    order_related = models.ForeignKey(Order, on_delete=models.CASCADE)
-    subscription = models.ForeignKey(UserSubscribe, on_delete=models.SET_NULL, null=True)
-    total_discount = models.DecimalField(max_digits=20, decimal_places=2, default=0)
-    uses = models.IntegerField(default=0)
-
-    @staticmethod
-    def check_if_subscription_exists(user):
-        sub_exists, sub_qs = UserSubscribe.check_active_subscription(user)
-        if sub_exists:
-            return True, sub_qs.first()
-        return False, None
-
-    @staticmethod
-    def check_or_create_subscription(order, subscription):
-        value, uses = 0, 0
-        remaining_uses = subscription.uses
-        products = subscription.subsribe.products.all()
-        while remaining_uses > 0:
-            for order_item in order.order_items.all():
-                if order_item.product in products:
-                    value += order_item.total
-                    uses += order_item.uses
-                    remaining_uses -= order_item.uses
-        new_subscribe, created = OrderSubscribeDiscount.objects.create(order_related=order, subscription=subscription)
-        new_subscribe.total_discount = value
-        new_subscribe.uses = uses
-        new_subscribe.save()
-
-
-@receiver(post_save, sender=OrderSubscribeDiscount)
-def update_order_on_sub_create(sender, instance, created, **kwargs):
-    if created:
-        order = instance.order_related
-        order.subscribe_discount_cost = instance.total_discount
-        order.save()
 
 
 class OrderGift(models.Model):

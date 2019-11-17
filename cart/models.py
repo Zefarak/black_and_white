@@ -13,7 +13,7 @@ from .validators import validate_positive_decimal
 from site_settings.models import Shipping, PaymentMethod
 from site_settings.constants import CURRENCY
 from catalogue.models import Product, Gifts
-from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass
+from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass, AttributeRelated
 from .subscribe_models import CartSubscribe, CartSubscribeDiscount
 from voucher.models import Voucher
 from decimal import Decimal
@@ -93,6 +93,7 @@ class Cart(models.Model):
         self.value = cart_items.aggregate(Sum('total_value'))['total_value__sum'] if cart_items.exists() else 0
         self.voucher_discount = self.discount_from_vouchers()
         self.discount_value = self.calculate_discount_from_subs()
+        self.subscribe_value = self.calculate_new_subscribes()
         self.payment_method_cost = 0.00 if not self.payment_method else self.payment_method.estimate_additional_cost(self.value)
         self.shipping_method_cost = 0.00 if not self.shipping_method else self.shipping_method.estimate_additional_cost(self.value)
         self.final_value = Decimal(self.value) - Decimal(self.discount_value) - Decimal(self.voucher_discount)\
@@ -107,20 +108,20 @@ class Cart(models.Model):
             discount = Voucher.calculate_discount_value(instance=cart, vouchers=vouchers)
         return round(discount, 2)
 
+    def calculate_new_subscribes(self):
+        new_subs = self.cart_subscribe.all()
+        return new_subs.aggregate(Sum('value'))['value__sum'] if new_subs.exists() else 0.00
+
     def calculate_discount_from_subs(self):
         cart_items = self.order_items.all()
         subs = self.cart_subscribe.all()
         user_subs = self.user.my_subscribes.filter(active=True) if self.user else Subscribe.objects.none()
         cart_discounts = self.cartsubscribediscount_set.all()
-        for cart_d in cart_discounts:
-            # resets all the data
-            cart_d.total_uses = 0
-            cart_d.total_discount = 0
-            cart_d.save()
+        cart_discounts.update(total_discount=0, total_uses=0)
         cart_item_id_used = []
         for cart_item in cart_items:
             for user_sub in user_subs:
-                have_sub = cart_item.check_if_product_in_subscribe(user_sub)
+                have_sub = cart_item.check_if_product_in_user_sub(user_sub)
                 if have_sub:
                     qty = cart_item.qty if cart_item.qty <= user_sub.subscription.uses else user_sub.subscription.uses
                     cart_discount, created = CartSubscribeDiscount.objects.get_or_create(
@@ -128,48 +129,50 @@ class Cart(models.Model):
                         subscribe=user_sub.subscription,
                         cart_type='b',
                     )
-                    cart_discount.total_uses = qty if created else cart_discount.total_uses + qty
+                    if created:
+                        total_uses = cart_item.qty if cart_item.qty <= user_sub.uses else user_sub.uses
+                        cart_discount.total_uses = total_uses
+                        cart_discount.total_discount = total_uses*cart_item.final_value
+                    else:
+                        qty = cart_item.qty + cart_discount.total_uses
+                        if qty <= user_sub.uses:
+                            cart_discount.total_uses += cart_item.qty
+                            cart_discount.total_discount += cart_item.total_value
+                        else:
+                            difference = user_sub.uses - cart_discount.total_uses
+                            cart_discount.total_uses = user_sub.uses
+                            cart_discount.total_discount += difference*cart_item.final_value
                     cart_discount.save()
                     cart_item_id_used.append(cart_item.id)
-                    break
+
             if not cart_item.id in cart_item_id_used:
                 for sub in subs:
                     have_sub = cart_item.check_if_product_in_subscribe(sub)
                     if have_sub:
-                        qty = cart_item.qty if cart_item.qty <= sub.subscribe.uses else sub.subscribe.uses
                         cart_discount, created = CartSubscribeDiscount.objects.get_or_create(
                             cart_related=cart_item.cart,
                             subscribe=sub.subscribe,
                             cart_type='a',
                         )
-                        cart_discount.total_uses = qty if created else cart_discount.total_uses + qty
+                        if created:
+                            qty = cart_item.qty if cart_item.qty <= sub.subscribe.uses else sub.subscribe.uses
+                            cart_discount.qty = qty
+                            cart_discount.total_discount = qty*cart_item.final_value
+                        else:
+                            total_qty = cart_item.qty + cart_discount.total_uses
+                            qty = total_qty if total_qty <= sub.subscribe.uses else sub.subscribe.uses
+                            if total_qty > sub.subscribe.uses:
+                                print('total_qty', total_qty)
+                                discount_qty = sub.subscribe.uses - cart_discount.total_uses
+                                cart_discount.total_discount += discount_qty*cart_item.final_value
+                            else:
+                                cart_discount.total_discount += cart_item.total_value
+                            cart_discount.total_uses = qty if created else cart_discount.total_uses + qty
                         cart_discount.save()
                         cart_item_id_used.append(cart_item.id)
-                        break
-            continue
-
-        '''
-        for sub in subs:
-            for cart_item in cart_items:
-                if cart_item not in cart_item_used:
-                    have_sub = cart_item.check_if_product_in_subscribe(sub)
-                    if have_sub:
-                        cart_discount, created = CartSubscribeDiscount.objects.get_or_create(cart_related=cart_item.cart,
-                                                                                             subscribe_related=sub,
-                                                                                             cart_type='a'
-                                                                                             )
-                        if created:
-                            cart_discount.total_uses = sub.subscribe.uses if cart_item.qty > sub.subscribe.uses else cart_item.qty
-                        else:
-                            cart_discount.total_uses += cart_item.qty
-
-                        cart_discount.total_discount = cart_discount.total_uses * cart_item.final_value
-                        cart_discount.save()
-                else:
-                    continue
-        '''
         discount_subs = self.cartsubscribediscount_set.all()
         total_discount = discount_subs.aggregate(Sum('total_discount'))['total_discount__sum'] if discount_subs.exists() else 0.00
+        print('total_discount', total_discount, discount_subs.count())
         return total_discount
 
     @staticmethod
@@ -255,6 +258,11 @@ class CartItem(models.Model):
             return True
         return False
 
+    def check_if_product_in_user_sub(self, sub):
+        if self.product in sub.subscription.products.all():
+            return True
+        return False
+
     def get_delete_frontend_url(self):
         return reverse('delete_from_cart', kwargs={'pk': self.id})
 
@@ -282,7 +290,7 @@ class CartItem(models.Model):
         try:
             qty = int(qty)
         except:
-            qty = Decimal(qty)
+            qty = 1
         cart_item = CartItem.objects.create(cart=cart, product=product, qty=qty)
         CartItemGifts.check_if_gift_exists(cart_item)
         cart_item_attr = CartItemAttribute.objects.create(cart_item=cart_item)
@@ -305,16 +313,21 @@ class CartItem(models.Model):
     @staticmethod
     def add_product_to_cart(request, cart, product):
         # only for products without attrs
-        qty = 1 # request.POST.get('qty', 1)
+        qty = request.POST.get('qty', 1)
         try:
             qty = int(qty)
         except:
             qty = Decimal(1)
         cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
         cart_item.qty = qty if created else cart_item.qty + qty
+        if product.support_transcations:
+            if cart_item.qty >= product.qty:
+                cart_item.qty = product.qty
+                messages.warning(request, f'Προσθέσαμε μόνο {product.qty} τεμάχια στο καλάθι επειδή δε υπάρχει αρκετο υπόλοιπο στο κατάστημα.')
         cart_item.save()
         cart_item.refresh_from_db()
         CartItemGifts.check_if_gift_exists(cart_item)
+
         return cart_item
 
     @staticmethod
@@ -375,7 +388,6 @@ class CartItemAttribute(models.Model):
             cart_item_attr.qty += qty
             cart_item_attr.save()
         return True, f'To Προϊόν {cart_item.product} με νούμερο {cart_item_attr.attribute} προστέθηκε με επιτυχία.'
-
 
 
 class CartProfile(models.Model):

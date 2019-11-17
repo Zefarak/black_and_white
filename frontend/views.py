@@ -189,6 +189,7 @@ class ProductView(DetailView, FormView):
 
     def form_valid(self, form):
         product = get_object_or_404(Product, slug=self.kwargs['slug'])
+
         if product.have_attr:
             for form_data in form:
                 print(form_data)
