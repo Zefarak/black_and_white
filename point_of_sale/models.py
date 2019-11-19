@@ -90,6 +90,7 @@ class Order(DefaultOrderModel):
         return self.title if self.title else 'order'
 
     def save(self, *args, **kwargs):
+
         if not self.number:
             self.number = get_random_string(length=30)
         order_items = self.order_items.all()
@@ -98,8 +99,8 @@ class Order(DefaultOrderModel):
         self.subscribe_cost = self.calculate_value_from_subs()
         self.subscribe_discount_cost = self.calculate_sub_discount()
         self.update_order()
-        self.final_value = self.shipping_method_cost + self.payment_cost + self.value + self.subscribe_cost \
-                           - self.discount - Decimal(self.voucher_discount) - Decimal(self.subscribe_discount_cost)
+        self.final_value = Decimal(self.shipping_method_cost) + Decimal(self.payment_cost) + Decimal(self.value) + Decimal(self.subscribe_cost) \
+                           - Decimal(self.discount) - Decimal(self.voucher_discount) - Decimal(self.subscribe_discount_cost)
         self.paid_value = self.final_value if self.is_paid else 0
         if self.id:
             self.title = f'{self.get_order_type_display()}- 000{self.id}' if not self.title else self.title

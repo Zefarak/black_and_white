@@ -10,7 +10,7 @@ User = get_user_model()
 class OrderSubscribe(models.Model):
     order_related = models.ForeignKey('point_of_sale.Order', on_delete=models.CASCADE, related_name='order_subscribes')
     subscribe = models.ForeignKey(Subscribe, on_delete=models.SET_NULL, null=True)
-    value = models.DecimalField(default=0, max_digits=20, decimal_places=2),
+    value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
 
     class Meta:
         app_label = 'point_of_sale'
@@ -31,12 +31,12 @@ class OrderSubscribe(models.Model):
         OrderSubscribe.objects.create(
             order_related=order,
             subscribe=cart_subscribe.subscribe,
-            value=cart_subscribe.value
+
         )
         UserSubscribe.objects.create(
             subscription=cart_subscribe.subscribe,
             user=order.user,
-            uses=cart_subscribe.uses,
+            uses=cart_subscribe.subscribe.uses,
             value=cart_subscribe.value
         )
 
@@ -51,7 +51,9 @@ class OrderSubscribeDiscount(models.Model):
         app_label = 'point_of_sale'
 
     def __str__(self):
-        return f'{self.subscribe.title} ==> Εκπτωση.. {self.total_discount}'
+        if self.subscribe:
+            return f'{self.subscribe.title} ==> Εκπτωση.. {self.total_discount}'
+        return 'malakiues'
 
     @staticmethod
     def create_discount_from_cart(cart_discount, order):

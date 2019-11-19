@@ -77,6 +77,9 @@ class Profile(models.Model):
     def get_edit_url(self):
         return reverse('point_of_sale:costumer_update_view', kwargs={'pk': self.id})
 
+    def get_user_edit_url(self):
+        return reverse('point_of_sale:user_detail_view', kwargs={'pk': self.id})
+
     def get_card_url(self):
         return reverse('point_of_sale:costumer_account_card', kwargs={'pk': self.id})
 

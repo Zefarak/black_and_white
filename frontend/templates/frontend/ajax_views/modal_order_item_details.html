@@ -1,0 +1,44 @@
+<div class="modal fade" id="quick_view_modal" tabindex="-1" role="dialog" aria-labelledby="message_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{ instance }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <ul class="messages">
+                    <h4>Αξία...{{ instance.tag_final_value }}</h4>
+                    <hr>
+                    <h6>Δώρα</h6>
+                    <small>Προσοχή μπορεί να έχουν αλλάξει τα δώρα, Δείτε το καλάθι σας μετά την προσθήκη για επιβεβαίωση.</small>
+                    <ul class="list-group">
+                        {% for gift in gifts %}
+                            <li class="list-group-item">{{ gift.products_gift }}</li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    {% if instance.have_attr %}
+                        <h6>Χαρακτηριστικά</h6>
+                        <ul class="list-group">
+                            {% for char in instance.attributes.all %}
+                                {% for attr_ in char.attribute.all %}
+                                    <li class="list-group-item"> {{ attr_.class_related.class_related }} ==>{{ attr_ }} </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </ul>
+
+                <hr>
+                <a href="{% url 'add_order_item_to_cart' instance.id %}" class="btn btn-success"><i class="fa fa-plus"></i> Προσθηκη </a>
+                <a href="{{ instance.title.get_absolute_url }}" class="btn btn-info">Ξανα παραγγειλε το από την αρχη</a>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Κλεισιμο</button>
+              </div>
+        </div>
+    </div>
+</div>

@@ -2,8 +2,10 @@ from django.urls import path
 from .views import (OrderListView, CreateOrderView, OrderUpdateView, delete_order,
                     check_product, add_to_order_with_attr, order_item_edit_with_attr, OrderItemListView,
                     CostumerCreateView, CostumerListView, CostumerUpdateView, delete_costumer_view,
-                    CostumerAccountCardView, create_return_order_view
+                    CostumerAccountCardView
                     )
+from .user_views import UserListView, UserDetailView
+
 from .ajax_views import (ajax_order_item, ajax_search_products, ajax_add_product, ajax_costumers_report,
                          ajax_search_costumers, ajax_costumer_order_pay_view, ajax_search_products_for_cart,
                          ajax_add_product_with_attribute, ajax_edit_product_with_attr_view, ajax_order_search_costumer
@@ -11,7 +13,9 @@ from .ajax_views import (ajax_order_item, ajax_search_products, ajax_add_product
 from .views_actions import (auto_create_retail_order, done_order_view, quick_pay_costumer_view, create_copy_order,
                             OrderPrintView, CreateCostumerFromOrder, order_change_costumer, ProfileOrderDetailView,
                             create_or_edit_order_voucher_view, order_voucher_manager_view)
-from .eshop_views import EshopOrderListView, EshopOrderDetailView, eshop_order_edit_profile, create_user_view, CreateShippingVoucher
+from .eshop_views import (EshopOrderListView, EshopOrderDetailView, eshop_order_edit_profile,
+                          create_user_view, CreateShippingVoucher, status_done_orders_view
+                          )
 from .ajax_eshop_views import ajax_change_status, ajax_find_product, ajax_find_product_attr, ajax_coupon_view
 from .autocomplete_widget import ProfileAutoComplete
 
@@ -76,5 +80,10 @@ urlpatterns = [
     path('profile/edit/<int:pk>/', eshop_order_edit_profile, name='eshop_edit_profile'),
     path('create-user-from-order/<int:pk>/', create_user_view, name='eshop_create_user'),
     path('ajax/find-attr-warehouse/<int:pk>/', ajax_find_product_attr, name='ajax_attr_found'),
-    path('ajax/voucher-create/<int:pk>/', ajax_coupon_view, name='ajax_voucher_add')
+    path('ajax/voucher-create/<int:pk>/', ajax_coupon_view, name='ajax_voucher_add'),
+    path('orders/set-done/', status_done_orders_view, name='orders_set_done'),
+
+    # user section
+    path('user-section/list/', UserListView.as_view(), name='user_list_view'),
+    path('user-section/detail/<int:pk>/', UserDetailView.as_view(), name='user_detail_view'),
 ]

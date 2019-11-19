@@ -23,28 +23,25 @@ class CartSubscribe(models.Model):
     def save(self, *args, **kwargs):
         self.value = self.subscribe.value
         super().save(*args, **kwargs)
+        self.cart_related.save()
 
     def tag_value(self):
         return f'{self.value} {CURRENCY}'
 
     @staticmethod
     def check_and_create_cart_subscribe(request, cart, subscribe):
-        check_if_can_use, cart_sub = False, None
-        user_exist = request.user.is_authenticated
-        if user_exist:
-            check_if_sub_in_cart = CartSubscribe.objects.filter(cart_related=cart, subscribe=subscribe)
-            if check_if_sub_in_cart.exists():
-                check_if_sub_in_cart, cart_sub = True, check_if_sub_in_cart.first()
-                messages.info(request, 'Εχετε ήδη προσθέσει αυτή την συνδρομή')
-            else:
-                new_sub = CartSubscribe.objects.create(cart_related=cart, subscribe=subscribe)
-                check_if_can_use, cart_sub = True, new_sub
-                messages.success(request, 'Η συνδρομή προστεθηκε στο καλαθι σας.')
-            # you do this for send the signal to create the discounts needed.
-            cart.save()
-        else:
-            messages.warning(request, 'Πρεπει να συνδεθείτε για να προσθέσετε συνδρομή')
-        return check_if_can_use, cart_sub
+        user = request.user
+        user_subs = UserSubscribe.objects.filter(subscription__category_type=subscribe.category_type, user=user, active=True)
+        cart_subs = cart.cart_subscribe.all()
+        if user_subs.exists():
+            messages.warning(request, 'Χρησιμοποιείται ήδη συνδρομή αυτής της κατηγορίας.')
+            return False
+        if cart_subs.exists():
+            messages.warning(request, 'Έχετε χρησιμοποιήσει συνδρομή αυτής της κατηγορίας στο καλάθι σας.')
+            return False
+        new_sub = CartSubscribe.objects.create(cart_related=cart, subscribe=subscribe)
+        messages.success(request, 'Η συνδρομή προστεθηκε στο καλαθι σας.')
+        return True
 
 
 class CartSubscribeDiscount(models.Model):

@@ -3,11 +3,13 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from catalogue.models import Product
+
+from catalogue.models import Product, Gifts
 from catalogue.product_attritubes import Attribute
 from catalogue.product_details import Brand
 from cart.models import CartItem, CartItemAttribute, CartItemGifts
 from cart.tools import check_or_create_cart
+from point_of_sale.models import OrderItem
 from voucher.models import Voucher
 from site_settings.models import Shipping, PaymentMethod
 from contact.forms import ContactFrontEndForm
@@ -181,7 +183,6 @@ def ajax_add_product_modal(request, slug):
 
 
 def ajax_quick_modal_view(request, slug):
-    print('here!')
     product = get_object_or_404(Product, slug=slug)
     attributes = Attribute.my_query.product_attributes(product)
     data = dict()
@@ -191,6 +192,22 @@ def ajax_quick_modal_view(request, slug):
                                                'attributes': attributes
                                             }
                                          )
+    return JsonResponse(data)
+
+
+@login_required
+def ajax_modal_show_order_item_details(request, pk):
+    instance = get_object_or_404(OrderItem, id=pk, order__user=request.user)
+    gifts = Gifts.objects.filter(product_related=instance.title)
+    print(gifts)
+    data = dict()
+    data['result'] = render_to_string(request=request,
+                                      template_name='frontend/ajax_views/modal_order_item_details.html',
+                                      context={
+                                          'instance': instance,
+                                          'gifts': gifts
+                                      }
+                                      )
     return JsonResponse(data)
 
 

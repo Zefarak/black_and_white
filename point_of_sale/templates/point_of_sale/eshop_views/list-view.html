@@ -14,14 +14,26 @@
             <div class="main-body">
                 <div class="page-wrapper">
                     <div class="page-body">
+                        {% if new_orders %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card" style="background-color: red">
+                                        <div class="card-header">
+                                             <h4>Εχετε Νεες Παραγγελιες</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- Zero config.table start -->
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>{{ page_title }}</h5>
-                                        <br><br>
-                                        <a href="{{ create_url }}?next={{ request.get_full_path|urlencode }}" class="btn btn-info btn-round">Δημιουργία</a>
+                                        <br>
+                                        <a href="{% url 'point_of_sale:orders_set_done' %}" class="btn btn-info btn-round">Ολοκληρώθηκαν</a><br>
+                                        <small>Μετατρέπει ολες τις παραγγελιες σε ολοκληρώθηκαν</small>
 
                                     </div>
                                     <div class="card-block">
@@ -31,7 +43,6 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -76,4 +87,10 @@
             })
         </script>
     {% endif %}
+
+    <script>
+        setTimeout(function(){
+            window.location.reload(1);
+            }, 60000);
+    </script>
 {% endblock %}

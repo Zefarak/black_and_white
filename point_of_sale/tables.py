@@ -46,6 +46,7 @@ class OrderEshopTable(tables.Table):
                                    " class='btn btn-{{ record.paid_color }}'><i class='fa fa-edit'></i></a>",
                                    orderable=False
                                    )
+
     tag_final_value = tables.Column(orderable=False, verbose_name='Αξία')
 
     tag_profile_full_name = tables.Column(verbose_name='Στοιχεία Χρήστη', orderable=False)

@@ -24,6 +24,7 @@ class EshopOrderListView(ListView):
     def get_queryset(self):
         qs = Order.my_query.get_queryset().eshop_orders()
         qs = Order.eshop_orders_filtering(self.request, qs)
+        qs = qs.order_by('status')
         return qs
 
     def get_context_data(self, **kwargs):
@@ -38,6 +39,7 @@ class EshopOrderListView(ListView):
         date_now = datetime.datetime.now() - relativedelta(month=6)
         date_now, date_end = date_now.strftime('%m/%d/%Y'), datetime.datetime.now().strftime('%m/%d/%Y')
         date_range = self.request.GET.get('daterange', f'{date_now} - {date_end}')
+        new_orders = self.object_list.filter(status='1').exists()
         context.update(locals())
         return context
 
@@ -141,3 +143,10 @@ class EditShippingVoucher(UpdateView):
 
         context.update(locals())
         return context
+
+
+@staff_member_required
+def status_done_orders_view(request):
+    orders = Order.objects.exclude(status__in=['1', '8'])
+    orders.update(status='8')
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

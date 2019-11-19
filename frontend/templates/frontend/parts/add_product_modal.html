@@ -128,6 +128,11 @@
                     $(my_class).hide();
                     $(".container_"+ new_val+ " :input").attr('data-remove', new_val);
                     $(".container_"+ new_val+ " :input").attr('data-remove-href', url);
+                    const myClass = $('.my_attr_'+data.id);
+                        for (i=0; i< myClass.length; i++){
+                            myClass[i].checked = false;
+
+                        }
 
 
                 }

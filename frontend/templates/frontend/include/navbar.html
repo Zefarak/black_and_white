@@ -44,6 +44,7 @@
                                         {% endfor %}
                                         <li><a href="{% url 'blog:homepage' %}">Blog</a> </li>
                                         <li><a href="{% url 'subscribe:frontend_subscribe_list' %}">Συνδρομη</a> </li>
+                                        <li><a href="{% url 'contact_view' %}">Επικοινωνία</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -81,7 +82,7 @@
                                         </div>
                                     </li>
                                     <li class="onhover-div mobile-setting">
-                                        <div><img src="{% static 'frontend' %}/assets/images/icon/setting.png" class="img-fluid blur-up lazyload" alt=""> <i class="ti-settings"></i></div>
+                                        <div><img src="{% static 'frontend/assets/images/icon/users.png' %}" class="img-fluid blur-up lazyload" alt=""> <i class="ti-settings"></i></div>
                                         <div class="show-div setting">
                                             <h6>Account</h6>
                                             <ul>

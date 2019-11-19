@@ -183,7 +183,7 @@
                                                                     <div>
                                                                         <div class="custom-control custom-radio">
                                                                             <input value='{{ attr.id }}'
-                                                                                   name='attr_{{ attr_header.id }}' type="radio" class="custom-control-input attr_input" id="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}"
+                                                                                   name='attr_{{ attr_header.id }}' type="radio" class="custom-control-input attr_input my_attr_{{ attr_header.id }}" id="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}"
                                                                             {% if attr.title.take_action %}
                                                                                    data-extra="{{ attr_header.id }}"
                                                                                    data-href="{% url 'dashboard:ajax_show_or_hide_attr' attr_header.id %}"
@@ -436,9 +436,15 @@
                     url: url,
                     success: function (data) {
                         const my_class = '.container_'+ data.id;
-                        $(my_class).hide()
+                        $(my_class).hide();
                         $(".container_"+ new_val+ " :input").attr('data-remove', new_val);
                         $(".container_"+ new_val+ " :input").attr('data-remove-href', url);
+                        const myClass = $('.my_attr_'+data.id);
+                        for (i=0; i< myClass.length; i++){
+                            myClass[i].checked = false;
+
+                        }
+
                     }
                 })
             }
@@ -449,7 +455,7 @@
             const myInput = $(this);
             const removeData = myInput.attr('data-remove');
             const url = myInput.attr('data-remove-href');
-            const new_val = myInput.attr('data-extra')
+            const new_val = myInput.attr('data-extra');
             if (removeData !== undefined && new_val == undefined){
                 $.ajax({
                     dataType: 'json',

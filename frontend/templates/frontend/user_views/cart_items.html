@@ -33,11 +33,11 @@
                                                         <td>{{ product }}</td>
                                                         <td></td>
                                                         <td>
-                                                            <a href="" class="btn btn-round btn-success" title="Add to Cart">
-                                                                <span>Το ξαναθελω</span>
+                                                            <a data-href="{% url 'ajax_show_order_item' product.id %}" class="btn btn-round btn-success order_item_detail" title="Add to Cart">
+                                                                <span>Λεπτομέριες</span>
                                                             </a>
                                                         </td>
-                                                        <td><a href='' class='btn btn-warning'><i class='fa fa-remove'></i></a>
+                                                        <td><a href='' class='btn btn-warning'><i class='fa fa-plus'></i>Προσθήκη</a>
                                                 {% empty %}
                                                     <tr><td colspan="5">Δε έχετε προσθέσει Προϊόντα στην Wishlist</td></tr>
                                                 {% endfor %}
@@ -51,7 +51,33 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-12">
+        <div id="modal_area"></div>
+    </div>
 {% endblock %}
 
+{% block extra_js %}
+    <script type="text/javascript">
+        $('.order_item_detail').click(function (evt) {
+            evt.preventDefault();
+            $('#modal_area').empty();
+            const thisBtn = $(this);
+            const url = thisBtn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                url: url,
+                dataType: 'json',
+
+                 success: function (data) {
+                    console.log('here');
+                    $('#modal_area').html(data.result);
+                    $('#quick_view_modal').modal('show');
+                }
+
+            })
+
+        })
+    </script>
+{% endblock %}
 
 

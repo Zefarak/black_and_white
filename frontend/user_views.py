@@ -18,7 +18,7 @@ from accounts.forms import LoginForm, SignUpForm, ProfileFrontEndForm, UpdatePas
 from accounts.token import account_activation_token
 from cart.models import CartItem, Cart
 from cart.tools import check_or_create_cart
-from point_of_sale.models import Order
+from point_of_sale.models import Order, OrderItem
 from catalogue.models import Product
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -198,15 +198,15 @@ class UserProfileOrderListView(ListView):
 
 @method_decorator(login_required, name='dispatch')
 class UserCartItemsView(ListView):
-    model = CartItem
+    model = OrderItem
     template_name = 'frontend/user_views/cart_items.html'
     paginate_by = 20
 
     def get_queryset(self):
         user = self.request.user
-        carts = Cart.objects.filter(user=user)
-        cart_items = CartItem.objects.filter(cart__in=carts)
-        return cart_items
+        carts = Order.objects.filter(user=user)
+        order_items = OrderItem.objects.filter(order__in=carts)
+        return order_items
 
 
 @method_decorator(login_required, name='dispatch')
@@ -261,6 +261,7 @@ def user_subscription_view(request):
     user = request.user
     subscribes = Subscribe.objects.filter(active=True)
     user_subscribes = user.my_subscribes.all()
+    active_subs = user_subscribes.filter(active=True)
     old_user_subs = user_subscribes.filter(active=False)
 
     return render(request, 'frontend/user_views/user_subscription_page.html', context=locals())

@@ -13,123 +13,134 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="success-text"><i class="fa fa-check-circle" aria-hidden="true"></i>
-                    <h2>Σας ευχαριστουμε!</h2>
-                    <p>Η παραγγελία σας ολοκληρώθηκε επιτυχώς. Θα σας αποστείλουμε τα προϊόντα μετά απο τηλεφωνική επικοινωνία. Σας ευχαριστούμε για την προτίμησή σας</p>
-                    <p>Transaction ID: {{ order.number }}</p>
-                    <hr>
-                    <h4>{{ order.title }}</h4>
-                    <hr><br>
-                    <button type="button" data-toggle="modal" data-target="#reOrderModal"  class="btn btn-success">Επαναληψη Παραγγελιας</button>
-                    <br> <br> <br>
-                    {% if order.favorite_order %}
-                        <a href="{% url 'order_change_status' order.id %}" class="btn btn-danger">Αφαιρεσε την απο Αγαπημενη Παραγγελια</a>
+                    {% if success_order %}
+                        <h2>Σας ευχαριστουμε!</h2>
+                        <p>Η παραγγελία σας ολοκληρώθηκε επιτυχώς. Θα σας αποστείλουμε τα προϊόντα μετά απο τηλεφωνική επικοινωνία. Σας ευχαριστούμε για την προτίμησή σας</p>
+                        <p>Transaction ID: {{ order.number }}</p>
+                        <hr>
+                        <a href="{% url 'frontend_order_detail' order.number %}" class="btn btn-classic">Επεξεργασία Παραγγελίας</a>
                     {% else %}
-                        <a href="{% url 'order_change_status' order.id %}" class="btn btn-danger">Καντην Αγαπημενη Παραγγελια</a>
+
+                        <h2>{{ order.title }}</h2>
+                        <hr><br>
+                        {% if request.user.is_authenticated %}
+                        <button type="button" data-toggle="modal" data-target="#reOrderModal"  class="btn btn-success">Επαναληψη Παραγγελιας</button>
+                        <br> <br> <br>
+                        {% if order.favorite_order %}
+                            <a href="{% url 'order_change_status' order.id %}" class="btn btn-danger">Αφαιρεσε την απο Αγαπημενη Παραγγελια</a>
+                        {% else %}
+                            <a href="{% url 'order_change_status' order.id %}" class="btn btn-danger">Καντην Αγαπημενη Παραγγελια</a>
+                        {% endif %}
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#nameModal">
+                          Δωσε το δικο σου ονομα.
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Δώσε το δικό σου όνομα</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form method="post" class="form" action="{% url 'order_change_title' order.id %}">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Ονομασια</label>
+                                            <input type="text" name="title" class="form-control"  placeholder="{{ order.title }}">
+                                            <small id="emailHelp" class="form-text text-muted">Αλλάξτε το όνομα της παραγγελίας σας για εύκολο re-ordering</small>
+                                        </div>
+                                        <br>
+                                        <button type="submit" class="btn btn-success"> Αποθηκευση </button>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="reOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Επανάληψη Παραγγελίας</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <h4>Προϊόντα</h4>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Προϊόν</th>
+                                                <th>Ποσοτητα</th>
+                                                <th>Συνολική Αξία</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for order_item in order.order_items.all %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ order_item.title }}</td>
+                                                    <td>{{ order_item.qty }}</td>
+                                                    <td>{{ order_item.tag_current_value }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                      <br><hr>
+                                      <h4>Δώρα</h4>
+                                      <table class="table table-bordered">
+                                          <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Προϊόν</th>
+                                                <th>Ποσοτητα</th>
+                                            </tr>
+                                          </thead>
+                                        <tbody>
+                                            {% for order_item in order.gifts.all %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ order_item.product }}</td>
+                                                    <td>{{ order_item.qty }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                      </table>
+                                      <small>Προσοχή τα δώρα μπορεί να αλλάξουν με την δημιουργία νέας Παραγγελίας, σύμγωνα με τις τρέχοντες προσφορές του site</small>
+                                      <hr>
+                                        <ul class="list-group">
+                                            <li class="list-group-item">Διευθυνση --> {{ order.tag_address }}</li>
+                                            <li class="list-group-item">Τηλέφωνο --> {{ order.profile.tag_phones }}</li>
+
+                                        </ul>
+                                      <hr>
+                                      <a href="" class="btn btn-success">Δημιουργία Παραγγελιας</a>
+                                        <br><br>
+                                      <a href="" class="btn btn-info">Προσθήκη των προϊόντων στο καλάθι</a>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                            {% else %}
+                                <div class="alert alert-warning" role="alert">
+                                    <p>Πρέπει αν συνδεθείτε για να επεξεργαστείτε την παραγγελία</p>
+                                    <a href="{% url 'login' %}" class="btn btn-info">Συνδεση</a>
+                                </div>
+                            {% endif %}
                     {% endif %}
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#nameModal">
-                      Δωσε το δικο σου ονομα.
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="nameModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Δώσε το δικό σου όνομα</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <form method="post" class="form" action="{% url 'order_change_title' order.id %}">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Ονομασια</label>
-                                        <input type="text" name="title" class="form-control"  placeholder="{{ order.title }}">
-                                        <small id="emailHelp" class="form-text text-muted">Αλλάξτε το όνομα της παραγγελίας σας για εύκολο re-ordering</small>
-                                    </div>
-                                    <br>
-                                    <button type="submit" class="btn btn-success"> Αποθηκευση </button>
-                                </form>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="reOrderModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Επανάληψη Παραγγελίας</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <h4>Προϊόντα</h4>
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Προϊόν</th>
-                                            <th>Ποσοτητα</th>
-                                            <th>Συνολική Αξία</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for order_item in order.order_items.all %}
-                                            <tr>
-                                                <td>{{ forloop.counter }}</td>
-                                                <td>{{ order_item.title }}</td>
-                                                <td>{{ order_item.qty }}</td>
-                                                <td>{{ order_item.tag_current_value }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                                  <br><hr>
-                                  <h4>Δώρα</h4>
-                                  <table class="table table-bordered">
-                                      <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Προϊόν</th>
-                                            <th>Ποσοτητα</th>
-                                        </tr>
-                                      </thead>
-                                    <tbody>
-                                        {% for order_item in order.gifts.all %}
-                                            <tr>
-                                                <td>{{ forloop.counter }}</td>
-                                                <td>{{ order_item.product }}</td>
-                                                <td>{{ order_item.qty }}</td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                  </table>
-                                  <small>Προσοχή τα δώρα μπορεί να αλλάξουν με την δημιουργία νέας Παραγγελίας, σύμγωνα με τις τρέχοντες προσφορές του site</small>
-                                  <hr>
-                                    <ul class="list-group">
-                                        <li class="list-group-item">Διευθυνση --> {{ order.tag_address }}</li>
-                                        <li class="list-group-item">Τηλέφωνο --> {{ order.profile.tag_phones }}</li>
-
-                                    </ul>
-                                  <hr>
-                                  <a href="" class="btn btn-success">Δημιουργία Παραγγελιας</a>
-                                    <br><br>
-                                  <a href="" class="btn btn-info">Προσθήκη των προϊόντων στο καλάθι</a>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

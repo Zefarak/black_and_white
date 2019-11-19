@@ -26,15 +26,15 @@
 <div class="home-slider fullpage full-slider">
     {% if request.user.is_authenticated %}
         <div class="home text-left p-left">
-            <img src="{% static 'frontend/demo_images/no_image.png' %}" alt="" class="bg-img blur-up lazyload">
+            <img src="{% static 'frontend/my_assets/user_banner_photo.jpg' %}" alt="" class="bg-img blur-up lazyload">
             <div class="container">
                 <div class="row">
                     <div class="col">
                         <div class="slider-contain">
                             <div>
-                                <h1>Δειτε τις Παραγγελίίες σας!</h1>
-                                <a href="{% url 'user_profile' %}" class="btn btn-solid">Account</a>
-                                <a href="{% url 'user_profile' %}" class="btn btn-solid">Account</a>
+                                <h1>Δειτε τις Παραγγελιες σας!</h1>
+                                <a href="{% url 'user_profile' %}" class="btn btn-success btn-solid">Αγαπημενες Παραγγελιες</a>
+                                <a href="{% url 'user_cart_items' %}" class="btn btn-solid">Αγαπημενα Προϊόντα</a>
                             </div>
                         </div>
                     </div>
