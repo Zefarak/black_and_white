@@ -1,5 +1,81 @@
-{% extends 'point_of_sale/index.html' %}
+{% extends 'point_of_sale/index.html' %}{% load render_table from django_tables2 %}
 
 {% block content %}
-
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Στοιχεια Πελατη</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Στοιχείο</th>
+                                                    <th>Αξία</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Username</th>
+                                                    <td>{{ user.username }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Email</th>
+                                                    <td>{{ user.email }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Ονοματεπώνυμο</th>
+                                                    <td>{{ user.profile.full_name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Κινητό</th>
+                                                    <td>{{ user.profile.cellphone }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Σταθερό</th>
+                                                    <td>{{ user.profile.phone }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Διεύθυνση</th>
+                                                    <td>{{ user.profile.tag_full_address }} - {{ user.profile.shipping_zip_code }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Παραγγελίες</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        {% render_table orders_queryset %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Συνδρομές</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        {% render_table subs_queryset %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

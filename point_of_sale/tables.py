@@ -63,6 +63,26 @@ class OrderEshopTable(tables.Table):
         }
 
 
+class OrderEshopMiniTable(tables.Table):
+    action = tables.TemplateColumn("<a href='{{ record.get_eshop_url }}?next={{ request.get_full_path|urlencode }}'"
+                                   " class='btn btn-{{ record.paid_color }}'><i class='fa fa-edit'></i></a>",
+                                   orderable=False
+                                   )
+
+    tag_final_value = tables.Column(orderable=False, verbose_name='Αξία')
+
+    class Meta:
+        model = Order
+        template_name = 'django_tables2/bootstrap-responsive.html'
+        fields = ['date_expired', 'payment_method', 'shipping_method', 'tag_final_value',
+                  ]
+        attrs = {
+            'class': 'small table table-sm table-bordered table-hover'
+        }
+
+
+
+
 class OrderItemListTable(tables.Table):
     get_date = tables.Column(orderable=False, verbose_name='Ημερομηνία')
 

@@ -97,33 +97,7 @@
 
 {% block extra_js %}
 
-    <!--Plugin JavaScript file-->
-    <script src="{% static 'frontend/ion.rangeSlider.min.js' %}"></script>
-    <script>
-       $("#demo_2").ionRangeSlider({
-        type: "double",
-        grid: true,
-        min: {{ low }},
-        max: {{ max }},
-        from: {{ low_selected }},
-        to: {{ max_selected }},
-        prefix: "€"
-    });
-    </script>
 
-    <script src="{% static 'frontend/waypoints/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'frontend/waypoints/infinite.min.js' %}"></script>
-    <script>
-        var infinite = new Waypoint.Infinite({
-            element: $('.infinite-container')[0],
-            onBeforePageLoad: function () {
-                $('.loading').show();
-                },
-            onAfterPageLoad: function ($items) {
-                $('.loading').hide();
-            }
-        });
-    </script>
 {% endblock %}
 
 

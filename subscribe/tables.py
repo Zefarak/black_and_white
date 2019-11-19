@@ -27,3 +27,16 @@ class UserSubscribeTable(tables.Table):
         model = UserSubscribe
         template_name = 'django_tables2/bootstrap.html'
         fields = ['subscription', 'user', 'tag_value', 'duration', 'active', 'uses']
+
+
+class UserSubscribeMiniTable(tables.Table):
+    action = tables.TemplateColumn("<a href='{{ record.get_edit_url }}' class='btn btn-primary btn-round'>"
+                                   "<i class='fa fa-edit'> </i></a>",
+                                   orderable=False
+                                   )
+    tag_value = tables.Column(orderable=False, verbose_name='Αξία')
+
+    class Meta:
+        model = UserSubscribe
+        template_name = 'django_tables2/bootstrap.html'
+        fields = ['subscription', 'tag_value', 'uses', 'active']
