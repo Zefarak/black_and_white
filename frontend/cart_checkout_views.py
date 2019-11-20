@@ -169,16 +169,20 @@ class CheckoutView(FormView):
         cart.shipping_method = shipping_method
         cart.payment_method = payment_method
         cart.save()
+        if cart.order_items.count() <= 0:
+            messages.warning(self.request, 'Δε έχετε Προϊόντα στο καλάθι')
+            return super(CheckoutView, self).form_valid(form)
         CartProfile.create_cart_profile(form, cart)
         # now we check if the payment type is a service, If its a service we dont create the order now
         # because something can go bad, so will created to success url
         if payment_method.payment_type in ['c', 'd']:
             return super(CheckoutView, self).form_valid(form)
-        # if the payment_methos is a regular paymnent type we continue the order process
+        # if the payment_method is a regular payment type we continue the order process
         cart.active = False
         cart.status = 'Submitted'
         cart.save()
         cart.refresh_from_db()
+        
         self.new_eshop_order = Order.create_eshop_order(self.request, cart)
         self.new_eshop_order.create_subs_from_eshop_order(cart, self.request.user)
         self.new_eshop_order.create_sub_discounts_from_eshop_order(cart, self.request.user)

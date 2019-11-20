@@ -379,7 +379,7 @@ class AttributeTitleEditView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        back_url, delete_url = self.get_success_url(), ''
+        back_url, delete_url = self.get_success_url(), self.object.get_delete_url()
         form_title = f'Edit {self.object.name}'
 
         context.update(locals())

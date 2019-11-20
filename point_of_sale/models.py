@@ -479,6 +479,10 @@ class OrderItem(DefaultOrderItemModel):
                                             discount_value=cart_item.product.price_discount,
                                             cost=cart_item.product.price_buy
                                             )
+        product = cart_item.product
+        if product.support_transcations:
+            product.qty -= cart_item.qty
+            product.save()
         if cart_item.product.have_attr:
             OrderItemAttribute.create_objects_from_cart(instance, cart_item)
 

@@ -78,6 +78,7 @@ class AttributeClass(models.Model):
     is_radio_button = models.BooleanField(default=True, verbose_name='Μονη Επιλογη')
 
     class Meta:
+        ordering = ['-is_needed']
         verbose_name_plural = 'Attribute Class Title'
 
     def __str__(self):
@@ -105,6 +106,9 @@ class AttributeTitle(MPTTModel):
 
     def get_edit_url(self):
         return reverse('dashboard:attribute_title_edit_view', kwargs={'pk': self.id})
+
+    def get_delete_url(self):
+        return reverse('dashboard:attribute_title_delete_view', kwargs={'pk': self.id})
 
 
 class AttributeProductClass(models.Model):

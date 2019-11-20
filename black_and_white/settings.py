@@ -12,8 +12,21 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+REAL_DB = True
+PRODUCTION = False
 
-ALLOWED_HOSTS = ['*']
+if PRODUCTION:
+    ALLOWED_HOSTS = ['blackkaiwhite.herokuapp.com']
+else:
+    ALLOWED_HOSTS = ['*']
+
+'''
+if PRODUCTION:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+'''
 
 
 # Application definition
@@ -42,7 +55,7 @@ INSTALLED_APPS = [
     'blog',
 
     'django_tables2',
-    'social_django',
+    # 'social_django',
     'tinymce',
     'mptt',
     'import_export',
@@ -84,12 +97,24 @@ WSGI_APPLICATION = 'black_and_white.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if REAL_DB:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': config('DATABASE'),
+            'USER': config('USER'),
+            'PASSWORD': config('PASSWORD'),
+            'HOST': config('HOST'),
+            'PORT': '5432',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
@@ -135,6 +160,23 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+if REAL_DB:
+    AWS_REGION = 'eu-central-1'
+    S3_USE_SIGV4 = True
+    AWS_S3_HOST = "s3.eu-central-1.amazonaws"
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    MEDIAFILES_LOCATION = 'media'
+    MEDIA_URL = 'https://s3.%s.amazonaws.com/%s/media/' % (AWS_REGION, AWS_STORAGE_BUCKET_NAME)
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    from storages.backends.s3boto import S3BotoStorage
+    DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
+
 CURRENCY = '€'
 WAREHOUSE_ORDERS_TRANSCATIONS = False
 RETAIL_TRANSCATIONS = False
@@ -144,9 +186,9 @@ USE_QTY_LIMIT = False
 
 
 AUTHENTICATION_BACKENDS = [
-    'social_core.backends.linkedin.LinkedinOAuth2',
-    'social_core.backends.instagram.InstagramOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
+    # 'social_core.backends.linkedin.LinkedinOAuth2',
+    # 'social_core.backends.instagram.InstagramOAuth2',
+    # 'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -156,6 +198,7 @@ LOGIN_REDIRECT_URL = 'user_profile'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
 
+'''
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')    # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')  # App Secret
@@ -163,6 +206,7 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]  # add this
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {  # add this
     'fields': 'email'
 }
+'''
 
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = config('SENDGRID_API_KEY')

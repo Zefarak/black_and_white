@@ -7,7 +7,7 @@
             <div class="modal-header">
                  <h2>{{ product.title }}</h2>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal1">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="row">
                     <div class="col-lg-6 col-xs-12">
@@ -31,8 +31,8 @@
                             </div>
                             <br>
                             <form method="post" class="form" action='{% url "add_to_cart_with_attr" product.slug %}'>{% csrf_token %}
-                                   {% for attr_header in product.attr_class.all %}
-                                       <div class='container_{{ attr_header.id }}'>
+                                {% for attr_header in product.attr_class.all %}
+                                    <div class='container_{{ attr_header.id }}'>
                                            <h4 class="d-flex justify-content-between align-items-center mb-3">
                                                <span class="text-muted">{{ attr_header }}</span>
                                            </h4>
@@ -86,9 +86,16 @@
                                        <div class="qty-box">
                                            <div class="input-group">
                                                <span class="input-group-prepend">
-                                                   <button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
-                                               <input type="text" name="qty" class="form-control input-number" value="1"> <span class="input-group-prepend">
-                                               <button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
+                                                   <button type="button" class="btn quantity-left-minus" data-type="minus" data-field="">
+                                                       <i class="ti-angle-left"></i>
+                                                   </button>
+                                               </span>
+                                               <input id='input-number' type="text" min="1" name="qty" class="form-control input-number" value="1">
+                                               <span class="input-group-prepend">
+                                                   <button type="button" class="btn quantity-right-plus" data-type="plus" data-field="">
+                                                       <i class="ti-angle-right"></i>
+                                                   </button>
+                                               </span>
                                            </div>
                                        </div>
                                    </div>
@@ -161,6 +168,36 @@
             $(".container_"+ removeData + " :input").removeAttr('data-remove-href');
         }
     })
+
+    $('.quantity-left-minus').on('click', function(e) {
+    e.preventDefault();
+    let $this = $(this);
+    let myInput = $('#input-number');
+    let value = myInput.val();
+    value = parseInt(value);
+    console.log(value);
+    if (value > 1) {
+        value = value - 1
+    } else {
+        value = 1
+    };
+
+
+  myInput.val(value);
+
+});
+
+$('.quantity-right-plus').on('click', function(e) {
+    e.preventDefault();
+    var $this = $(this);
+    let myInput = $('#input-number');
+    let value = myInput.val();
+    value = parseInt(value);
+    value = value +1;
+
+
+    myInput.val(value);
+});
 </script>
 
 

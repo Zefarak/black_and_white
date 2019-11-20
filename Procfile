@@ -1,1 +1,1 @@
-web: gunicorn optika_kotsalis.wsgi --log-file -
+web: gunicorn black_and_white.wsgi --log-file -

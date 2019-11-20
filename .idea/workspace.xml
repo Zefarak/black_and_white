@@ -2,12 +2,109 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc917261-ad6e-4127-8784-b270c109f488" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/accounts/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/accounts/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/black_and_white/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/black_and_white/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/black_and_white/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/black_and_white/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/blog/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/migrations/0002_auto_20191102_0835.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/migrations/0003_auto_20191103_1426.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/migrations/0004_auto_20191108_1450.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/migrations/0005_auto_20191108_1455.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/migrations/0006_postcategory_slug.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/blog/migrations/0007_auto_20191110_1055.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/cart/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0002_cartprofile.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0003_auto_20190920_1437.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0004_cartitemgifts_cartsubscribe.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0005_auto_20191026_0728.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0006_cartsubscribediscount.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0007_cart_subscribe_value.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0008_auto_20191031_0639.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0009_auto_20191031_0723.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0010_auto_20191108_0757.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0011_auto_20191110_1055.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0012_auto_20191110_1327.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0013_auto_20191110_1518.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cart/migrations/0014_auto_20191112_0816.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/catalogue/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0002_auto_20190920_0732.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0003_product_different_color_products.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0004_auto_20191022_1506.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0005_auto_20191024_1356.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0006_auto_20191031_0639.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0007_auto_20191031_0653.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0008_attributerelated.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/migrations/0009_attributetitle_take_action.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/catalogue/product_attritubes.py" beforeDir="false" afterPath="$PROJECT_DIR$/catalogue/product_attritubes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chartsize/migrations/0001_initial.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contact/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/contact/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/settings_view.py" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/settings_view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/cart_checkout_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/cart_checkout_views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/static/frontend/my_assets/my_css.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/static/frontend/my_assets/my_css.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/frontend/include/head.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/frontend/include/head.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/templates/frontend/include/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/frontend/include/navbar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/templates/frontend/parts/add_product_modal.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/templates/frontend/parts/add_product_modal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/point_of_sale/tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/point_of_sale/tables.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/point_of_sale/templates/point_of_sale/user_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/point_of_sale/templates/point_of_sale/user_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/point_of_sale/user_views.py" beforeDir="false" afterPath="$PROJECT_DIR$/point_of_sale/user_views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/subscribe/tables.py" beforeDir="false" afterPath="$PROJECT_DIR$/subscribe/tables.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/newsletter/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/newsletter/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/point_of_sale/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0002_auto_20190920_0732.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0003_auto_20191004_1255.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0004_auto_20191022_1506.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0005_auto_20191023_1521.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0006_auto_20191024_1356.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0007_auto_20191026_0728.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0008_auto_20191027_1627.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0009_auto_20191029_0813.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0010_auto_20191031_0639.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0011_auto_20191031_1351.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0012_auto_20191102_0835.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0013_auto_20191103_1426.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0014_auto_20191108_0757.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0015_auto_20191110_1055.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0016_auto_20191111_1321.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0017_auto_20191111_1449.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0018_auto_20191112_0750.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0019_order_favorite_order.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0020_auto_20191117_0946.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/migrations/0021_ordersubscribe_value.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point_of_sale/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/point_of_sale/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/site_settings/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/site_settings/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/site_settings/migrations/0002_auto_20191004_1255.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/site_settings/migrations/0003_auto_20191022_1506.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/site_settings/migrations/0004_sitesettings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/frontend/assets/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/frontend/assets/js/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/subscribe/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0002_auto_20191023_1521.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0003_auto_20191024_1356.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0004_auto_20191026_0728.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0005_auto_20191026_1526.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0006_auto_20191027_1627.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0007_auto_20191027_1716.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0008_auto_20191029_0813.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0009_auto_20191031_0639.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0010_auto_20191031_0723.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0011_auto_20191031_1351.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0012_auto_20191102_0835.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0013_auto_20191103_1451.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0014_auto_20191103_1458.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0015_auto_20191108_1450.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0016_auto_20191108_1455.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0017_auto_20191108_1549.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0018_auto_20191110_1055.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0019_auto_20191110_1327.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0020_auto_20191110_1518.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0021_auto_20191111_1321.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0022_auto_20191111_1449.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0023_auto_20191112_0750.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0024_auto_20191112_0816.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0025_auto_20191112_1518.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0026_auto_20191117_0946.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/subscribe/migrations/0027_auto_20191117_1559.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/voucher/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/voucher/migrations/0001_initial.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,20 +122,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="product_view.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/product_view.html">
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/black_and_white/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="231" column="58" lean-forward="true" selection-start-line="224" selection-start-column="52" selection-end-line="231" selection-end-column="58" />
+            <state relative-caret-position="-2590">
+              <caret line="57" column="6" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add_product_modal.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/parts/add_product_modal.html">
+      <file leaf-file-name=".env" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="536">
-              <caret line="92" column="58" selection-start-line="92" selection-start-column="58" selection-end-line="92" selection-end-column="58" />
+            <state relative-caret-position="221">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
             </state>
           </provider>
         </entry>
@@ -56,12 +156,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>attributes-title/edit</find>
-      <find>data-extra</find>
-      <find>extra</find>
-      <find>s=</find>
-      <find>ProductForm</find>
-      <find>blog</find>
       <find>search</find>
       <find>searc</find>
       <find>cart</find>
@@ -85,7 +179,13 @@
       <find>παραγγελια-λεπτομέρειες/</find>
       <find>attr</find>
       <find>attr_</find>
+      <find>container</find>
+      <find>18.Add to cart</find>
+      <find>.dark .full-scroll-men</find>
+      <find>img</find>
+      <find>alert</find>
       <find>qty</find>
+      <find>attributes-title</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -94,14 +194,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/blog/templates/blog/blog_categories.html" />
-        <option value="$PROJECT_DIR$/blog/views.py" />
-        <option value="$PROJECT_DIR$/cart/views.py" />
-        <option value="$PROJECT_DIR$/dashboard/templates/dashboard/product_detail.html" />
-        <option value="$PROJECT_DIR$/cart/apps.py" />
-        <option value="$PROJECT_DIR$/cart/__init__.py" />
-        <option value="$PROJECT_DIR$/frontend/tests.py" />
-        <option value="$PROJECT_DIR$/subscribe/forms.py" />
         <option value="$PROJECT_DIR$/frontend/context_processors.py" />
         <option value="$PROJECT_DIR$/subscribe/templates/subscribe/SubscribeView.html" />
         <option value="$PROJECT_DIR$/frontend/templates/frontend/cart_page.html" />
@@ -119,20 +211,15 @@
         <option value="$PROJECT_DIR$/point_of_sale/signals.py" />
         <option value="$PROJECT_DIR$/cart/models.py" />
         <option value="$PROJECT_DIR$/frontend/templates/frontend/user_views/user_subscription_page.html" />
-        <option value="$PROJECT_DIR$/frontend/templates/frontend/index.html" />
         <option value="$PROJECT_DIR$/frontend/user_views.py" />
         <option value="$PROJECT_DIR$/frontend/templates/frontend/user_views/cart_items.html" />
-        <option value="$PROJECT_DIR$/point_of_sale/models.py" />
         <option value="$PROJECT_DIR$/frontend/ajax_views.py" />
         <option value="$PROJECT_DIR$/frontend/urls.py" />
         <option value="$PROJECT_DIR$/frontend/templates/frontend/ajax_views/modal_order_item_details.html" />
         <option value="$PROJECT_DIR$/frontend/action_views.py" />
-        <option value="$PROJECT_DIR$/frontend/templates/frontend/include/navbar.html" />
         <option value="$PROJECT_DIR$/frontend/templates/frontend/footer_views/contant_view.html" />
         <option value="$PROJECT_DIR$/point_of_sale/subscribe_models.py" />
-        <option value="$PROJECT_DIR$/frontend/cart_checkout_views.py" />
         <option value="$PROJECT_DIR$/frontend/templates/frontend/checkout_success.html" />
-        <option value="$PROJECT_DIR$/frontend/templates/frontend/product_view.html" />
         <option value="$PROJECT_DIR$/cart/subscribe_models.py" />
         <option value="$PROJECT_DIR$/point_of_sale/eshop_views.py" />
         <option value="$PROJECT_DIR$/point_of_sale/templates/point_of_sale/eshop_views/list-view.html" />
@@ -144,7 +231,20 @@
         <option value="$PROJECT_DIR$/subscribe/tables.py" />
         <option value="$PROJECT_DIR$/point_of_sale/user_views.py" />
         <option value="$PROJECT_DIR$/point_of_sale/templates/point_of_sale/user_detail.html" />
+        <option value="$PROJECT_DIR$/static/frontend/assets/js/script.js" />
+        <option value="$PROJECT_DIR$/frontend/templates/frontend/include/js.html" />
+        <option value="$PROJECT_DIR$/point_of_sale/models.py" />
+        <option value="$PROJECT_DIR$/frontend/cart_checkout_views.py" />
+        <option value="$PROJECT_DIR$/frontend/templates/frontend/include/head.html" />
+        <option value="$PROJECT_DIR$/frontend/templates/frontend/include/navbar.html" />
+        <option value="$PROJECT_DIR$/static/frontend/assets/css/color18.css" />
+        <option value="$PROJECT_DIR$/frontend/templates/frontend/index.html" />
+        <option value="$PROJECT_DIR$/frontend/static/frontend/my_assets/my_css.css" />
+        <option value="$PROJECT_DIR$/frontend/templates/frontend/product_view.html" />
         <option value="$PROJECT_DIR$/frontend/templates/frontend/parts/add_product_modal.html" />
+        <option value="$PROJECT_DIR$/catalogue/product_attritubes.py" />
+        <option value="$PROJECT_DIR$/dashboard/settings_view.py" />
+        <option value="$PROJECT_DIR$/black_and_white/settings.py" />
       </list>
     </option>
   </component>
@@ -160,10 +260,12 @@
       <path value="$PROJECT_DIR$/dashboard/static/dashboard/my_static/jquery-file-upload/package.json" />
       <path value="$PROJECT_DIR$/static/dashboard/jQuery-File-Upload/package.json" />
       <path value="$PROJECT_DIR$/static/dashboard/my_static/jquery-file-upload/package.json" />
+      <path value="$PROJECT_DIR$/static/vendor/select2/package.json" />
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-15" />
+    <option name="x" value="950" />
+    <option name="y" value="-10" />
     <option name="width" value="980" />
     <option name="height" value="1050" />
   </component>
@@ -179,39 +281,6 @@
             <path>
               <item name="black_and_white" type="b2602c69:ProjectViewProjectNode" />
               <item name="black_and_white" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="black_and_white" type="b2602c69:ProjectViewProjectNode" />
-              <item name="black_and_white" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="black_and_white" type="b2602c69:ProjectViewProjectNode" />
-              <item name="black_and_white" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="black_and_white" type="b2602c69:ProjectViewProjectNode" />
-              <item name="black_and_white" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="black_and_white" type="b2602c69:ProjectViewProjectNode" />
-              <item name="black_and_white" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="parts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="black_and_white" type="b2602c69:ProjectViewProjectNode" />
-              <item name="black_and_white" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="paypal_" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -321,20 +390,19 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="manage.py@black_and_white" order="7" weight="0.31586206" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5005208" side_tool="true" weight="0.29330498" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49947917" visible="true" weight="0.2890542" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14895834" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49947917" visible="true" weight="0.28827587" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20833333" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -343,33 +411,33 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info active="true" anchor="bottom" id="manage.py@black_and_white" order="7" visible="true" weight="0.31586206" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16666667" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5005208" side_tool="true" weight="0.29330498" />
-      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49947917" visible="true" weight="0.28965518" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="manage.py@black_and_white" order="13" weight="0.3177471" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info id="Favorites" order="2" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -443,169 +511,19 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/frontend/cart_checkout_views.py</url>
-          <line>225</line>
+          <line>229</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="21" />
+      <option name="time" value="22" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/point_of_sale/templates/point_of_sale/eshop_views/detail_view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="84" column="88" selection-start-line="84" selection-start-column="88" selection-end-line="84" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/point_of_sale/templates/point_of_sale/eshop_views/product_body.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="22" column="82" selection-start-line="22" selection-start-column="28" selection-end-line="22" selection-end-column="82" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cart/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="43" column="72" selection-start-line="43" selection-start-column="72" selection-end-line="43" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/models.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/list_view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="110" column="7" lean-forward="true" selection-start-line="110" selection-start-column="7" selection-end-line="110" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/include/third-party-code.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/context_processors.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/point_of_sale/signals.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-          <folding>
-            <element signature="e#0#59#0" expanded="true" />
-            <element signature="e#390#918#0" />
-            <element signature="e#1036#1496#0" />
-            <element signature="e#2162#2570#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voucher/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="93" column="8" selection-start-line="93" selection-start-column="8" selection-end-line="93" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/user_views/user_subscription_page.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="102" column="77" selection-start-line="102" selection-start-column="77" selection-end-line="102" selection-end-column="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/include/head.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/parts/message_modal.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="26" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/include/js.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1241">
-          <caret line="73" column="13" selection-start-line="70" selection-start-column="11" selection-end-line="73" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/user_views/cart_items.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1241">
-          <caret line="73" selection-start-line="73" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/catalogue/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1389">
-          <caret line="356" column="17" selection-start-line="356" selection-start-column="4" selection-end-line="356" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/ajax_views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="196" selection-start-line="196" selection-end-line="196" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/catalogue/product_attritubes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="123" column="17" selection-start-line="123" selection-start-column="4" selection-end-line="123" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/user_views/dashboard.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="28" selection-start-column="28" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/user_views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="201" column="49" selection-start-line="201" selection-start-column="49" selection-end-line="201" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#73#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cart/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="360" column="48" selection-start-line="360" selection-start-column="39" selection-end-line="360" selection-end-column="48" />
-          <folding>
-            <element signature="e#958#11153#0" />
-            <element signature="e#11190#16823#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/ajax_views/modal_order_item_details.html" />
     <entry file="file://$PROJECT_DIR$/frontend/action_views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
           <caret line="69" column="52" selection-start-line="69" selection-start-column="52" selection-end-line="69" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#57#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -630,20 +548,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/include/navbar.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="46" column="68" selection-start-line="46" selection-start-column="68" selection-end-line="46" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="782">
@@ -661,27 +565,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="165" selection-start-line="165" selection-end-line="165" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/cart/subscribe_models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="217">
           <caret line="25" column="32" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/cart_checkout_views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="47" column="51" selection-start-line="47" selection-start-column="51" selection-end-line="47" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -701,29 +588,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/point_of_sale/ajax_eshop_views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-196">
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-196" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/point_of_sale/ajax_views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#71#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/point_of_sale/eshop_views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="382">
           <caret line="148" column="27" selection-start-line="148" selection-start-column="27" selection-end-line="148" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#77#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -731,30 +605,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1088">
           <caret line="88" column="1" selection-start-line="88" selection-start-column="1" selection-end-line="88" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/accounts/tables.py" />
-    <entry file="file://$PROJECT_DIR$/point_of_sale/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="40" selection-start-line="40" selection-end-line="40" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/point_of_sale/user_views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
           <caret line="33" column="68" selection-start-line="33" selection-start-column="68" selection-end-line="33" selection-end-column="68" />
-          <folding>
-            <element signature="e#0#53#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -762,9 +620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
           <caret line="70" column="69" selection-start-line="70" selection-start-column="69" selection-end-line="70" selection-end-column="69" />
-          <folding>
-            <element signature="e#328#3541#0#HTML" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -772,9 +627,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
           <caret line="39" column="21" selection-start-line="39" selection-start-column="21" selection-end-line="39" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#31#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -803,9 +655,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="416">
           <caret line="82" column="25" selection-start-line="82" selection-start-column="25" selection-end-line="82" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -823,17 +672,172 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/product_view.html">
+    <entry file="file://$PROJECT_DIR$/static/frontend/assets/js/bootstrap-notify.min.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/include/js.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="20" selection-start-line="20" selection-end-line="21" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/frontend/assets/js/script.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="89">
+          <caret line="21" column="18" lean-forward="true" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/point_of_sale/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="486" column="76" selection-start-line="486" selection-start-column="76" selection-end-line="486" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/cart_checkout_views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="170" column="19" selection-start-line="170" selection-start-column="19" selection-end-line="170" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/frontend/assets/css/color6.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/frontend/my_assets/my_css.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="1" lean-forward="true" selection-start-line="2" selection-start-column="1" selection-end-line="2" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/static/frontend/assets/css/color6.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/frontend/assets/css/slick-theme.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/static/frontend/assets/css/animate.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/static/frontend/assets/css/color4.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/static/frontend/assets/css/themify.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-408" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/frontend/assets/css/color11.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/static/frontend/my_assets/my_css.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="30" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/frontend/assets/css/color18.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret column="281120" lean-forward="true" selection-start-column="281097" selection-end-column="281120" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/include/head.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="22" column="82" selection-start-line="22" selection-start-column="82" selection-end-line="22" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/include/navbar.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="317">
-          <caret line="231" column="58" lean-forward="true" selection-start-line="224" selection-start-column="52" selection-end-line="231" selection-end-column="58" />
+          <caret line="63" column="194" lean-forward="true" selection-start-line="63" selection-start-column="185" selection-end-line="63" selection-end-column="194" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="16" column="5" lean-forward="true" selection-start-line="16" selection-start-column="5" selection-end-line="16" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="23" column="33" lean-forward="true" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/product_view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="164" column="36" selection-start-line="164" selection-start-column="36" selection-end-line="164" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/static/frontend/assets/css/bootstrap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="3503" column="25" selection-start-line="3503" selection-start-column="20" selection-end-line="3503" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/templates/frontend/parts/add_product_modal.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="536">
-          <caret line="92" column="58" selection-start-line="92" selection-start-column="58" selection-end-line="92" selection-end-column="58" />
+        <state relative-caret-position="153">
+          <caret line="179" column="24" selection-start-line="179" selection-start-column="24" selection-end-line="179" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/settings_view.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="418" column="71" lean-forward="true" selection-start-line="418" selection-start-column="71" selection-end-line="418" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/catalogue/product_attritubes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="102" selection-start-line="102" selection-end-line="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="119" column="56" selection-start-line="119" selection-start-column="56" selection-end-line="119" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/black_and_white/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2590">
+          <caret line="57" column="6" selection-start-line="57" selection-start-column="6" selection-end-line="57" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
