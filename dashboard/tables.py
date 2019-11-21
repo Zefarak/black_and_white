@@ -158,7 +158,7 @@ class GiftTable(tables.Table):
     class Meta:
         model = Gifts
         template_name = 'django_tables2/bootstrap.html'
-        fields = ['title']
+        fields = ['title', 'products_gift', 'status']
 
 
 class AttributeRelatedTable(tables.Table):

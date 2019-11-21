@@ -66,7 +66,7 @@
 {% block content %}
 
     <!-- breadcrumb start -->
-<div style="margin-top:  7%" class="breadcrumb-section">
+<div style="margin-top:  6%" class="breadcrumb-section">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
@@ -86,15 +86,22 @@
     </div>
 </div>
 <!-- breadcrumb End -->
-    <section class="pricing py-5">
+    <section style="background-color:#6e6e6e" class="pricing py-5">
         <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger" role="alert">
+                       Προσοχή μπορείτε να έχετε μόνο μια συνδρομή στο καλάθι σας ή ενεργή από κάθε παραγγελία.
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <!-- Free Tier -->
                 {% for subscribe in object_list %}
                     <div class="col-lg-4">
                         <div class="card mb-5 mb-lg-0">
                             <div class="card-body">
-                                <h5 class="card-title text-muted text-uppercase text-center">Αξια</h5>
+                                <h5 class="card-title text-muted text-uppercase text-center">{{ subscribe.get_category_type_display }}</h5>
                                 <h6 class="card-price text-center">{{ subscribe.value }}<span class="period">€</span></h6>
                                 <hr>
                                 <button style="margin-top: 7%" type="button" class="btn btn-block btn-info text-uppercase" data-toggle="modal" data-target="#Modal_{{ subscribe.id }}">
@@ -108,7 +115,7 @@
                                 </ul>
                                 <hr>
                                 {% if request.user.is_authenticated %}
-                                    <a href="{% url 'add_subscribe_to_cart' subscribe.id %}" class="btn btn-block btn-success text-uppercase">Προσθηκη στο καλάθι</a>
+                                    <a href="{% url 'add_subscribe_to_cart' subscribe.id %}" class="btn btn-block btn-solid text-uppercase">Προσθηκη στο καλαθι</a>
                                 {% else %}
                                     <a href="{% url 'login' %}" class="btn btn-warning">Θα πρέπει να συνδεθειτε</a>
                                 {% endif %}

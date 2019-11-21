@@ -181,8 +181,8 @@ class ProductView(DetailView, FormView):
         same_cate_products = Product.my_query.active_for_site().filter(category_site__in=categories_p).exclude(id=self.object.id)[:4]
         related_products = Product.my_query.active_for_site().filter(related_products=product)
         different_color_products = Product.my_query.active_for_site().filter(different_color_products=product)
-        gifts = Gifts.objects.filter(product_related=product)
-        subscribes = Subscribe.objects.filter(products=product)
+        gifts = Gifts.objects.filter(product_related=product).filter(status=True)
+        subscribes = Subscribe.objects.filter(products=product).filter(active=True)
         ask_form = AskForm()
         context.update(locals())
         return context

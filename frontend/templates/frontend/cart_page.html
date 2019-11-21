@@ -54,8 +54,8 @@
                 <div class="col-6"><a href="{% url 'checkout_view' %}" class="btn btn-solid">Παραγγελια</a></div>
             </div>
 
-            <div class='row'>
-                <div class='col-12 col-md-12'>
+            <div class='row my_top_margin'>
+                <div class='col-lg-6 col-sm-12'>
                     <h4 style='text-align: center'>Δωρα</h4>
                     <table class="table table-bordered">
                         <thead>
@@ -65,11 +65,10 @@
                                 <th scope="col">Ποσοτητα</th>
                             </tr>
                         </thead>
-        
                         <tbody>
                             {% for gift in cart.gifts.all %}
                                 <tr>
-                                    <td><h5>{{ loop.counter }}</h5></td>
+                                    <td><h5>{{ forloop.counter }}</h5></td>
                                     <td><h5>{{ gift }}</h5></td>
                                     <td><h5>{{ gift.qty }}</h5></td>
                                 </tr>
@@ -81,38 +80,30 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            {% if cart.cart_subscribe %}
-            <div style="margin-top: 7%" class='row'>
-                <div class='col-12 col-md-12'>
+                <div class='col-lg-6 col-sm-12'>
                     <h4 style='text-align: center'>Συνδρομη</h4>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr class="table-head">
-                                <th scope="col">Συνδρομή</th>
-                                <th scope="col">Αξία</th>
-                                <th scope="col">#</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                        {% for sub in cart.cart_subscribe.all %}
-                            <tr>
-                                <td><h5>{{ sub }}</h5></td>
-                                <td><h5>{{ subtag_value }}</h5></td>
-                                <td>
-                                    <a style="color: white" href="{% url 'delete_subscribe_from_cart' sub.id %}" class="btn btn-danger btn-round btn-block"><i class="fa fa-remove"></i> Διαγραφη </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
-
-                        </tbody>
-                    </table>
-                </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="table-head">
+                                    <th scope="col">Συνδρομή</th>
+                                    <th scope="col">Αξία</th>
+                                    <th scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for sub in cart.cart_subscribe.all %}
+                                <tr>
+                                    <td><h5>{{ sub }}</h5></td>
+                                    <td><h5>{{ sub.tag_value }}</h5></td>
+                                    <td>
+                                        <a href="{% url 'delete_subscribe_from_cart' sub.id %}" class="btn btn-solid"><i class="fa fa-remove"></i> Διαγραφη </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
             </div>
-            {% endif %}
-        </div>
         </div>
     </section>
     <!--section end-->

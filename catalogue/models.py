@@ -354,7 +354,7 @@ class Gifts(models.Model):
     gift_message = models.CharField(max_length=200, unique=True, verbose_name='Μυνημα στον πελατη')
     status = models.BooleanField(default=False, verbose_name='Κατασταση')
     product_related = models.ManyToManyField(Product, related_name='product_related')
-    products_gift = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    products_gift = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, verbose_name='Δωρο')
 
     def __str__(self):
         return self.title

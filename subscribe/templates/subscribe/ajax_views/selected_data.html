@@ -14,7 +14,7 @@
             <td>
                 <a class="btn btn-warning add_button"
                    data-href="{% url 'subscribe:ajax_add_delete_product' object.id  product.id 'remove'%}" >
-                    <i class="fa fa-remove "></i>
+                    <i class="fa fa-minus "></i>
                 </a>
             </td>
         </tr>
@@ -23,5 +23,18 @@
 </table>
 
  <script>
+     $('.add_button').click(function (evt) {
+            evt.preventDefault();
+            const myBtn = $(this);
+            const url = myBtn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                url: url,
+                dataType: 'json',
 
+                success: function (data) {
+                    $('#result_container').html(data.result)
+                }
+            })
+        })
  </script>

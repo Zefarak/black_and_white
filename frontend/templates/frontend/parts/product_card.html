@@ -43,16 +43,11 @@
                data-toggle="modal"
                data-target="#add_product_modal"
                title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
-
         </div>
     </div>
      <div class="product-detail text-center">
-        <div class="rating">
-            <h6>Sku: {{ product.sku }}</h6>
-        </div>
-
         <a href="{{ product.get_absolute_url }}">
-            <h6>{{ product.title }}</h6>
+            <h4>{{ product.title }}</h4>
         </a>
         <h4>{{ product.tag_final_price }} {% if product.is_offer %} <span style="color: red;text-decoration: line-through">{{ product.tag_price }}</span>{% endif %}</h4>
     </div>

@@ -15,6 +15,8 @@
  * Licensed under the New BSD License
  * See: https://opensource.org/licenses/bsd-license.php
  */
+
+
 (function($) {
     'use strict';
     $.fn.formset = function(opts) {

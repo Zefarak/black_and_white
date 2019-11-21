@@ -12,7 +12,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-REAL_DB = True
+REAL_DB = False
 PRODUCTION = False
 
 if PRODUCTION:
@@ -57,8 +57,9 @@ INSTALLED_APPS = [
     'django_tables2',
     # 'social_django',
     'tinymce',
-    'mptt',
+
     'import_export',
+    'mptt',
     
 ]
 

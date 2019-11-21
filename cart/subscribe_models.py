@@ -32,7 +32,7 @@ class CartSubscribe(models.Model):
     def check_and_create_cart_subscribe(request, cart, subscribe):
         user = request.user
         user_subs = UserSubscribe.objects.filter(subscription__category_type=subscribe.category_type, user=user, active=True)
-        cart_subs = cart.cart_subscribe.all()
+        cart_subs = cart.cart_subscribe.all().filter(subscribe__category_type=subscribe.category_type)
         if user_subs.exists():
             messages.warning(request, 'Χρησιμοποιείται ήδη συνδρομή αυτής της κατηγορίας.')
             return False
