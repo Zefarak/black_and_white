@@ -162,11 +162,11 @@ def update_profile_view(request):
             form.save()
             return redirect('user_profile')
 
-    conttext = {
+    context = {
         'form': form,
         'profile': profile
     }
-    return render(request, 'frontend/user_views/user_form.html', context=conttext)
+    return render(request, 'frontend/user_views/user_form.html', context=context)
 
 
 @login_required

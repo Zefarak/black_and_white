@@ -40,7 +40,7 @@ def add_products_from_order_view(request, pk):
     if order.user != request.user:
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     for order_item in order.order_items.all():
-        product = order_item.item
+        product = order_item.title
         new_cart_item = CartItem.add_product_to_cart(request, cart, product)
         new_cart_item.qty = order_item.qty
         new_cart_item.save()
@@ -50,29 +50,27 @@ def add_products_from_order_view(request, pk):
 
 @login_required
 def create_new_order_from_order(request, pk):
-    cart = check_or_create_cart(request)
     order = get_object_or_404(Order, id=pk)
     if order.user != request.user:
+        messages.warning(request, 'Κατι πηγε λάθος')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    cart = check_or_create_cart(request)
+    for cart_item in cart.order_items.all():
+        cart_item.delete()
+    for order_item in order.order_items.all():
+        CartItem.copy_cart_item_with_multi_attr(cart, order_item)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @login_required
 def add_order_item_to_cart_view(request, pk):
-    instance = get_object_or_404(OrderItem, id=pk, order__user=request.user)
-    product = instance.title
-    if product.have_attr:
-        cart = check_or_create_cart(request)
-        cart_item = CartItem.objects.create(cart=cart, product=product, qty=1)
-        CartItemGifts.check_if_gift_exists(cart_item)
-        cart_item_attr = CartItemAttribute.objects.create(cart_item=cart_item)
-        for attr_class in instance.attributes.all():
-            for attr_ in attr_class.attribute.all():
-                cart_item_attr.attribute.add(attr_)
-        cart_item_attr.save()
-        messages.success(request, f'Το Προϊόν {product} προστεθηκε στο καλαθι')
-    else:
-        return redirect(reverse('add_to_cart', product.slug))
+    order = get_object_or_404(Order, id=pk)
+    if order.user != request.user:
+        messages.warning(request, 'Κατι πηγε λάθος')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    cart = check_or_create_cart(request)
+    for order_item in order.order_items.all():
+        CartItem.copy_cart_item_with_multi_attr(cart, order_item)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

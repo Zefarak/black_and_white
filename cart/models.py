@@ -285,6 +285,20 @@ class CartItem(models.Model):
         return self.attribute_item
 
     @staticmethod
+    def copy_cart_item_with_multi_attr(cart, order_item):
+        qty = order_item.qty
+        product = order_item.title
+        cart_item = CartItem.objects.create(cart=cart, product=product, qty=qty)
+        CartItemGifts.check_if_gift_exists(cart_item)
+        cart_item_attr = CartItemAttribute.objects.create(cart_item=cart_item)
+        for attr in order_item.attributes.all():
+            for attribute in attr.attribute.all():
+                cart_item_attr.attribute.add(attribute)
+        cart_item_attr.save()
+        result, message = True, f'To προϊόν {product} προστέθηκε με επιτυχία'
+        return cart_item, message
+
+    @staticmethod
     def create_cart_item_with_multi_attr(cart, product, request):
         qty = request.POST.get('qty', 1)
         try:
@@ -309,6 +323,16 @@ class CartItem(models.Model):
         cart_item_attr.save()
         result, message = True, f'To προϊόν {product} προστέθηκε με επιτυχία'
         return cart_item, message
+
+    @staticmethod
+    def copy_order_item(order_item, cart):
+        product = order_item.title
+        qty = order_item.qty
+        if product.have_attr:
+            new_cart_item, message = CartItem.create_cart_item_with_multi_attr(cart, product, '')
+        else:
+            new_cart_item, message = CartItem.create_cart_item(cart, product, qty, None)
+        return new_cart_item
 
     @staticmethod
     def add_product_to_cart(request, cart, product):

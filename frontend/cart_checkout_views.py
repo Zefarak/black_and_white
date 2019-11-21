@@ -8,7 +8,7 @@ from django.core.mail import send_mail
 from django.shortcuts import redirect, reverse
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from .mixins import SearchMixin
+from django.utils.decorators import method_decorator
 
 from cart.models import CartItem, CartProfile, CartItemGifts
 from cart.subscribe_models import  CartSubscribe, CartSubscribeDiscount
@@ -19,7 +19,7 @@ from site_settings.models import Shipping, PaymentMethod
 from cart.forms import CheckOutForm
 from point_of_sale.models import Order, OrderProfile, SendReceipt, OrderSubscribe
 from voucher.models import Voucher
-
+from django.views.decorators.cache import cache_control
 from subscribe.models import Subscribe, UserSubscribe
 from site_settings.models import SiteSettings
 BUSSNESS_EMAIL = settings.SITE_EMAIL
@@ -120,6 +120,7 @@ def ajax_change_cart_item_qty(request, pk, action):
     return JsonResponse(data)
 
 
+@method_decorator(cache_control(no_cache=True, must_revalidate=True), name='dispatch')
 class CheckoutView(FormView):
     form_class = CheckOutForm
     template_name = 'frontend/checkout.html'
@@ -200,7 +201,7 @@ class CheckoutView(FormView):
                   )
         send_mail('Έχετε νέα Παραγγελία',
                   f'Ημερομηνια.. {self.new_eshop_order.date_expired} |'
-                  f' {self.new_eshop_order.guest_email} | Ποσο {self.new_eshop_order.tag_final_value}',
+                  f' {self.new_eshop_order.guest_email} | Ποσο {self.new_eshop_order.tag_final_value()}',
                   BUSSNESS_EMAIL,
                   [BUSSNESS_EMAIL, ]
                   )

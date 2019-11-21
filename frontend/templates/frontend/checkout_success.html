@@ -22,6 +22,7 @@
                     {% else %}
 
                         <h2>{{ order.title }}</h2>
+                         <a href="{% url 'homepage' %}" class="btn btn-solid">Επιστροφη</a>
                         <hr><br>
                         {% if request.user.is_authenticated %}
                         <button type="button" data-toggle="modal" data-target="#reOrderModal"  class="btn btn-success">Επαναληψη Παραγγελιας</button>
@@ -124,9 +125,9 @@
 
                                         </ul>
                                       <hr>
-                                      <a href="" class="btn btn-success">Δημιουργία Παραγγελιας</a>
+                                      <a href="{% url 'create_order_from_order'  order.id%}" class="btn btn-success">Δημιουργία Παραγγελιας</a>
                                         <br><br>
-                                      <a href="" class="btn btn-info">Προσθήκη των προϊόντων στο καλάθι</a>
+                                      <a href="{% url 'copy_products_from_order' order.id %}" class="btn btn-info">Προσθήκη των προϊόντων στο καλάθι</a>
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -214,7 +215,7 @@
             <div class="col-lg-6">
                 <div class="row order-success-sec">
                     <div class="col-sm-6">
-                        <h4>summery</h4>
+                        <h4>Στοιχεία</h4>
                         <ul class="order-detail">
                             <li>Email: {{ order.guest_email }}</li>
                             <li>Order Date: {{ order.timestamp }}</li>
@@ -222,7 +223,7 @@
                         </ul>
                     </div>
                     <div class="col-sm-6">
-                        <h4>shipping address</h4>
+                        <h4>Διευθυνση</h4>
                         <ul class="order-detail">
                             <li>{{ order.profile.full_name }}</li>
                             <li>{{ profile.address }} </li>
@@ -303,5 +304,5 @@
 </section>
 <!-- Section ends -->
 
-
+<div class="my_top_margin"></div>
 {% endblock %}

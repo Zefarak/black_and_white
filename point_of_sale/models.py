@@ -16,7 +16,7 @@ from decimal import Decimal
 
 
 from site_settings.constants import TAXES_CHOICES
-from catalogue.models import Product
+from catalogue.models import Product, Gifts
 from catalogue.product_attritubes import Attribute, AttributeClass
 from .abstract_models import DefaultOrderModel, DefaultOrderItemModel
 from .subscribe_models import *
@@ -539,6 +539,16 @@ class OrderItemAttribute(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.order_item.save()
+
+    @staticmethod
+    def create_objects_from_old_order_item(old_order_item, new_order_item):
+        qs = old_order_item.attribute_items.all()
+        if qs.exists():
+            for cart_attribrute in old_order_item.attribute_items.all():
+                for attribute in cart_attribrute.attribute.all():
+                    new_ = OrderItemAttribute.objects.create(order_item=new_order_item)
+                    new_.attribute.add(attribute)
+                    new_.save()
 
     @staticmethod
     def create_objects_from_cart(order_item, cart_item):

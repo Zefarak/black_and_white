@@ -9,7 +9,7 @@ from .user_views import UserDashboardView, login_view, register_view, account_ac
 from .cart_checkout_views import CartPageView, add_product_to_cart, delete_product_from_cart, CheckoutView, order_success_url, OrderDetailView, add_product_with_attr_to_cart, add_voucher_to_cart_view, delete_voucher_from_cart_view, decide_what_to_do_with_order_payment, add_subscribe_to_cart, delete_subscription_view
 from .ajax_views import ajax_search_brands, ajax_change_cart_item_qty, ajax_check_voucher, ajax_change_cart_attribute_qty, ajax_add_product_modal, ajax_quick_modal_view, ajax_delete_cart_item, ajax_estimate_costs, ajax_update_cate_shipping_method_view, ajax_modal_show_order_item_details
 from .footer_views import ShippingListView, PaymentMethodListView, order_status_form_view, TermsView, ReturnProductPolicyView, CompanyView, ContactView, PersonalDataView
-from .action_views import order_change_favorite_status_view, order_change_title_view, add_order_item_to_cart_view, add_or_remove_favorite_order_item_view
+from .action_views import order_change_favorite_status_view, order_change_title_view, add_order_item_to_cart_view, add_or_remove_favorite_order_item_view, add_products_from_order_view, create_new_order_from_order
 from .paypall_views import payment_canceled, payment_done, payment_process
 from .sitemaps import StaticViewsSitemap, BrandSitemap, CategorySitemap
 
@@ -104,6 +104,8 @@ urlpatterns = [
     path('order/change-title/<int:pk>/', order_change_title_view, name='order_change_title'),
     path('order/add-order-item-to-cart/<int:pk>/', add_order_item_to_cart_view, name='add_order_item_to_cart'),
     path('order-item/favorite/<int:pk>/', add_or_remove_favorite_order_item_view, name='order_item_favorite_add_or_remove'),
+    path('copy-products-from-order/<int:pk>/', add_products_from_order_view, name='copy_products_from_order'),
+    path('create-order-from-order/<int:pk>/', create_new_order_from_order, name='create_order_from_order'),
 
 
     #  paypall
