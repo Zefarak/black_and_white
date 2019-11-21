@@ -1,9 +1,26 @@
 {% extends 'frontend/user_views/dashboard.html' %} {% load static %}
 
+{% block extra_css %}
+<style>
+    input[type=checkbox]
+    {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+    }
+    .errorlist {
+        background-color: indianred;
+    }
+    #id_notes{
+        height: 250px;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
     <!-- breadcrumb start -->
-<div style="margin-top: 7%" class="breadcrumb-section">
+<div class="breadcrumb-section my_top_margin">
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
@@ -40,7 +57,8 @@
                                     <form class="form" method="post">
                                         {% csrf_token %}
                                         {{ form }}
-                                        <button type="submit" class="btn btn-success">Παραγγελια</button>
+                                        <br>
+                                        <button type="submit" class="btn btn-solid">Παραγγελια</button>
                                     </form>
                                 </div>
 
@@ -59,6 +77,7 @@
     </div>
 </section>
 <!-- section end -->
+    <div class="my_top_margin"></div>
 
 
 {% endblock %}

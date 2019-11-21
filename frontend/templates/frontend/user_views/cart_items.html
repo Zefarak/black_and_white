@@ -23,7 +23,7 @@
                                                 <th>Προϊόν</th>
                                                 <th>Λεπτομεριες</th>
                                                 <th>Παράγγειλέ το!</th>
-                                                <th>Διαγραφή </th>
+
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -31,13 +31,12 @@
                                                     <tr>
                                                         <td>{{ forloop.counter }}</td>
                                                         <td>{{ product }}</td>
-                                                        <td></td>
                                                         <td>
                                                             <a data-href="{% url 'ajax_show_order_item' product.id %}" class="btn btn-round btn-success order_item_detail" title="Add to Cart">
-                                                                <span>Λεπτομέριες</span>
+                                                                <span>Λεπτομεριες</span>
                                                             </a>
                                                         </td>
-                                                        <td><a href='' class='btn btn-warning'><i class='fa fa-plus'></i>Προσθήκη</a>
+                                                        <td><a href='{% url "add_order_item_to_cart" product.id %}' class='btn btn-warning'><i class='fa fa-plus'></i>Προσθηκη</a>
                                                 {% empty %}
                                                     <tr><td colspan="5">Δε έχετε προσθέσει Προϊόντα στην Wishlist</td></tr>
                                                 {% endfor %}

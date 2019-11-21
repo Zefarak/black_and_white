@@ -43,6 +43,8 @@
                                 <li class=""><a href="{% url 'dashboard:home' %}">Διαχείριση Site</a></li>
                             {% endif %}
                             <li class=""><a href="{% url 'user_profile' %}">Στοιχεία</a></li>
+                            <li><a href="{% url 'favorite_orders' %}">Αγαπημένες Παραγγελίες</a></li>
+                            <li><a href="{% url 'favorite_order_items' %}">Aγαπημενα Προϊόντα</a></li>
                             <li><a href="{% url 'user_profile_order_list' %}">Οι Παραγγελίες μου</a></li>
                             <li><a href="{% url 'user_cart_items' %}">Τα Προϊόντα μου</a></li>
                             <li><a href="{% url 'wishlist' %}">My Wishlist</a></li>
@@ -90,45 +92,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div>
-                                <div class="box">
-                                    <div class="box-title">
-                                        <h3>Αγαπημένες Παραγγελίες</h3>
-                                    </div>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Ημερομηνία</th>
-                                                        <th>Τιτλος</th>
-                                                        <th>Αξία</th>
-                                                        <th>Λεπτομέριες</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for order in orders %}
-                                                        <tr>
-                                                            <td>{{ forloop.counter }}</td>
-                                                            <td>{{ order.date_expired }}</td>
-                                                            <td>{{ order.title }}</td>
-                                                            <td>{{ order.tag_final_value }}</td>
-                                                            <td>
-                                                                <a href="{{ order.get_absolute_url }}" class="btn btn-info"><i class="fa fa-info"></i> </a>
-                                                            </td>
-
-                                                        </tr>
-                                                    {% empty %}
-                                                        <tr>
-                                                            <td colspan="5">Δε έχετε αγαπημένες παραγγελίες</td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="box">
+                                        <div class="box-title">
+                                            <h3>Αγαπημενες Παραγγελίες</h3>
+                                            <a href="{% url 'favorite_orders' %}">Επεξεργασία</a>
                                         </div>
+                                        <div class="box-content">
 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="box">
+                                        <div class="box-title">
+                                            <h3>Αγαπημένα Προϊόντα</h3>
+                                                <a href="{% url 'favorite_order_items' %}">Επεξεργασία</a>
+                                            </div>
+                                        <div class="box-content">
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>

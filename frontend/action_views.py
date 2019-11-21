@@ -74,3 +74,14 @@ def add_order_item_to_cart_view(request, pk):
     else:
         return redirect(reverse('add_to_cart', product.slug))
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+@login_required
+def add_or_remove_favorite_order_item_view(request, pk):
+    order_item = get_object_or_404(OrderItem, id=pk)
+    if order_item.order.user != request.user:
+        messages.warning(request, 'Κάτι πήγε λάθος')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    order_item.favorite = False if order_item.favorite else True
+    order_item.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

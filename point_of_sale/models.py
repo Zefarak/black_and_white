@@ -139,6 +139,12 @@ class Order(DefaultOrderModel):
     def get_print_url(self):
         return reverse('point_of_sale:print_order', kwargs={'pk': self.id})
 
+    def get_remove_favorite_url(self):
+        return reverse('order_change_status', kwargs={'pk': self.id})
+
+    def get_frontend_detail_url(self):
+        return reverse('frontend_order_detail', kwargs={'slug': self.number})
+
     def update_order(self):
         items = self.order_items.all()
         self.value = items.aggregate(Sum('total_value'))['total_value__sum'] if items else 0
@@ -350,6 +356,7 @@ class Order(DefaultOrderModel):
 
 
 class OrderItem(DefaultOrderItemModel):
+    favorite = models.BooleanField(default=False)
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items', verbose_name='Παραστατικό')
     cost = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     title = models.ForeignKey(Product,
@@ -456,6 +463,9 @@ class OrderItem(DefaultOrderItemModel):
 
     def absolute_url_vendor_page(self):
         return reverse('retail_order_section', kwargs={'dk': self.order.id})
+
+    def get_add_or_remove_favorite_url(self):
+        return reverse('order_item_favorite_add_or_remove', kwargs={'pk': self.id})
 
     def get_date(self):
         return self.order.date_expired

@@ -37,7 +37,7 @@ class CheckOutForm(BaseForm):
     zip_code = forms.CharField(label='TK *', max_length=5)
     cellphone = forms.CharField(label='Κινητό *')
     phone = forms.CharField(label='Σταθερό τηλέφωνο', required=False)
-    notes = forms.CharField(label='Σημειώσεις', widget=forms.Textarea(), required=False)
+    notes = forms.CharField(label='Σημειώσεις', widget=forms.Textarea(attrs={'rows': 80 }), required=False)
     shipping_method = forms.ModelChoiceField(required=True, queryset=Shipping.objects.filter(active=True),
                                              label='Τρόπος Μεταφοράς *')
     payment_method = forms.ModelChoiceField(required=True, queryset=PaymentMethod.my_query.active_for_site(),

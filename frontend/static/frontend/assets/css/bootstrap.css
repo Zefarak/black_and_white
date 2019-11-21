@@ -3503,7 +3503,7 @@ input[type="button"].btn-block {
     border-top-color: #c8cbcf; }
   .alert-secondary .alert-link {
     color: #202326; }
-
+  /*
 .alert-success {
   color: #155724;
   background-color: #d4edda;
@@ -3512,7 +3512,7 @@ input[type="button"].btn-block {
     border-top-color: #b1dfbb; }
   .alert-success .alert-link {
     color: #0b2e13; }
-
+ */
 .alert-info {
   color: #0c5460;
   background-color: #d1ecf1;

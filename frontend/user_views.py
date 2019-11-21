@@ -16,6 +16,7 @@ from django.contrib import messages
 from accounts.models import Profile, Wishlist
 from accounts.forms import LoginForm, SignUpForm, ProfileFrontEndForm, UpdatePasswordForm, ForgotPasswordForm
 from accounts.token import account_activation_token
+from .tables import UserOrderTable, UserOrderItemTable
 from cart.models import CartItem, Cart
 from cart.tools import check_or_create_cart
 from point_of_sale.models import Order, OrderItem
@@ -147,7 +148,6 @@ class UserDashboardView(ListView):
         context = super(UserDashboardView, self).get_context_data(**kwargs)
         user = self.request.user
         profile = user.profile
-        orders = user.orders.filter(favorite_order=True)
         context.update(locals())
         return context
 
@@ -195,11 +195,17 @@ class UserProfileOrderListView(ListView):
         qs = Order.my_query.get_queryset().eshop_orders_by_user(user)
         return qs
 
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileOrderListView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Οι παραγγελιες μου'
+        context['queryset_table'] = UserOrderTable(self.object_list)
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class UserCartItemsView(ListView):
     model = OrderItem
-    template_name = 'frontend/user_views/cart_items.html'
+    template_name = 'frontend/user_views/order_list.html'
     paginate_by = 20
 
     def get_queryset(self):
@@ -207,6 +213,12 @@ class UserCartItemsView(ListView):
         carts = Order.objects.filter(user=user)
         order_items = OrderItem.objects.filter(order__in=carts)
         return order_items
+
+    def get_context_data(self, **kwargs):
+        context = super(UserCartItemsView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Ολα Τα Προϊόντα μου'
+        context['queryset_table'] = UserOrderItemTable(self.object_list)
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -298,3 +310,34 @@ def delete_user_view(request):
     messages.warning(request, 'Λυπούμαστε που διαγράψατε τον λογαριασμό σας, ελπίζουμε να μας ξαναπροτιμήσετε στο μέλλον')
     return HttpResponseRedirect('/')
 
+
+@method_decorator(login_required, name='dispatch')
+class UserFavoriteOrderItemsView(ListView):
+    template_name = 'frontend/user_views/order_list.html'
+    model = OrderItem
+
+    def get_queryset(self):
+        qs = OrderItem.objects.filter(order__user=self.request.user, favorite=True)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(UserFavoriteOrderItemsView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Αγαπημενα Προϊόντα'
+        context['queryset_table'] = UserOrderItemTable(self.object_list)
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class UserFavoriteOrderView(ListView):
+    template_name = 'frontend/user_views/order_list.html'
+    model = Order
+
+    def get_queryset(self):
+        qs = Order.objects.filter(user=self.request.user, favorite_order=True)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super(UserFavoriteOrderView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Αγαπημένες Παραγγελίες'
+        context['queryset_table'] = UserOrderTable(self.object_list)
+        return context
