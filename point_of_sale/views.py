@@ -152,7 +152,6 @@ def add_to_order_with_attr(request, pk, dk):
     context['instance'] = product
     context['order'] = order
     if request.POST:
-        print(request.POST)
         OrderItem.create_order_item_with_multi_attr(order, product, request)
         return redirect(order.get_edit_url())
 
