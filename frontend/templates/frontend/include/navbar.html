@@ -87,7 +87,7 @@
                                             <h6>Account</h6>
                                             <ul>
                                                 {% if request.user.is_authenticated %}
-                                                <li><a href="{% url 'user_profile' %}">{{ request.user }}</a></li>
+                                                <li><a href="{% url 'user_profile' %}">{{ request.email }}</a></li>
                                                 {% else %}
                                                 <li>
                                                    <a data-toggle="modal" data-target="#login_modal">Συνδεση</a>
