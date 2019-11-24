@@ -1,4 +1,4 @@
-{% extends 'index.html' %} {% load static %}
+{% extends 'blog/dashboard/index.html' %} {% load static %}
 
 {% block content %}
     <div class="pcoded-content">
@@ -49,6 +49,44 @@
                                         <br>
                                         <div style="margin-top: 10%"></div>
                                          <a href="{{ delete_url }}" onclick="return confirm('Εισαι σιγουρος')" class="btn btn-danger"><i class="fa fa-remove"></i> Διαγραφη </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Links</h4>
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Link</th>
+                                                    <th>Διαγραφή</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for link in links %}
+                                                    <tr>
+                                                        <td>{{ forloop.counter }}</td>
+                                                        <td>{{ link.url }}</td>
+                                                        <td><a href="{% url 'dashboard_blog:delete_url' link.id %}" class="btn btn-danger"><i class="fa fa-remove"></i> Διαγραφη </a> </td>
+                                                    </tr>
+                                                {% empty %}
+                                                    <tr>
+                                                        <td colspan="3">No data</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <form class="form" action="{% url 'dashboard_blog:create_url' object.id %}" method="post">
+                                            {% csrf_token %}
+                                            {{ video_form }}
+                                            <br>
+                                            <button type="submit" class="btn btn-solid"><i class="fa fa-save"></i> Αποθηκευση </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

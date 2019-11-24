@@ -298,6 +298,7 @@ class CartItem(models.Model):
         result, message = True, f'To προϊόν {product} προστέθηκε με επιτυχία'
         return cart_item, message
 
+
     @staticmethod
     def create_cart_item_with_multi_attr(cart, product, request):
         qty = request.POST.get('qty', 1)

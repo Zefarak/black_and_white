@@ -99,8 +99,8 @@ def create_slug(sender, instance, **kwargs):
 
 
 class YouTubeVideo(models.Model):
-    url = models.URLField()
-    post_related = models.ForeignKey(Post, on_delete=models.CASCADE)
+    url = models.TextField(blank=True)
+    post_related = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='my_videos')
 
     def __str__(self):
         return f'{self.post_related}- {self.id}'

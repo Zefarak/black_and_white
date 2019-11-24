@@ -59,7 +59,30 @@ def create_new_order_from_order(request, pk):
         cart_item.delete()
     for order_item in order.order_items.all():
         CartItem.copy_cart_item_with_multi_attr(cart, order_item)
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    cart.refresh_from_db()
+    cart.active = False
+    cart.status = 'Submitted'
+    cart.shipping_method = order.shipping_method
+    cart.payment_method = order.payment_method
+    cart.save()
+    cart.refresh_from_db()
+
+    new_eshop_order = Order.create_eshop_order(request, cart)
+    new_eshop_order.shipping_method = order.shipping_method
+    new_eshop_order.payment_method = order.payment_method
+    new_eshop_order.create_subs_from_eshop_order(cart, request.user)
+    new_eshop_order.create_sub_discounts_from_eshop_order(cart, request.user)
+    new_eshop_order.create_gifts(cart)
+    new_eshop_order.save()
+    new_eshop_order.refresh_from_db()
+
+    profiles = order.order_profiles.all()
+    for profile in profiles:
+        profile.pk = None
+        profile.order_related = new_eshop_order
+        profile.save()
+    messages.success(request, f'Η παραγγελία {order.title} επαναλήπτικε.')
+    return redirect('decide_payment_process')
 
 
 @login_required
@@ -71,6 +94,7 @@ def add_order_item_to_cart_view(request, pk):
     cart = check_or_create_cart(request)
     for order_item in order.order_items.all():
         CartItem.copy_cart_item_with_multi_attr(cart, order_item)
+
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 

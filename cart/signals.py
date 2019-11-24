@@ -2,9 +2,15 @@ from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
 
-from .models import Cart, CartItem
+from .models import Cart, CartItem, CartProfile
 from .subscribe_models import CartSubscribeDiscount, CartSubscribe
 from subscribe.models import UserSubscribe
+
+
+@receiver(post_save, sender=Cart)
+def create_cart_profile(sender, instance, created, **kwargs):
+    if created:
+        cart_profile, created = CartProfile.objects.get_or_create(cart_related=instance)
 
 
 @receiver(post_save, sender=CartItem)

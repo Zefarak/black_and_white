@@ -1,13 +1,13 @@
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404, redirect, reverse
+from django.shortcuts import get_object_or_404, redirect, reverse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, TemplateView, UpdateView, CreateView
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 
-from .models import Post, PostCategory
+from .models import Post, PostCategory, YouTubeVideo
 from .tables import PostTable, PostCategoryTable
-from .forms import PostForm, PostCategoryForm
+from .forms import PostForm, PostCategoryForm, YoutubeVideoForm
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -47,6 +47,8 @@ class PostUpdateView(UpdateView):
         context['page_title'] = f'Επεξεργασια {self.object}'
         context['back_url'] = self.success_url
         context['delete_url'] = self.object.get_delete_url()
+        context['links'] = self.object.my_videos.all()
+        context['video_form'] = YoutubeVideoForm(initial={'post_related': self.object})
         return context
 
     def form_valid(self, form):
@@ -146,4 +148,18 @@ def post_category_delete_view(request, pk):
     return redirect(reverse('dashboard_blog:post_category_list'))
 
 
+@staff_member_required
+def create_new_url_view(request, pk):
+    print(request.POST)
+    instance = get_object_or_404(Post, id=pk)
+    form = YoutubeVideoForm(request.POST or None, initial={'post_related': instance})
+    if form.is_valid():
+        form.save()
+    return redirect(instance.get_edit_url())
 
+
+@staff_member_required
+def delete_url_view(request, pk):
+    instance = get_object_or_404(YouTubeVideo, id=pk)
+    instance.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

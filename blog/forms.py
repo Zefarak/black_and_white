@@ -1,7 +1,7 @@
 from django import forms
 
 from site_settings.forms import BaseForm
-from .models import Post, PostCategory
+from .models import Post, PostCategory, YouTubeVideo
 
 
 class PostForm(BaseForm, forms.ModelForm):
@@ -21,3 +21,11 @@ class PostCategoryForm(BaseForm, forms.ModelForm):
     class Meta:
         model = PostCategory
         fields = ['active', 'title', 'image', 'slug']
+
+
+class YoutubeVideoForm(BaseForm, forms.ModelForm):
+    post_related = forms.ModelChoiceField(queryset=Post.objects.all(), widget=forms.HiddenInput())
+
+    class Meta:
+        model = YouTubeVideo
+        fields = '__all__'

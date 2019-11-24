@@ -28,6 +28,7 @@ class CategoryDetailView(ListView):
     def get_queryset(self):
         self.category = get_object_or_404(PostCategory, slug=self.kwargs['slug'])
         qs = Post.objects.filter(status=True, category=self.category)
+        print(qs.count())
         return qs
 
     def get_context_data(self, **kwargs):

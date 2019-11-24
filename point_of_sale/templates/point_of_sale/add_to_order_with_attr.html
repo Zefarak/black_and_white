@@ -8,40 +8,74 @@
                 <div class="page-wrapper">
                     <div class="page-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header"><h4>Προσθήκη</h4></div>
+                                    <div class="card-header"><h4>Προσθήκη Προϊόντος {{ instance }}</h4></div>
                                     <div class="card-body">
-                                        <table class="table">
-                                          <thead>
-                                            <tr>
-                                              <th scope="col">#</th>
-                                              <th scope="col">Τίτλος</th>
-                                              <th scope="col">Action</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                              {% for ele in attri_class.my_attributes.all %}
-                                                  <tr>
-                                                      <th scope="row">{{ forloop.counter }}</th>
-                                                      <td>{{ ele }}</td>
+                                        <form method="post"
+                                              class="form"
+                                        >
+                                            {% csrf_token %}
+                                            {% for attr_header in instance.attr_class.all %}
+                                                <div class='container_{{ attr_header.id }}'>
+                                                    <h4 class="d-flex justify-content-between align-items-center">
+                                                        <span class="text-muted">{{ attr_header }}</span>
+                                                    </h4>
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item">
+                                                            {% if attr_header.class_related.is_radio_button %}
+                                                                <div class="input-group mb-3">
+                                                                    <div class="input-group-prepend">
+                                                                        <label class="input-group-text" for="inputGroupSelect01">==></label>
+                                                                    </div>
+                                                                    <select name='attr_{{ attr_header.id }}' class="custom-select" id="inputGroupSelect{{ attr_header.id }}">
+                                                                        <option selected>Επιλογη...</option>
+                                                                        {% for attr in attr_header.my_attributes.all %}
+                                                                         <option value="{{ attr.id }}">{{ attr }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            {% else %}
+                                                                {% for attr in attr_header.my_attributes.all %}
+                                                                <div class="form-check">
+                                                                    <input value='{{ attr.id }}'
+                                                                                   name='attr_{{ attr_header.id }}'
+                                                                                   type="checkbox"
+                                                                                   class="form-control attr_input" id="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}"
+                                                                            {% if attr.title.take_action %}
+                                                                                   data-extra="{{ attr_header.id }}"
+                                                                                   data-href="{% url 'dashboard:ajax_show_or_hide_attr' attr_header.id %}"
+                                                                            {% endif %}
+                                                                            {% if attr_header.class_related.is_needed %} required {% endif %}
+                                                                            >
+                                                                    <label class="custom-control-label"
+                                                                           for="defaultUnchecked_{{ attr.id }}_{{ attr_header.id }}">{{ attr }}
+                                                                    </label>
+                                                                </div>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    <br>
+                                                </div>
+                                                <div class="product-description border-product">
+                                                    <h6 class="product-title">Ποσότητα</h6>
+                                                    <div class="qty-box">
+                                                        <div class="input-group">
+                                                            <span class="input-group-prepend">
+                                                            <button type="button" class="btn quantity-left-minus" data-type="minus" data-field=""><i class="ti-angle-left"></i></button> </span>
+                                                            <input type="text" name="qty" class="form-control input-number" value="1"> <span class="input-group-prepend">
+                                                            <button type="button" class="btn quantity-right-plus" data-type="plus" data-field=""><i class="ti-angle-right"></i></button></span>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="product-buttons">
+                                                        <button type="submit" data-target="#addtocart" class="btn btn-solid">Προσθηκη στο Καλαθι</button>
+                                                        <br /> <br />
+                                                    </div>
+                                            </form>
 
-                                                      <td><a data-href="{% url 'point_of_sale:ajax_add_product_with_attr' order.id instance.id ele.id %}" class="btn btn-primary btn-round add_button"><i class="fa fa-plus"></i> </a> </td>
-                                                  </tr>
-                                              {% endfor %}
-                                          </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <a href="{{ back_url }}" class="btn btn-warning btn-round">Επιστροφή</a> <br />
-                                        <h4>Επιλεγμένα</h4>
-                                    </div>
-                                    <div class="card-body" id="result_container">
-                                       {% include 'point_of_sale/ajax/attribute_container.html' %}
                                     </div>
                                 </div>
                             </div>

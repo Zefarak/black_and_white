@@ -10,14 +10,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.utils.html import format_html
-
+from django.shortcuts import get_object_or_404
 
 from decimal import Decimal
 
 
 from site_settings.constants import TAXES_CHOICES
 from catalogue.models import Product, Gifts
-from catalogue.product_attritubes import Attribute, AttributeClass
+from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass
 from .abstract_models import DefaultOrderModel, DefaultOrderItemModel
 from .subscribe_models import *
 from site_settings.models import PaymentMethod, Shipping, Country
@@ -39,9 +39,11 @@ MANUAL_RETAIL_TRANSCATIONS = settings.MANUAL_RETAIL_TRANSCATIONS
 POSITIVE_ORDER_TYPES, NEGATIVE_ORDERS_TYPES = ['r', 'e', 'wr'], ['b', 'c', 'wa']
 SITE_EMAIL = settings.SITE_EMAIL
 User = get_user_model()
+import datetime
 
 
 class Order(DefaultOrderModel):
+    # date_expired = models.DateField(default=datetime.datetime.now().today().date(), verbose_name='Ημερομηνία')
     number = models.SlugField(max_length=128, db_index=True, blank=True)
     favorite_order = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=ORDER_STATUS, default='1', verbose_name="Κατάσταση")
@@ -84,7 +86,6 @@ class Order(DefaultOrderModel):
     class Meta:
         verbose_name_plural = '1. Orders'
         verbose_name = 'Order'
-        ordering = ['-date_expired', 'status', '-id']
 
     def __str__(self):
         return self.title if self.title else 'order'
@@ -267,7 +268,7 @@ class Order(DefaultOrderModel):
 
     @staticmethod
     def create_eshop_order(request, cart):
-        profile = cart.cart_profile
+        profile = cart.cart_profile if cart.cart_profile else None
         email = profile.email
         shipping = cart.shipping_method
         payment_method = cart.payment_method
@@ -377,7 +378,6 @@ class OrderItem(DefaultOrderItemModel):
     class Meta:
         verbose_name_plural = '2. Προϊόντα Πωληθέντα'
         ordering = ['-order__timestamp', ]
-        unique_together = ['title', 'order']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -479,6 +479,35 @@ class OrderItem(DefaultOrderItemModel):
             else:
                 product.qty += instance.qty
             product.save()
+
+    @staticmethod
+    def create_order_item_with_multi_attr(order, product, request):
+        qty = request.POST.get('qty', 1)
+        qty = int(qty)
+        order_item = OrderItem.objects.create(
+            order=order,
+            title=product,
+            qty=qty
+        )
+        order_item_attr = OrderItemAttribute.objects.create(order_item=order_item)
+        for field in request.POST:
+            if 'attr_' in field:
+                id = field.split('_')[1]
+                print('works', id)
+
+                attr_class = get_object_or_404(AttributeProductClass, id=id)
+                if attr_class.class_related.is_radio_button:
+                    attr_id = request.POST.get(field)
+                    if attr_id.isdigit():
+                        attr = get_object_or_404(Attribute, id=attr_id)
+                        order_item_attr.attribute.add(attr)
+                else:
+                    attr_ids = request.POST.getlist(field)
+                    for attr in attr_ids:
+                        if attr.isdigit():
+                            print('attr', attr)
+                            attr_se = get_object_or_404(Attribute, id=attr)
+                            order_item_attr.attribute.add(attr_se)
 
     @staticmethod
     def create_order_item_from_cart_item(order, cart_item):

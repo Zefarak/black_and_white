@@ -190,12 +190,14 @@ class AttributeRelated(models.Model):
     ACTIONS = (
         ('HIDE', 'Hide'),
     )
-    attribute_selected = models.ForeignKey(AttributeClass, on_delete=models.CASCADE, related_name='attribute_selected')
-    attribute_related = models.ForeignKey(AttributeClass, on_delete=models.CASCADE, related_name='attribute_related')
-    action_related = models.CharField(choices=ACTIONS, max_length=20)
+    attribute_selected = models.ForeignKey(AttributeClass, on_delete=models.CASCADE, related_name='attribute_selected',
+                                           verbose_name='Αποστολεας')
+    attribute_related = models.ForeignKey(AttributeClass, on_delete=models.CASCADE, related_name='attribute_related',
+                                          verbose_name='Παραλήπτησ')
+    action_related = models.CharField(choices=ACTIONS, max_length=20, verbose_name='Πακετο')
 
     def __str__(self):
-        return f'{self.attribute_selected} ==> {self.get_action_related_display} => {self.attribute_related}'
+        return f'{self.attribute_selected}'
 
     def get_edit_url(self):
         return reverse('dashboard:attr_related_update', kwargs={'pk': self.id})

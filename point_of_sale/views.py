@@ -146,17 +146,17 @@ def check_product(request, pk, dk):
 
 @staff_member_required
 def add_to_order_with_attr(request, pk, dk):
-    instance = get_object_or_404(Product, id=dk)
+    context = dict()
+    product = get_object_or_404(Product, id=dk)
     order = get_object_or_404(Order, id=pk)
-    form_title, back_url = f'Add {instance.title}', order.get_edit_url()
-    order_item_qs = OrderItem.objects.filter(title=instance, order=order)
-    order_item = order_item_qs.first() if order_item_qs.exists() else None
-    qs = instance.attr_class.all().filter(class_related__have_transcations=True)
-    attri_class = qs.first() if qs.exists() else None
-    if attri_class is None:
-        messages.warning(request, 'Δε έχετε επλέξει μεγεθολόγιο')
+    context['instance'] = product
+    context['order'] = order
+    if request.POST:
+        print(request.POST)
+        OrderItem.create_order_item_with_multi_attr(order, product, request)
         return redirect(order.get_edit_url())
-    return render(request, 'point_of_sale/add_to_order_with_attr.html', context=locals())
+
+    return render(request, 'point_of_sale/add_to_order_with_attr.html', context=context)
 
 
 @staff_member_required

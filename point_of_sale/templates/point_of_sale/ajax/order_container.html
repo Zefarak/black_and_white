@@ -66,34 +66,35 @@
         <table class='table'>
             <thead>
                 <tr>
-                    <th>Sku</th>
                     <th>Προϊόν</th>
                     <th>Qty</th>
                     <th>Τιμή</th>
                     <th>Σύνολο</th>
+                    <th>Λεπτομεριες</th>
                     <th colspan="2">Actions</th>
                 </tr>
             </thead>
             <tbody>
             {% for order_item in instance.order_items.all %}
                 <tr>
-                    <td>{{ order_item.title.sku }}</td>
                     <td>{{ order_item.title|truncatechars:25 }}</td>
                     <td>{{ order_item.qty }} {% for item in order_item.attributes.all %} {{ item.title.title }} {% endfor %}</td>
                     <td>{{ order_item.tag_final_value }}</td>
                     <td>{{ order_item.tag_total_value  }}</td>
-                    {% if order_item.have_attr %}
-                        <td>
-                            <a href="{% url 'point_of_sale:add_to_order_attr' order_item.order.id order_item.title.id  %}" class="btn btn-info"><i class="fa fa-edit"></i> </a>
-                            <button data-href="{% url 'point_of_sale:ajax_order_item_edit' 'delete' order_item.id %}" class="btn btn-danger edit_button"><i class="fa fa-trash"></i></button>
-                        </td>
-                    {% else %}
-                        <td colspan="2">
-                            <button data-href="{% url 'point_of_sale:ajax_order_item_edit' 'remove' order_item.id %}" class="btn btn-sm btn-warning edit_button"><i class="fa fa-arrow-down"></i></button>
-                            <button data-href="{% url 'point_of_sale:ajax_order_item_edit' 'add' order_item.id %}" class="btn btn-sm btn-success edit_button"><i class="fa fa-arrow-up"></i></button>
-                            <button data-href="{% url 'point_of_sale:ajax_order_item_edit' 'delete' order_item.id %}" class="btn btn-sm btn-danger edit_button"><i class="fa fa-trash"></i></button>
-                        </td>
-                    {% endif %}
+                    <td>
+                        {% if order_item.have_attr %}
+                            {% for attr_ in order_item.attributes.all %}
+                                {% for ele in attr_.attribute.all %}
+                                    <p>{{ ele.class_related.class_related }}==>{{ ele.title }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            <p>No data</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button data-href="{% url 'point_of_sale:ajax_order_item_edit' 'delete' order_item.id %}" class="btn btn-danger edit_button"><i class="fa fa-trash"></i></button>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

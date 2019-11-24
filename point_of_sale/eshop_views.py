@@ -24,7 +24,7 @@ class EshopOrderListView(ListView):
     def get_queryset(self):
         qs = Order.my_query.get_queryset().eshop_orders()
         qs = Order.eshop_orders_filtering(self.request, qs)
-        qs = qs.order_by('status')
+        qs = qs.order_by('status','-date_expired', '-id')
         return qs
 
     def get_context_data(self, **kwargs):

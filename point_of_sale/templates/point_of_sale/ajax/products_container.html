@@ -15,12 +15,12 @@
                     {% if product.image %}
                     <img style="width: 200px; height: 200px;" class="img-fluid img-radius" src="{{ product.image.url }}" alt="round-img">
                     {% else %}
-                    <img style="width: 200px; height: 200px;" class="img-fluid img-radius" src="{% static 'my_static/no_image.png' %}" alt="round-img">
+                    <img style="width: 200px; height: 200px;" class="img-fluid img-radius" src="{% static 'frontend/demo_images/no_image.png' %}" alt="round-img">
                     {% endif %}
                     <div class="img-overlay img-radius">
                         <span>
                             {% if product.have_attr %}
-                                <a href="{% url 'point_of_sale:add_to_order_attr' instance.id product.id %}" class="btn btn-info">Διάλεξε <br> Νούμερο</a>
+                                <a href="{% url 'point_of_sale:add_to_order_attr' instance.id product.id %}" class="btn btn-info">Λεπτομεριες</a>
                             {% else %}
                                  <button data-href="{% url 'point_of_sale:ajax_add_product' instance.id product.id %}" class="btn btn-warning add_button block">
                             <i class="fa fa-plus"></i> Προσθήκη

@@ -28,8 +28,8 @@
 <section class="blog-detail-page section-b-space ratio2_3">
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 blog-detail">
-                <img src="{{ object.image.url }}" class="img-fluid blur-up lazyload" alt="">
+            <div class="col-12 blog-detail">
+                <img src="{{ object.image.url }}" class="img img-fluid" alt="">
                 <h3>{{ object }}</h3>
                 <ul class="post-social">
                     <li>{{ object.timestamp }}</li>
@@ -47,8 +47,20 @@
             {% endfor %}
         </div>
 
+        <div class="row">
+            {% for video in object.my_videos.all %}
+                <div class="col-md-6 col-sm-12">
+                    {{ video.url|safe }}
+                </div>
+
+            {% endfor %}
+        </div>
+
+
+
 
     </div>
+<div class="my_top_margin"></div>
 </section>
 <!--Section ends-->
 

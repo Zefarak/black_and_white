@@ -90,7 +90,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-warning" role="alert">
                        Προσοχή μπορείτε να έχετε μόνο μια συνδρομή στο καλάθι σας ή ενεργή από κάθε κατηγορία.
                     </div>
                 </div>
@@ -98,7 +98,7 @@
             <div class="row">
                 <!-- Free Tier -->
                 {% for subscribe in object_list %}
-                    <div class="col-lg-4">
+                    <div style='margin-bottom: 3%' class="col-lg-4">
                         <div class="card mb-5 mb-lg-0">
                             <div class="card-body">
                                 <h5 class="card-title text-muted text-uppercase text-center">{{ subscribe.get_category_type_display }}</h5>
@@ -146,7 +146,6 @@
                                                         <td>{{ forloop.counter }}</td>
                                                         <td>{{ product }}</td>
                                                     </tr>
-
                                                 {% endfor %}
                                             </tbody>
                                         </table>

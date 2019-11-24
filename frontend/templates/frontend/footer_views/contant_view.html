@@ -2,7 +2,7 @@
 
  {% block seo_data %}
         <title>{{ site_title }} | Τρόποι Επικοινώνιας</title>
-        <meta name="description" content="Καλώς ήρθατε στο κατάστημά μας, optika kotsalis. Εδώ θα βρείτε μεγάλη ποικιλία απο γυαλιά ηλιού και οράσεως.">
+        <meta name="description" content="">
     {% endblock %}
 
 {% block content %}
@@ -19,7 +19,7 @@
             <div class="col-sm-6">
                 <nav aria-label="breadcrumb" class="theme-breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Αρχικη Σελιδα</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a></li>
                         <li class="breadcrumb-item active">Τρόποι Επικοινώνιας</li>
                     </ol>
                 </nav>
@@ -35,7 +35,7 @@
     <div class="container">
         <div class="row section-b-space">
             <div style="background-color: white" class="col-lg-7 map">
-                <img src="{% static 'frontend/my_assets/our store.jpg' %}" />
+                <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=22.846914767433194%2C36.80259866145595%2C22.856956957984956%2C36.808328393370296&amp;layer=mapnik&amp;marker=36.80546358100505%2C22.85193586270907" style="border: 1px solid black"></iframe><br/><small><a href="https://www.openstreetmap.org/?mlat=36.80546&amp;mlon=22.85194#map=17/36.80546/22.85194">View Larger Map</a></small>
             </div>
             <div style="background-color: white" class="col-lg-5">
                 <div class="contact-right">
@@ -77,11 +77,13 @@
                 <form class="theme-form" method="post">
                     {% csrf_token %}
                     {{ form }}
-                    <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> </button>
+                    <button type="submit" class="btn btn-solid"><i class="fa fa-send"></i> Αποστολη </button>
                 </form>
             </div>
         </div>
     </div>
 </section>
 <!--Section ends-->
+
+    <div class="my_top_margin"></div>
 {% endblock %}
