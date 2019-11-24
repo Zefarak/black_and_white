@@ -20,13 +20,13 @@ if PRODUCTION:
 else:
     ALLOWED_HOSTS = ['*']
 
-'''
+
 if PRODUCTION:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-'''
+
 
 
 # Application definition
@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'blog',
 
     'django_tables2',
-    # 'social_django',
+    'social_django',
     'tinymce',
 
     'import_export',
@@ -187,9 +187,9 @@ USE_QTY_LIMIT = False
 
 
 AUTHENTICATION_BACKENDS = [
-    # 'social_core.backends.linkedin.LinkedinOAuth2',
-    # 'social_core.backends.instagram.InstagramOAuth2',
-    # 'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.linkedin.LinkedinOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -199,7 +199,7 @@ LOGIN_REDIRECT_URL = 'user_profile'
 LOGOUT_URL = 'logout'
 LOGOUT_REDIRECT_URL = 'login'
 
-'''
+
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')    # App ID
 SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')  # App Secret
@@ -207,15 +207,13 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email', ]  # add this
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {  # add this
     'fields': 'email'
 }
-'''
+
 
 EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
 SENDGRID_API_KEY = config('SENDGRID_API_KEY')
 SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 SENDGRID_ECHO_TO_STDOUT = True
 SITE_EMAIL = 'lirageika@hotmail.gr'
-
-
 
 TINYMCE_DEFAULT_CONFIG = {
     'theme': "advanced",
