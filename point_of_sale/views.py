@@ -59,13 +59,14 @@ class OrderListView(ListView):
     def get_queryset(self):
         qs = Order.objects.all()
         qs = Order.filters_data(self.request, qs)
+        qs = qs.order_by('-id')
         return qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         page_title, create_url = 'Λιστα', reverse('point_of_sale:order_create')
         queryset_table = OrderTable(self.object_list)
-
+        RequestConfig(self.request, paginate={"per_page": 25}).configure(queryset_table)
         # filters
         date_filter, order_status_filter, search_filter, order_type_filter = [True] * 4
         order_types, order_status = ORDER_TYPES, ORDER_STATUS

@@ -45,7 +45,7 @@
     {% for banner in banners %}
     <div>
         <div class="home text-left p-left">
-            <img src="{{ banner.image.url }}" alt="" class="bg-img blur-up lazyload">
+            <img src="{{ banner.image.url }}" alt="" class="img-responsive  my_banner_img">
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -126,7 +126,7 @@
                                                 <br>
                                                 <button class="btn btn-success btn-solid">Συνδεση</button>
                                                 <br> <br>
-                                                <p>Η δημιουργήστε λογαριασμο <a href="{% url 'register_view' %}">εδώ</a> </p>
+                                                <p>Η πηγαίνετε στην σείδα<a href="{% url 'login' %}"> συνδέσεως</a> </p>
                                             </form>
                                             <a class="btn btn-solid btn-primary" href="{% url 'social:begin' 'facebook' %}">Συνδεση μεσω facebook</a>
                                             <a class="btn btn-solid" href="{% url 'register_view' %}">Δημιουργια Λογαριασμου</a>
