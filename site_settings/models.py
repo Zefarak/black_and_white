@@ -185,10 +185,15 @@ class BannerManager(models.Manager):
 
 
 class Banner(models.Model):
-    BANNER_TYPE = (('a', 'Μεγάλο Banner --> (1970*718)'),
+    BANNER_TYPE = (('a', 'Μεγάλο Banner --> (1920*1080)'),
                    ('b', 'Μεσαίο Banner --> No Use. For future'),
                    ('c', 'Μικρό Banner -->(600*250)')
                    )
+    SIDE_CHOICES = (
+        ('p-left', 'Αριστερα'),
+        ('p-right', 'Δεχιά'),
+        ('none', 'Κάθόλου')
+    )
     active = models.BooleanField(default=False, verbose_name='Κατάσταση')
     category = models.CharField(max_length=1, choices=BANNER_TYPE, default='a')
     title = models.CharField(unique=True, max_length=100, verbose_name='Τίτλος')
@@ -198,6 +203,10 @@ class Banner(models.Model):
     bootstrap_class = models.CharField(default='home-slide', max_length=200, help_text='home-slide text-center')
     browser = BannerManager()
     objects = models.Manager()
+
+    # styling
+    choose_side = models.CharField(default='p-right', choices=SIDE_CHOICES, max_length=10, verbose_name='Επιλογη Πλευράς')
+    color_letter = models.CharField(default='white', max_length=50)
 
     def __str__(self):
         return self.title

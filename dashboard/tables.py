@@ -23,10 +23,18 @@ class ImageColumn(tables.Column):
 
 
 class TableProduct(tables.Table):
-    action = tables.TemplateColumn("<a href='{{ record.get_edit_url }}' class='btn btn-primary btn-round'>"
-                                   "<i class='fa fa-edit'> </i></a>",
-                                   orderable=False
-                                   )
+    action = tables.TemplateColumn('''
+            <div class="btn-group dropright">
+                <a href='{{ record.get_edit_url }}' class="btn btn-primary"><i class='fa fa-edit'> </i></a>
+                    <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="sr-only">Toggle Dropright</span>
+                                        </button>
+                                            <div class="dropdown-menu">
+                                                <a target='_blank' class="dropdown-item" href="{{ record.get_edit_url}}">Ανοιγμα σε νεο Παραθυρο</a>     
+                                            </div>
+                                        </div>
+                                        ''', orderable=False, verbose_name='Επιλογες')
+
    # qty = tables.TemplateColumn('<span class="label label-{{ record.color_qty }}">{{ record.tag_qty }}</span>')
     tag_final_price = tables.Column(orderable=False, verbose_name='Τιμή Πώλησης')
     tag_price_buy = tables.Column(orderable=False, verbose_name='Τιμή Αγοράς')

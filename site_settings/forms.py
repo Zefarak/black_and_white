@@ -35,7 +35,10 @@ class BannerForm(BaseForm, forms.ModelForm):
 
      class Meta:
          model = Banner
-         fields = '__all__'
+         fields = ['active', 'category', 'image',
+                   'title', 'text', 'url',
+                   'choose_side', 'color_letter'
+                   ]
 
 
 class CompanyForm(BaseForm, forms.ModelForm):

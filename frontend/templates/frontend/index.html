@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     {% block seo_data %}
-        <title>{{ site_title }} | Αρχική Σελίδα</title>
+        <title>{{ site_title }} | {{ extra_title }}</title>
         <meta name="description" content="Στο Black&White θα βρείτε μεγάλη ποικιλία σε καφέδες....">
     {% endblock %}
     <meta name="keywords" content="Καφές, Παραγγελία ,Μολαοι, Λακωνια, Club Sandwich, φαγητά, espresso, capuccino">
@@ -21,8 +21,7 @@
 {% block extra_css %} {% endblock %}
 {% block content %}
 
-
-<!-- home slider start -->
+    <!-- home slider start -->
 <div class="home-slider fullpage full-slider">
     {% if request.user.is_authenticated %}
         <div class="home text-left p-left">
@@ -43,28 +42,29 @@
         </div>
     {% endif %}
     {% for banner in banners %}
-    <div>
-        <div class="home text-left p-left">
-            <img src="{{ banner.image.url }}" alt="" class="img-responsive  my_banner_img">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="slider-contain">
-                            <div>
-                                <h1>{{ banner.title }}</h1>
-                                {{ banner.text|safe }}
-                                <a href="{{ banner.url }}" class="btn btn-solid">Το Θελω!</a>
+        <div>
+            <div class="home text-left {{ banner.choose_side }}">
+                <img src="{{ banner.image.url }}" alt="" class="bg-img blur-up lazyload">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="slider-contain">
+                                <div>
+                                    <h1 style="color:{{ banner.color_letter }}">{{ banner.title }}</h1>
+                                    <p style="color:{{ banner.color_letter }}">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500</p>
+                                    <a href="{{ banner.url }}" class="btn btn-solid">Δες τα Προϊόντα</a></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     {% endfor %}
 
 </div>
 <!-- home slider end -->
+
+
 
 
 {% endblock %}

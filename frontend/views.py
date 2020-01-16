@@ -25,9 +25,8 @@ class HomepageView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
-        seo_title = 'Αρχική Σελίδα'
         banners = Banner.browser.active().filter(category='a')
-
+        extra_title = 'Αρχική Σελίδα'
         featured_products = Product.my_query.featured_products()[:8]
         new_products = Product.my_query.active()[:4]
         offers = Product.my_query.products_with_offer()[:4]
