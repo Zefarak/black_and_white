@@ -14,12 +14,14 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 REAL_DB = True
 PRODUCTION = True
+ALLOWED_HOSTS = ['blackkaiwhite.herokuapp.com', 'www.black-and-white.gr']
+'''
 
 if PRODUCTION:
     ALLOWED_HOSTS = ['blackkaiwhite.herokuapp.com', 'www.black-and-white.gr']
 else:
     ALLOWED_HOSTS = ['*']
-
+'''
 
 if PRODUCTION:
     SESSION_COOKIE_SECURE = True
