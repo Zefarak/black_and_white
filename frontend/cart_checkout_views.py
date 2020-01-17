@@ -126,6 +126,11 @@ class CheckoutView(FormView):
     template_name = 'frontend/checkout.html'
     success_url = reverse_lazy('decide_payment_process')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profiles'] = self.request.user.profile.all()
+        return context
+
     def get(self, request, *args, **kwargs):
         cart = check_or_create_cart(self.request)
         if not cart.order_items.exists():
@@ -138,14 +143,16 @@ class CheckoutView(FormView):
         cart = self.cart = check_or_create_cart(self.request)
         user = self.request.user
         if user.is_authenticated:
-            profile = user.profile
-            initial['first_name'] = profile.first_name
-            initial['last_name'] = profile.last_name
-            initial['email'] = user.email
-            initial['address'] = profile.shipping_address
+            profiles = user.profile.filter(user_favorite=True)
+            if profiles.exists():
+                profile = profiles.first()
+                initial['first_name'] = profile.first_name
+                initial['last_name'] = profile.last_name
+                initial['email'] = user.email
+                initial['address'] = profile.shipping_address
 
-            initial['cellphone'] = profile.cellphone
-            initial['phone'] = profile.phone
+                initial['cellphone'] = profile.cellphone
+                initial['phone'] = profile.phone
         if CartProfile.objects.filter(cart_related=cart).exists():
             cart_profile = cart.cart_profile
             initial['first_name'] = cart_profile.first_name

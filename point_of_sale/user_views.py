@@ -7,6 +7,7 @@ from accounts.tables import UserTable
 from .tables import OrderEshopMiniTable
 from subscribe.tables import UserSubscribeMiniTable
 
+
 @method_decorator(staff_member_required, name='dispatch')
 class UserListView(ListView):
     model = User

@@ -45,6 +45,32 @@
 <section class="section-b-space">
     <div class="container">
         <div class="checkout-page">
+            <div class="row">
+                {% if user.is_authenticated %}
+                    <div class="col-md-6 col-sm-12">
+                        <div class="card">
+                            <div class="card-title">
+                                <h3>Επιλογη Διευθυνσης</h3>
+                            </div>
+                            <div class="card-body">
+                                <form action="">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlSelect1">Επιλογη Προφιλ</label>
+                                        <select name="select_" class="form-control" id="exampleFormControlSelect1">
+                                            {% for profile in profiles %}
+                                                <option value="{{ profile.id }}">{{ profile.user_title }}</option>
+                                            {% endfor %}
+
+                                        </select>
+                                    <button type="submit" class="btn btn-solid">Ανανέωση στοιχειων</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endif %}
+            </div>
             <div class="checkout-form">
                 <form method="post">
                     <div class="row">

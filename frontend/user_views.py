@@ -145,13 +145,13 @@ class UserDashboardView(ListView):
     model = Order
 
     def get_queryset(self):
-        profile = self.request.user.profile
-        return Order.objects.filter(profile=profile)[:5]
+        user = self.request.user
+        return Order.objects.filter(user=user)[:5]
 
     def get_context_data(self, **kwargs):
         context = super(UserDashboardView, self).get_context_data(**kwargs)
         user = self.request.user
-        profile = user.profile
+        profile = user.profile.filter(user_favorite=True).first()
         context.update(locals())
         return context
 
