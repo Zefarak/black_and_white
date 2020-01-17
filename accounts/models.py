@@ -22,8 +22,10 @@ class CostumerAccountManager(models.Manager):
 
 class Profile(models.Model):
     PROFILE_TYPES = (('a', 'Πελατης Λιανικης'), ('b', 'Πελατης Eshop'))
+    user_title = models.CharField(null=True, blank=True, max_length=200, verbose_name='Τιτλος Διευθυνσης')
+    user_favorite = models.BooleanField(default=False, verbose_name='Προτεριοτητα')
     profile_type = models.CharField(max_length=1, choices=PROFILE_TYPES, default='a')
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE, related_name='profile')
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, related_name='profile')
     email_confirmed = models.BooleanField(default=False)
     first_name = models.CharField(blank=True, null=True, max_length=150, verbose_name='Όνομα')
     last_name = models.CharField(blank=True, null=True, max_length=150, verbose_name='Επίθετο')
@@ -73,6 +75,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}' if self.first_name else 'No User'
+
+    def get_frontend_edit_url(self):
+        return reverse('profile_edit', kwargs={'pk': self.id})
 
     def get_edit_url(self):
         return reverse('point_of_sale:costumer_update_view', kwargs={'pk': self.id})
@@ -136,11 +141,20 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=User)
-def create_profile(sender, instance, *args, **kwargs):
-    profile, created = Profile.objects.get_or_create(user=instance)
-    profile.first_name = instance.first_name
-    profile.last_name = instance.last_name
-    profile.save()
+def create_profile(sender, instance, created, *args, **kwargs):
+    if created:
+        profile, created = Profile.objects.get_or_create(user=instance)
+        profile.first_name = instance.first_name
+        profile.last_name = instance.last_name
+        profile.user_title = 'Αυτοματη δημιουργία απο το συστημα. Παρακαλώ συμπληρωστε το.'
+        profile.save()
+
+
+@receiver(post_save, sender=Profile)
+def update_favorite(sender, instance, *args, **kwargs):
+    if instance.user_favorite:
+        qs = Profile.objects.filter(user=instance.user).exclude(id=instance.id)
+        qs.update(user_favorite=False)
 
 
 class Wishlist(models.Model):

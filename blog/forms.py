@@ -9,7 +9,7 @@ class PostForm(BaseForm, forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['status', 'title', 'category', 'image', 'text', 'date', 'show_custom_date', 'slug']
+        fields = ['status', 'show_first_page', 'title', 'category', 'image', 'text', 'date', 'show_custom_date', 'slug']
 
 
 class PostPhotoUploadForm(BaseForm):

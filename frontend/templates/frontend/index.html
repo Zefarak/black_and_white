@@ -61,6 +61,26 @@
         </div>
     {% endfor %}
 
+    {% for post in posts %}
+        <div>
+            <div class="home text-left p-right">
+                <img src="{{ post.image.url }}" alt="" class="bg-img blur-up lazyload">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="slider-contain">
+                                <div>
+                                    <h1 style="color:{{ banner.color_letter }}">{{ post.title }}</h1>
+                                    <p style="color:{{ banner.color_letter }}">{% if post.show_custom_date %} Ημερομηνια: {{ post.date|date }} {% endif %}</p>
+                                    <a href="{{ post.get_absolute_url }}" class="btn btn-solid">Εκδήλωση</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
 </div>
 <!-- home slider end -->
 

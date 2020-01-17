@@ -11,12 +11,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 REAL_DB = True
 PRODUCTION = True
 
 if PRODUCTION:
-    ALLOWED_HOSTS = ['blackkaiwhite.herokuapp.com']
+    ALLOWED_HOSTS = ['blackkaiwhite.herokuapp.com', 'www.black-and-white.gr']
 else:
     ALLOWED_HOSTS = ['*']
 

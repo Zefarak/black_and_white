@@ -13,6 +13,7 @@ from .tools import category_and_brands_filter_data
 from cart.forms import ProductCartForm
 from cart.tools import check_or_create_cart
 from cart.models import CartItem
+from blog.models import Post
 from newsletter.models import NewsLetter
 from contact.forms import ContactFrontEndForm
 from .forms import AskForm
@@ -25,6 +26,7 @@ class HomepageView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
+        posts = Post.objects.filter(status=True, show_first_page=True)
         banners = Banner.browser.active().filter(category='a')
         extra_title = 'Αρχική Σελίδα'
         featured_products = Product.my_query.featured_products()[:8]

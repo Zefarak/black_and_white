@@ -1,19 +1,23 @@
-from django.views.generic import UpdateView, ListView, TemplateView, View
+from django.views.generic import UpdateView, ListView, TemplateView, View, CreateView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 from django.shortcuts import redirect, reverse, render, HttpResponseRedirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
-from django.utils.encoding import force_bytes
-from django.utils.encoding import force_text
+
+from django.utils.encoding import force_text, force_bytes
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
+from django.contrib.auth import get_user_model
+
 from accounts.models import Profile, Wishlist
+from accounts.tables import ProfileTable
 from accounts.forms import LoginForm, SignUpForm, ProfileFrontEndForm, UpdatePasswordForm, ForgotPasswordForm
 from accounts.token import account_activation_token
 from .tables import UserOrderTable, UserOrderItemTable
@@ -21,7 +25,7 @@ from cart.models import CartItem, Cart
 from cart.tools import check_or_create_cart
 from point_of_sale.models import Order, OrderItem
 from catalogue.models import Product
-from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 from subscribe.models import Subscribe, UserSubscribe
@@ -341,3 +345,55 @@ class UserFavoriteOrderView(ListView):
         context['page_title'] = 'Αγαπημένες Παραγγελίες'
         context['queryset_table'] = UserOrderTable(self.object_list)
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class UserShippingListView(ListView):
+    template_name = 'frontend/user_views/profiles_list.html'
+    model = Profile
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = self.request.user
+        qs = Profile.objects.filter(user=user)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['queryset_table'] = ProfileTable(self.object_list)
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class UserProfileEditView(UpdateView):
+    template_name = 'frontend/user_views/user_form.html'
+    model = Profile
+    form_class = ProfileFrontEndForm
+    success_url = reverse_lazy('profiles')
+
+    def get_queryset(self):
+        qs = Profile.objects.filter(user=self.request.user)
+        return qs
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, 'Οι αλλαγες Αποθηκευτηκαν')
+        return super().form_valid(form)
+
+
+@method_decorator(login_required, name='dispatch')
+class UserProfileCreateView(CreateView):
+    template_name = 'frontend/user_views/user_form.html'
+    model = Profile
+    form_class = ProfileFrontEndForm
+    success_url = reverse_lazy('profiles')
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['user'] = self.request.user
+        return initial
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, 'Οι αλλαγες Αποθηκευτηκαν')
+        return super().form_valid(form)

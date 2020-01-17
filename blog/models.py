@@ -50,6 +50,7 @@ def create_post_category_slug(sender, instance, **kwargs):
 
 
 class Post(models.Model):
+    show_first_page = models.BooleanField(default=False, verbose_name='Εμφανιση Πρωτη Σελιδα')
     status = models.BooleanField(default=False, verbose_name='Κατασταση')
     timestamp = models.DateTimeField(auto_now_add=True)
     date = models.DateTimeField(blank=True, null=True, verbose_name='Ημερομηνια')

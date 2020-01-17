@@ -66,7 +66,7 @@ class ProfileFrontEndForm(BaseForm, forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name',
+        fields = ['user_favorite', 'user_title','first_name', 'last_name',
                   'shipping_address', 'shipping_city',
                   'shipping_zip_code', 'cellphone',
                   'phone', 'user'
