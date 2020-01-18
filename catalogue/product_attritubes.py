@@ -92,6 +92,7 @@ class AttributeTitle(MPTTModel):
     timestamp = models.DateField(auto_now=True)
     attri_by = models.ForeignKey(AttributeClass, null=True, on_delete=models.CASCADE, related_name='my_values')
     name = models.CharField(max_length=120, verbose_name='Τίτλος')
+    value = models.DecimalField(default=0, decimal_places=2, max_digits=10)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     default_value = models.BooleanField(default=False)
     take_action = models.BooleanField(default=False)
@@ -102,6 +103,8 @@ class AttributeTitle(MPTTModel):
         verbose_name_plural = 'Τιμες Μεγεθολόγιου'
 
     def __str__(self):
+        if self.value > 0:
+            return f'{self.name} (+{self.value} {CURRENCY})'
         return self.name
 
     def get_edit_url(self):

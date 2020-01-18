@@ -231,6 +231,7 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE)
     qty = models.PositiveIntegerField(default=1)
     have_attributes = models.BooleanField(default=False)
+    extra_value = models.DecimalField(default=0, max_digits=10, decimal_places=2)
     value = models.DecimalField(default=0, decimal_places=2, max_digits=10,
                                 validators=[validate_positive_decimal,
                                             ])
@@ -271,6 +272,9 @@ class CartItem(models.Model):
 
     def get_total_value(self):
         return self.qty * self.final_value
+
+    def get_extra_value(self):
+        pass
 
     def tag_value(self):
         return '%s %s' % (round(self.value, 2), CURRENCY)
@@ -386,6 +390,7 @@ class CartItemAttribute(models.Model):
     attribute = models.ManyToManyField(Attribute, blank=True,  null=True)
     cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='attribute_items')
     qty = models.IntegerField(default=1)
+
 
     def __str__(self):
         return f'{self.cart_item.product} - {self.attribute.title}'

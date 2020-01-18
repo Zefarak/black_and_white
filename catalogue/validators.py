@@ -7,7 +7,7 @@ def upload_image(instance, filename):
 
 
 def upload_product_photo(instance, filename):
-    return f'products_photo/product_{instance.id}/{filename}'
+    return f'products_photo/product_{instance.product.id}/{filename}'
 
 
 def validate_file(value):

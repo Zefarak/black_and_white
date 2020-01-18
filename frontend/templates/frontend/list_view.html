@@ -62,7 +62,7 @@
                                         <h4>{{ page_title }}</h4>
                                     </div>
                                 </div>
-                                <div class="collection-product-wrapper">
+                                <div class="collection-product-wrapper" >
                                     <div class="product-wrapper-grid">
                                         <div class="row infinite-container">
                                             {% for product in object_list %}
@@ -71,13 +71,13 @@
                                             </div>
                                             {% endfor %}
                                         </div>
-
                                     </div>
-                                    <div style='display: none' class="loading" style="display: none;">Loading...
+                                    <div class="loading">Loading...
                                         {% if page_obj.has_next %}
                                             <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a>
                                         {% endif %}
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -94,11 +94,22 @@
 
 
 
-
 {% block extra_js %}
-
-
+    <!--Plugin JavaScript file-->
+    
+    <script src="{% static 'frontend/waypoints/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'frontend/waypoints/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+            onBeforePageLoad: function () {
+                $('.loading').show();
+                },
+            onAfterPageLoad: function ($items) {
+                $('.loading').hide();
+            }
+        });
+    </script>
 {% endblock %}
-
 
 
