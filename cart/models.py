@@ -248,9 +248,12 @@ class CartItem(models.Model):
         return f'{self.cart} - {self.product}'
 
     def save(self, *args, **kwargs):
-        self.final_value = self.price_discount if self.price_discount > 0 else self.value
+
         self.have_attributes = True if self.product.have_attr else False
-        self.total_value = self.get_total_value()
+        self.extra_value = self.get_extra_value()
+        self.total_value = self.get_total_value() + (self.extra_value*self.qty)
+        self.final_value = self.price_discount if self.price_discount > 0 else self.value
+        self.final_value += self.extra_value
         super().save(*args, **kwargs)
         self.cart.save()
 
@@ -274,7 +277,13 @@ class CartItem(models.Model):
         return self.qty * self.final_value
 
     def get_extra_value(self):
-        pass
+        if self.have_attributes:
+            attrs = self.attribute_items.all()
+            attr_cost = 0
+            for ele in attrs:
+                attr_cost += ele.attribute.title.value
+            return attr_cost
+        return 0
 
     def tag_value(self):
         return '%s %s' % (round(self.value, 2), CURRENCY)
@@ -301,7 +310,6 @@ class CartItem(models.Model):
         cart_item_attr.save()
         result, message = True, f'To προϊόν {product} προστέθηκε με επιτυχία'
         return cart_item, message
-
 
     @staticmethod
     def create_cart_item_with_multi_attr(cart, product, request):
@@ -390,7 +398,6 @@ class CartItemAttribute(models.Model):
     attribute = models.ManyToManyField(Attribute, blank=True,  null=True)
     cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='attribute_items')
     qty = models.IntegerField(default=1)
-
 
     def __str__(self):
         return f'{self.cart_item.product} - {self.attribute.title}'
