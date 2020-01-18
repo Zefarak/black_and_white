@@ -284,7 +284,9 @@ class Order(DefaultOrderModel):
         new_order.payment_cost = cart.payment_method_cost
         if user:
             new_order.user = user
-            new_order.profile = user.profile
+            user_profiles = user.profile.all().order_by('user_favorite')
+            if user_profiles.exists():
+                new_order.profile = user_profiles.first()
 
         for item in cart.order_items.all():
             OrderItem.create_order_item_from_cart_item(new_order, item)
@@ -368,6 +370,7 @@ class OrderItem(DefaultOrderItemModel):
                               )
     #  warehouse_management
     is_find = models.BooleanField(default=False)
+    extra_value = models.DecimalField(default=0, max_digits=20, decimal_places=2)
     is_return = models.BooleanField(default=False)
     attribute = models.BooleanField(default=False)
     total_value = models.DecimalField(max_digits=20, decimal_places=2, default=0, help_text='qty*final_value')
@@ -398,9 +401,11 @@ class OrderItem(DefaultOrderItemModel):
 
     def save(self, *args, **kwargs):
         self.value = self.title.price if self.title else 0
+        self.extra_value = self.get_extra_value() if self.id else 0
         self.discount_value = self.title.price_discount if self.title else 0
         self.cost = self.title.price_buy if self.title else 0
         self.final_value = self.discount_value if self.discount_value > 0 else self.value
+        self.final_value += self.extra_value
         self.total_value = self.final_value * self.qty
         self.total_cost_value = self.cost * self.qty
         self.attribute = self.have_attr()
@@ -415,6 +420,12 @@ class OrderItem(DefaultOrderItemModel):
 
     def get_clean_value(self):
         return self.final_value * (100 - self.order.taxes / 100)
+
+    def get_extra_value(self):
+        attrs = self.attributes.all()
+        attr_cost = attrs.aggregate(Sum('value'))['value__sum'] if attrs.exists() else 0.00
+        return attr_cost
+
 
     @property
     def get_total_value(self):
@@ -561,13 +572,21 @@ class OrderItemAttribute(models.Model):
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, related_name='attributes')
     qty = models.DecimalField(default=1, decimal_places=2, max_digits=10)
     is_found = models.BooleanField(default=False)
+    value = models.DecimalField(default=0, decimal_places=2, max_digits=10)
 
     def __str__(self):
         return f'{self.order_item}'
 
     def save(self, *args, **kwargs):
+        self.value = self.get_value() if self.id else 0
         super().save(*args, **kwargs)
         self.order_item.save()
+
+    def get_value(self):
+        value = 0
+        for ele in self.attribute.all():
+            value += ele.title.value
+        return value
 
     @staticmethod
     def create_objects_from_old_order_item(old_order_item, new_order_item):

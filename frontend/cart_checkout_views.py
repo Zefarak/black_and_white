@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from accounts.models import Profile
 from cart.models import CartItem, CartProfile, CartItemGifts
 from cart.subscribe_models import  CartSubscribe, CartSubscribeDiscount
 from cart.tools import check_or_create_cart, add_product_to_cart_movements
@@ -153,6 +154,7 @@ class CheckoutView(FormView):
 
                 initial['cellphone'] = profile.cellphone
                 initial['phone'] = profile.phone
+        '''
         if CartProfile.objects.filter(cart_related=cart).exists():
             cart_profile = cart.cart_profile
             initial['first_name'] = cart_profile.first_name
@@ -163,6 +165,7 @@ class CheckoutView(FormView):
             initial['zip_code'] = cart_profile.zip_code
             initial['cellphone'] = cart_profile.cellphone
             initial['phone'] = cart_profile.phone
+        '''
         initial['shipping_method'] = cart.shipping_method
         initial['payment_method'] = cart.payment_method
         initial['city'] = 'Μολαοι'
@@ -214,6 +217,18 @@ class CheckoutView(FormView):
                   )
 
         return super(CheckoutView, self).form_valid(form)
+
+
+@login_required
+def change_profile_from_checkout_view(request):
+    pk = request.GET.get('select_', None)
+    instance = get_object_or_404(Profile, id=pk)
+    if instance.user != request.user:
+        messages.warning(request, 'Κατι πήγε λάθος')
+    else:
+        instance.user_favorite = True
+        instance.save()
+    return HttpResponseRedirect(reverse('checkout_view'))
 
 
 def decide_what_to_do_with_order_payment(request):

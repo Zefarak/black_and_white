@@ -248,12 +248,11 @@ class CartItem(models.Model):
         return f'{self.cart} - {self.product}'
 
     def save(self, *args, **kwargs):
-
         self.have_attributes = True if self.product.have_attr else False
-        self.extra_value = self.get_extra_value()
-        self.total_value = self.get_total_value() + (self.extra_value*self.qty)
+        self.extra_value = self.get_extra_value() if self.id else 0
         self.final_value = self.price_discount if self.price_discount > 0 else self.value
         self.final_value += self.extra_value
+        self.total_value = self.get_total_value()
         super().save(*args, **kwargs)
         self.cart.save()
 
@@ -279,9 +278,7 @@ class CartItem(models.Model):
     def get_extra_value(self):
         if self.have_attributes:
             attrs = self.attribute_items.all()
-            attr_cost = 0
-            for ele in attrs:
-                attr_cost += ele.attribute.title.value
+            attr_cost = attrs.aggregate(Sum('value'))['value__sum'] if attrs.exists() else 0
             return attr_cost
         return 0
 
@@ -398,13 +395,21 @@ class CartItemAttribute(models.Model):
     attribute = models.ManyToManyField(Attribute, blank=True,  null=True)
     cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='attribute_items')
     qty = models.IntegerField(default=1)
+    value = models.DecimalField(default=0, decimal_places=2, max_digits=10)
 
     def __str__(self):
-        return f'{self.cart_item.product} - {self.attribute.title}'
+        return f'{self.cart_item.product}- {self.cart_item.cart}'
 
     def save(self, *args, **kwargs):
+        self.value = self.get_value() if self.id else 0
         super(CartItemAttribute, self).save()
         self.cart_item.save()
+
+    def get_value(self):
+        value = 0
+        for ele in self.attribute.all():
+            value += ele.title.value
+        return value
 
     @staticmethod
     def create_cart_item(cart, product, qty, attribute_id):
