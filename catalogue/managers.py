@@ -18,7 +18,10 @@ class ProductSiteQuerySet(models.query.QuerySet):
         return self.filter(active=True)
 
     def active_for_site(self):
-        return self.filter(active=True, site_active=True, qty__gt=0) if USE_QTY_LIMIT else self.filter(active=True, site_active=True)
+        qs = self.active()
+        qs_1 = qs.filter(product_class__have_transcations=False)
+        qs_2 = qs.filter(product_class__have_transcations=True).filter(qty__gt=0)
+        return qs_1 | qs_2
 
     def featured(self):
         return self.active_for_site().filter(is_featured=True)[:12]
