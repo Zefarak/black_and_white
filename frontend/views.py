@@ -112,7 +112,7 @@ class CategoryView(ListView):
 class SearchView(ListViewMixin, ListView):
     model = Product
     template_name = 'frontend/list_view.html'
-    paginate_by = 8
+    paginate_by = 32
 
     def get_queryset(self):
         search_name = self.request.GET.get('search_name', None)

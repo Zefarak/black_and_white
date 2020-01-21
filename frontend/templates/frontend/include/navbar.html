@@ -70,7 +70,7 @@
                                                             <div class="col-xl-12">
                                                                 <form action="{% url 'search_page' %}">
                                                                     <div class="form-group">
-                                                                        <input name="search_name" type="text" class="form-control" id="exampleInputPassword1" placeholder="Search a Product">
+                                                                        <input name="search_name" type="text" class="form-control" id="exampleInputPassword1" placeholder="Αναζήτηση Προϊόντος">
                                                                     </div>
                                                                     <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                                                 </form>
@@ -84,7 +84,7 @@
                                     <li class="onhover-div mobile-setting">
                                         <div><img src="{% static 'frontend/assets/images/icon/users.png' %}" class="img-fluid blur-up lazyload" alt=""> <i class="ti-settings"></i></div>
                                         <div class="show-div setting">
-                                            <h6>Account</h6>
+                                            <h6>Λογαριασμος</h6>
                                             <ul>
                                                 {% if request.user.is_authenticated %}
                                                 <li>
@@ -144,7 +144,7 @@
                                             </li>
                                             <li>
                                                 <div class="buttons">
-                                                    <a href="{% url 'cart_view' %}" class="view-cart">view cart</a>
+                                                    <a href="{% url 'cart_view' %}" class="view-cart">Καλαθι</a>
                                                     <a href="{% url 'checkout_view' %}" class="checkout">checkout</a>
                                                 </div>
                                             </li>

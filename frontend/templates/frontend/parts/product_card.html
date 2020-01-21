@@ -13,15 +13,17 @@
                 {% endif %}
             </a>
         </div>
-        <div class="back">
-            <a href="{{ product.get_absolute_url }}">
-                <img {% if product.secondary_image %}
-                            src="{{ product.secondary_image.url }}" class="img-fluid blur-up lazyload bg-img" alt="">
-                    {% else %}
-                        src="{% static 'frontend/demo_images/no_image.png' %}" class="img-fluid blur-up lazyload bg-img" alt="">
-                    {% endif %}
-            </a>
-        </div>
+        {% comment %}
+            <div class="back">
+                <a href="{{ product.get_absolute_url }}">
+                    <img {% if product.secondary_image %}
+                                src="{{ product.secondary_image.url }}" class="img-fluid blur-up lazyload bg-img" alt="">
+                        {% else %}
+                            src="{% static 'frontend/demo_images/no_image.png' %}" class="img-fluid blur-up lazyload bg-img" alt="">
+                        {% endif %}
+                </a>
+            </div>
+        {% endcomment %}
         <div class="cart-box">
             {% if product.have_attr %}
                 <button
@@ -42,7 +44,8 @@
                data-href="{% url 'ajax_add_product_modal' product.slug %}"
                data-toggle="modal"
                data-target="#add_product_modal"
-               title="Quick View"><i class="ti-search" aria-hidden="true"></i></a>
+               title="Quick View"><i class="ti-eye" aria-hidden="true"></i>
+            </a>
         </div>
     </div>
      <div class="product-detail text-center">
