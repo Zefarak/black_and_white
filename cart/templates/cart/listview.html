@@ -13,6 +13,8 @@
                                     <div class="card-header">
                                         <h5>{{ page_title }}</h5>
                                         <br>
+                                        <a href="{% url 'cart:clear_cart_view' %}" class="btn btn-danger btn-round">Καθαρισμος καλαθιών</a>
+                                        <br>
                                     </div>
                                     <div class="card-block">
                                         <div class="dt-responsive table-responsive" id="result_table">

@@ -197,7 +197,7 @@ class UserProfileOrderListView(ListView):
     def get_queryset(self):
         user = self.request.user
         qs = Order.my_query.get_queryset().eshop_orders_by_user(user)
-        return qs
+        return qs.order_by('-date_expired')
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileOrderListView, self).get_context_data(**kwargs)
@@ -338,7 +338,7 @@ class UserFavoriteOrderView(ListView):
 
     def get_queryset(self):
         qs = Order.objects.filter(user=self.request.user, favorite_order=True)
-        return qs
+        return qs.order_by('-date_expired')
 
     def get_context_data(self, **kwargs):
         context = super(UserFavoriteOrderView, self).get_context_data(**kwargs)

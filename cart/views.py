@@ -1,4 +1,4 @@
-from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect
+from django.shortcuts import HttpResponseRedirect, get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from django.contrib import messages
@@ -15,7 +15,8 @@ from .forms import CartForm
 from .tables import CartTable, ProductCartTable, CartItemTable
 from .tools import add_to_cart, add_to_cart_with_attr, remove_from_cart_with_attr
 from point_of_sale.models import OrderItem, Order
-
+from datetime import datetime
+from datetime import timedelta
 from django_tables2 import RequestConfig
 
 
@@ -99,3 +100,11 @@ def create_order_from_cart_view(request, pk):
     return redirect(cart.get_edit_url())
 
 
+@staff_member_required
+def clear_cart_view(request):
+    date_two_moths_before = datetime.now() - timedelta(days=60)
+    qs = Cart.objects.all().filter(order__isnull=True, timestamp__lte=date_two_moths_before)
+    CartItem.objects.filter(cart__in=qs).delete()
+    qs.delete()
+    messages.success(request, 'Τα Καλαθια Καθαριστικαν.')
+    return redirect(reverse('cart:cart_list'))
