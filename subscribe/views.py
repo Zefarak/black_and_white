@@ -17,6 +17,11 @@ class FrontEndSubscribeListView(ListView):
     def get_queryset(self):
         return Subscribe.objects.filter(active=True)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['extra_title'] = 'Συνδρομές'
+        return context
+
 
 @method_decorator(staff_member_required, name='dispatch')
 class SubscribeHomepageView(TemplateView):

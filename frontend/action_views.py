@@ -81,7 +81,7 @@ def create_new_order_from_order(request, pk):
         profile.pk = None
         profile.order_related = new_eshop_order
         profile.save()
-    messages.success(request, f'Η παραγγελία {order.title} επαναλήπτικε.')
+    messages.success(request, f'Η παραγγελία {order.title} αντιγράφηκε και ξαναέγινε. Σας ευχαριστούμε!.')
     return redirect('decide_payment_process')
 
 
