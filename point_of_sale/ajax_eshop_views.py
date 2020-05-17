@@ -3,10 +3,9 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 
-from .models import Order, OrderItem, Attribute, OrderItemAttribute
+from .models import Order, OrderItem, OrderItemAttribute, AttributeTitle
 from voucher.models import Voucher
 from .forms import EshopOrderStatusForm
-
 
 
 @staff_member_required

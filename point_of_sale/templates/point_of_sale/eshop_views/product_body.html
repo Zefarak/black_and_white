@@ -20,7 +20,7 @@
                 {% if item.attribute %}
                     {% for item_ in item.attributes.all %}
                         {% for i in item_.attribute.all %}
-                            {{ i.class_related.class_related }}  ==> {{ i.title }}
+                            {{ i.attri_by }}  ==> {{ i }}
                         {% endfor %}
                         <br>
                     {% endfor %}

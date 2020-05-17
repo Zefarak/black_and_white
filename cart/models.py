@@ -321,8 +321,8 @@ class CartItem(models.Model):
         for field in request.POST:
             if 'attr_' in field:
                 id = field.split('_')[1]
-                attr_class = get_object_or_404(AttributeProductClass, id=id)
-                if attr_class.class_related.is_radio_button:
+                attr_class = get_object_or_404(AttributeClass, id=id)
+                if attr_class.is_radio_button:
                     attr_id = request.POST.get(field)
                     attr = get_object_or_404(AttributeTitle, id=attr_id)
                     cart_item_attr.attribute.add(attr)

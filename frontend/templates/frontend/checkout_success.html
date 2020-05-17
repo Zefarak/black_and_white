@@ -288,7 +288,7 @@
 
                                 {% for attr in order_item.attributes.all %}
                                     {% for item in attr.attribute.all %}
-                                        <li class="list-group-item">{{ item.class_related.class_related }}  ==> {{ item.title }}</li>
+                                        <li class="list-group-item">{{ item.attri_by }}  ==> {{ item }}</li>
                                     {% endfor %}
                                     {% empty %}
                                     <li class="list-group-item">Δε υπάρχουν στοιχεία</li>

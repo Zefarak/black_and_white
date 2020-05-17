@@ -17,7 +17,7 @@ from decimal import Decimal
 
 from site_settings.constants import TAXES_CHOICES
 from catalogue.models import Product, Gifts
-from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass
+from catalogue.product_attritubes import AttributeTitle, AttributeClass
 from .abstract_models import DefaultOrderModel, DefaultOrderItemModel
 from .subscribe_models import *
 from site_settings.models import PaymentMethod, Shipping, Country
@@ -568,7 +568,7 @@ def create_destroy_title():
 
 
 class OrderItemAttribute(models.Model):
-    attribute = models.ManyToManyField(Attribute, null=True)
+    attribute = models.ManyToManyField(AttributeTitle, null=True)
     order_item = models.ForeignKey(OrderItem, on_delete=models.CASCADE, related_name='attributes')
     qty = models.DecimalField(default=1, decimal_places=2, max_digits=10)
     is_found = models.BooleanField(default=False)
@@ -585,7 +585,7 @@ class OrderItemAttribute(models.Model):
     def get_value(self):
         value = 0
         for ele in self.attribute.all():
-            value += ele.title.value
+            value += ele.value
         return value
 
     @staticmethod

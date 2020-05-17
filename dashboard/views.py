@@ -362,7 +362,7 @@ def create_attr_product_class(request, pk, dk):
     attribute_class.products.add(instance)
     attribute_class.save()
     messages.success(request, 'Το μεγεθολογιο Προστεθηκε!')
-    return redirect(reverse('dashboard:attribute_manager_view', kwargs={'pk': instanc.id}))
+    return redirect(reverse('dashboard:attribute_manager_view', kwargs={'pk': instance.id}))
 
 
 @method_decorator(staff_member_required, name='dispatch')
@@ -388,11 +388,13 @@ class ProductAttriClassManagerView(ListView):
 
 
 @staff_member_required
-def delete_product_attribute_view(request, pk):
-    attribute = get_object_or_404(AttributeProductClass, id=pk)
-    attribute.delete()
+def delete_product_attribute_view(request, pk, dk):
+    instance = get_object_or_404(Product, pk)
+    attribute = get_object_or_404(AttributeClass, id=dk)
+    attribute.products.remove(instance)
+    attribute.save()
     messages.success(request, 'Το μεγεθολογιο διαγραφηκε')
-    return redirect(reverse('dashboard:attribute_manager_view', kwargs={'pk': attribute.product_related.id}))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 @method_decorator(staff_member_required, name='dispatch')
