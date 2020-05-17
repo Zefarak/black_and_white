@@ -350,7 +350,7 @@ class ProductAttributeManagerView(ListView):
         context = super().get_context_data(**kwargs)
         instance = get_object_or_404(Product, id=self.kwargs['pk'])
         page_title, attrs, back_url = f'Δημιουργία Μεγεθολογίων', True, instance.get_edit_url()
-        selected_data = instance.attr_class.all()
+        selected_data = instance.my_attr_class.all()
         context.update(locals())
         return context
 
@@ -359,8 +359,10 @@ class ProductAttributeManagerView(ListView):
 def create_attr_product_class(request, pk, dk):
     instance = get_object_or_404(Product, id=pk)
     attribute_class = get_object_or_404(AttributeClass, id=dk)
-    get_class, created = AttributeProductClass.objects.get_or_create(class_related=attribute_class, product_related=instance)
-    return redirect(reverse('dashboard:product_attr_detail_view', kwargs={'pk': get_class.id}))
+    attribute_class.products.add(instance)
+    attribute_class.save()
+    messages.success(request, 'Το μεγεθολογιο Προστεθηκε!')
+    return redirect(reverse('dashboard:attribute_manager_view', kwargs={'pk': instanc.id}))
 
 
 @method_decorator(staff_member_required, name='dispatch')

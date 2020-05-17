@@ -13,7 +13,7 @@ from .validators import validate_positive_decimal
 from site_settings.models import Shipping, PaymentMethod
 from site_settings.constants import CURRENCY
 from catalogue.models import Product, Gifts
-from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass, AttributeRelated
+from catalogue.product_attritubes import Attribute, AttributeClass, AttributeProductClass, AttributeRelated, AttributeTitle
 from .subscribe_models import CartSubscribe, CartSubscribeDiscount
 from voucher.models import Voucher
 from decimal import Decimal
@@ -324,7 +324,7 @@ class CartItem(models.Model):
                 attr_class = get_object_or_404(AttributeProductClass, id=id)
                 if attr_class.class_related.is_radio_button:
                     attr_id = request.POST.get(field)
-                    attr = get_object_or_404(Attribute, id=attr_id)
+                    attr = get_object_or_404(AttributeTitle, id=attr_id)
                     cart_item_attr.attribute.add(attr)
                 else:
                     attr_ids = request.POST.getlist(field)
@@ -392,7 +392,7 @@ class CartItem(models.Model):
 
 
 class CartItemAttribute(models.Model):
-    attribute = models.ManyToManyField(Attribute, blank=True,  null=True)
+    attribute = models.ManyToManyField(AttributeTitle, blank=True,  null=True)
     cart_item = models.ForeignKey(CartItem, on_delete=models.CASCADE, related_name='attribute_items')
     qty = models.IntegerField(default=1)
     value = models.DecimalField(default=0, decimal_places=2, max_digits=10)
@@ -408,7 +408,7 @@ class CartItemAttribute(models.Model):
     def get_value(self):
         value = 0
         for ele in self.attribute.all():
-            value += ele.title.value
+            value += ele.value
         return value
 
     @staticmethod

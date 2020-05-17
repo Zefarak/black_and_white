@@ -76,6 +76,7 @@ class AttributeClass(models.Model):
     have_transcations = models.BooleanField(default=True, verbose_name='Υποστηρίζει Συναλλαγές')
     is_needed = models.BooleanField(default=True, verbose_name='Απαιτειται')
     is_radio_button = models.BooleanField(default=True, verbose_name='Μονη Επιλογη')
+    products = models.ManyToManyField(Product,related_name='my_attr_class')
 
     class Meta:
         ordering = ['-is_needed']

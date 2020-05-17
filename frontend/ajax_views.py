@@ -169,6 +169,7 @@ def ajax_check_voucher(request):
 
 def ajax_add_product_modal(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    product_classes = product.my_attr_class.all()
     attributes = Attribute.my_query.product_attributes_with_qty(product)
     contact_form = ContactFrontEndForm()
     data = dict()
@@ -176,7 +177,8 @@ def ajax_add_product_modal(request, slug):
                                          request=request,
                                          context={'product': product,
                                                   'attributes': attributes,
-                                                  'contact_form': contact_form
+                                                  'contact_form': contact_form,
+                                                  'product_classes': product_classes
                                                   }
                                          )
     return JsonResponse(data)

@@ -18,7 +18,8 @@ from catalogue.forms import (CreateProductClassForm, CategorySiteForm,
                              CharacteristicsForm, AttributeClassForm, AttributeTitleForm
                              )
 from catalogue.product_attritubes import (Characteristics, CharacteristicsValue,
-                                           AttributeTitle, AttributeClass, AttributeRelated
+                                          AttributeTitle, AttributeClass, AttributeRelated, Attribute,
+                                          AttributeProductClass
                                           )
 from .forms import AttributeRelatedForm
 from .tables import ProductClassTable, CategorySiteTable, BrandTable, CharacteristicsTable, AttributeClassTable, ColorTable, AttributeRelatedTable

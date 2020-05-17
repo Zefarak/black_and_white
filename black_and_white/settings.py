@@ -12,8 +12,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-REAL_DB = True
-PRODUCTION = True
+REAL_DB = False
+PRODUCTION = False
 
 
 if PRODUCTION:
@@ -114,7 +114,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'NAME': os.path.join(BASE_DIR, 'db_.sqlite3'),
         }
     }
 
