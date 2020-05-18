@@ -67,7 +67,7 @@ class ProductsListView(ListView):
         back_url, create_url = reverse('dashboard:home'), reverse('dashboard:product_create')
         page_title = 'Προϊόντα'
         queryset_table = TableProduct(self.object_list)
-        RequestConfig(self.request).configure(queryset_table)
+        RequestConfig(self.request, paginate={'per_page': self.paginate_by}).configure(queryset_table)
         # filters
         search_filter, vendor_filter, category_filter, active_filter, qty_filter, brand_filter, feature_filter = [True] * 7
         categories, vendors, brands = WarehouseCategory.objects.filter(
@@ -567,7 +567,6 @@ class ProductDiscountUpdateView(UpdateView):
         # ajax filter url
         get_params = self.request.get_full_path().split('?', 1)[1] if '?' in self.request.get_full_path() else ''
         ajax_add_url = reverse('dashboard:ajax_products_discount_add', kwargs={'pk': self.object.id}) + '?' + get_params
-        print(ajax_add_url)
         context.update(locals())
         return context
 
@@ -625,8 +624,8 @@ class GiftUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(GiftUpdateView, self).get_context_data(**kwargs)
-        context['queryset'] = Product.objects.all()[:15]
-        print(self.object.products_gift)
+        context['queryset'] = Product.filters_data(self.request, Product.objects.all())[:30]
+
         return context
 
 

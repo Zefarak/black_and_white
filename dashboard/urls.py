@@ -20,7 +20,7 @@ from .settings_view import (ProductClassView, ProductClassCreateView,
                             characteristic_delete_view, CharValueEditView, delete_char_value_view,
                             AttributeClassListView, attribute_class_edit_view, attribute_class_delete_view,
                             AttributeClassCreateView, attribute_title_delete_view, AttributeTitleEditView,
-                            ColorCreateView, ColorListView, ColorUpdateView, color_delete_view,
+                            ColorCreateView, ColorListView, ColorUpdateView, color_delete_view, attribute_class_manager_view,
                             AttributeRelatedCreateView, AttributeRelatedListView, AttributeRelatedUpdateView, attribute_related_delete_view
                             )
 from .dashboard_actions import copy_product_view, add_gift_action_view, reset_qty_to_products_view, change_site_setting_status_view
@@ -115,6 +115,7 @@ urlpatterns = [
     path('attributes-class/create/', AttributeClassCreateView.as_view(), name='attribute_class_create_view'),
     path('attributes-class/delete//<int:pk>/', attribute_class_delete_view, name='attribute_class_delete_view'),
     path('attributes-class/edit/<int:pk>/', attribute_class_edit_view, name='attribute_class_edit_view'),
+    path('attribute-class-manager/<int:pk>/', attribute_class_manager_view, name='attribute_class_manager'),
 
     path('attributes-title/edit/<int:pk>/', AttributeTitleEditView.as_view(), name='attribute_title_edit_view'),
     path('attributes-title/delete/<int:pk>/', attribute_title_delete_view, name='attribute_title_delete_view'),

@@ -97,7 +97,7 @@ class AttributeTitleForm(BaseForm, forms.ModelForm):
 
     class Meta:
         model = AttributeTitle
-        fields = ['name', 'attri_by', 'value', 'take_action']
+        fields = ['name', 'attri_by', 'value', 'take_action', 'my_ordering']
 
 
 class ProductForm(BaseForm, forms.ModelForm):

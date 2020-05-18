@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.conf import settings
 
 from django_tables2 import RequestConfig
-from catalogue.models import ProductClass
+from catalogue.models import ProductClass, Product
 from catalogue.categories import Category
 from catalogue.product_details import Brand, Color
 from catalogue.forms import (CreateProductClassForm, CategorySiteForm,
@@ -18,8 +18,7 @@ from catalogue.forms import (CreateProductClassForm, CategorySiteForm,
                              CharacteristicsForm, AttributeClassForm, AttributeTitleForm
                              )
 from catalogue.product_attritubes import (Characteristics, CharacteristicsValue,
-                                          AttributeTitle, AttributeClass, AttributeRelated, Attribute,
-                                          AttributeProductClass
+                                          AttributeTitle, AttributeClass, AttributeRelated
                                           )
 from .forms import AttributeRelatedForm
 from .tables import ProductClassTable, CategorySiteTable, BrandTable, CharacteristicsTable, AttributeClassTable, ColorTable, AttributeRelatedTable
@@ -367,6 +366,16 @@ def attribute_class_edit_view(request, pk):
                 return redirect(reverse('dashboard:attribute_class_edit_view', kwargs={'pk': instance.id}))
     context = locals()
     return render(request, 'dashboard/settings/characteristic_detail_view.html', context)
+
+
+@staff_member_required
+def attribute_class_manager_view(request, pk):
+    instance = get_object_or_404(AttributeClass, id=pk)
+    selected_data = instance.products.all()
+    products = Product.filters_data(request, Product.objects.all())
+    context = locals()
+
+    return render(request, 'dashboard/settings/attribute_class_manager.html', context)
 
 
 @method_decorator(staff_member_required, name='dispatch')

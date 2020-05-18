@@ -30,7 +30,7 @@
                                                         <td>{{ ele.id }}</td>
                                                         <td>{{ ele }}</td>
                                                         <td><a href="{{ ele.get_edit_url }}" class="btn btn-primary">Edit</a> </td>
-                                                        <td><a href="" class="btn btn-success">Manager</a></td>
+                                                        <td>{{ ele.my_ordering }}</td>
                                                     </tr>
                                                 {% empty %}
                                                     <tr>

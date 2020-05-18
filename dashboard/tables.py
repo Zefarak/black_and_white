@@ -111,11 +111,13 @@ class AttributeTable(tables.Table):
 class AttributeClassTable(tables.Table):
     action = tables.TemplateColumn("<a href='{{ record.get_edit_url }}' class='btn btn-primary'>Επεξεργασία</a>",
                                    orderable=False)
+    manager = tables.TemplateColumn("<a href='{{ record.get_manager_url }}' class='btn btn-primary'>Manager</a>",
+                                   orderable=False)
 
     class Meta:
         model = AttributeClass
         template_name = 'django_tables2/bootstrap.html'
-        fields = ['title', 'is_needed', 'is_radio_button']
+        fields = ['title', 'is_needed', 'is_radio_button', 'manager']
 
 
 class ProductTable(tables.Table):

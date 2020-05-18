@@ -85,6 +85,12 @@ class ProductAdmin(ImportExportModelAdmin):
             return super(ProductAdmin, self).save_model(request, obj, form, change)
         return super(ProductAdmin, self).save_model(request, obj, form, change)
 
+
+@admin.register(AttributeTitle)
+class AttributeTitlesAdmin(admin.ModelAdmin):
+    pass
+
+
 '''
 @admin.register(Characteristics)
 class CharacteristicsAdmin(admin.ModelAdmin):
@@ -106,9 +112,6 @@ class AttributeClassAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(AttributeTitle)
-class AttributeTitlesAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(AttributeProductClass)

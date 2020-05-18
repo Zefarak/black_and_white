@@ -1,0 +1,99 @@
+{% extends 'catalogue_index.html' %}
+
+
+{% block content %}
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card-header">
+                                    <h4>dsfdsf</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Προϊόντα</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Προϊον</th>
+                                                    <th>Αξια</th>
+                                                    <th>Προσθηκη</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for product in products %}
+                                                    <tr>
+                                                        <td>{{ product }}</td>
+                                                        <td>{{ product.tag_final_price }}</td>
+                                                        <td><button type="button" class="btn btn-success"><i class="fa fa-plus"></i> </button> </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Επιλεγμενα</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Προϊον</th>
+                                                    <th>Αξια</th>
+                                                    <th>Προσθηκη</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for product in selected_data %}
+                                                    <tr>
+                                                        <td>{{ product }}</td>
+                                                        <td>{{ product.tag_final_price }}</td>
+                                                        <td><button type="button" class="btn btn-danger"><i class="fa fa-minus"></i> </button> </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $('.handle_button').click(function () {
+            const myBtn = $(this);
+            const url = myBtn.attr('data-href');
+            $.ajax({
+                method: 'GET',
+                dataType: 'json',
+                endpoint: url,
+
+                success: function (data) {
+                    $('.container_result').html(data.result)
+                }
+            })
+
+        })
+    </script>
+{% endblock %}

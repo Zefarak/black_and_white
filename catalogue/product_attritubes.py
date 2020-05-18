@@ -83,13 +83,16 @@ class AttributeClass(models.Model):
         verbose_name_plural = 'Attribute Class Title'
 
     def __str__(self):
-        return  self.title
+        return self.title
+
+    def get_manager_url(self):
+        return reverse('dashboard:attribute_class_manager', kwargs={'pk': self.id})
 
     def get_edit_url(self):
         return reverse('dashboard:attribute_class_edit_view', kwargs={'pk': self.id})
 
 
-class AttributeTitle(MPTTModel):
+class AttributeTitle(models.Model):
     timestamp = models.DateField(auto_now=True)
     attri_by = models.ForeignKey(AttributeClass, null=True, on_delete=models.CASCADE, related_name='my_values')
     name = models.CharField(max_length=120, verbose_name='Τίτλος')
@@ -97,9 +100,10 @@ class AttributeTitle(MPTTModel):
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     default_value = models.BooleanField(default=False)
     take_action = models.BooleanField(default=False)
+    my_ordering = models.IntegerField(default=5)
 
     class Meta:
-        unique_together = ['name', 'attri_by']
+        ordering = ['my_ordering', ]
         app_label = 'catalogue'
         verbose_name_plural = 'Τιμες Μεγεθολόγιου'
 

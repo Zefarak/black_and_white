@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from catalogue.categories import Category
 from catalogue.models import Product, ProductPhotos, Gifts
-from catalogue.product_attritubes import AttributeTitle, AttributeProductClass, Attribute
+from catalogue.product_attritubes import AttributeTitle, AttributeProductClass, Attribute, AttributeClass
 from .models import ProductDiscount
 from catalogue.forms import WarehouseCategoryForm, BrandForm, VendorForm, ColorForm
 from site_settings.constants import CURRENCY
@@ -298,3 +298,18 @@ def ajax_quick_change_qty_to_product(request, pk):
     instance.save()
     return JsonResponse({'success': True})
 
+
+@staff_member_required
+def ajax_handle_attribute_manager_view(request, pk, dk, action):
+    attribute_class = get_object_or_404(AttributeClass, id=pk)
+    product = get_object_or_404(Product, id=dk)
+    attribute_class.products.add(product) if action == 'add' else attribute_class.products.remove(product)
+    attribute_class.save()
+    data = dict()
+    data['result'] = render_to_string(request=request,
+                                      template_name='',
+                                      context={'selected_data': attribute_class.products.all(),
+                                               'instance': attribute_class
+                                               }
+                                      )
+    return JsonResponse(data)
