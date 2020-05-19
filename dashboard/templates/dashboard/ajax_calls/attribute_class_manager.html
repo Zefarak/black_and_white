@@ -1,0 +1,21 @@
+<table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Προϊον</th>
+                                                    <th>Αξια</th>
+                                                    <th>Προσθηκη</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for product in selected_data %}
+                                                    <tr>
+                                                        <td>{{ product }}</td>
+                                                        <td>{{ product.tag_final_price }}</td>
+                                                        <td><button
+                                                                data-href="{% url 'dashboard:ajax_attribute_manager' instance.id product.id 'remove' %}"
+                                                                type="button" class="btn btn-danger handle_button"><i class="fa fa-minus"></i> </button>
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>

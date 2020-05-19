@@ -26,6 +26,8 @@ from cart.tools import check_or_create_cart
 from point_of_sale.models import Order, OrderItem
 from catalogue.models import Product
 
+from django_tables2 import RequestConfig
+
 User = get_user_model()
 
 from subscribe.models import Subscribe, UserSubscribe
@@ -221,7 +223,9 @@ class UserCartItemsView(ListView):
     def get_context_data(self, **kwargs):
         context = super(UserCartItemsView, self).get_context_data(**kwargs)
         context['page_title'] = 'Ολα Τα Προϊόντα μου'
-        context['queryset_table'] = UserOrderItemTable(self.object_list)
+        qs_table = UserOrderItemTable(self.object_list)
+        RequestConfig(self.request, paginate={'per_page': self.paginate_by}).configure(qs_table)
+        context['queryset_table'] = qs_table
         return context
 
 

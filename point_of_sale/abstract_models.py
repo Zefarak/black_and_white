@@ -55,7 +55,7 @@ class DefaultOrderModel(models.Model):
 
 
 class DefaultOrderItemModel(models.Model):
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Ημερομηνια Δημιουργιας')
     edited = models.DateTimeField(auto_now=True)
     qty = models.PositiveIntegerField(default=1, verbose_name='Ποσότητα')
     value = models.DecimalField(decimal_places=2, max_digits=20, default=0, verbose_name='Αξία Προϊόντων')

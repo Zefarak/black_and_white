@@ -28,7 +28,7 @@ from .ajax_views import (ajax_category_site, ajax_product_images, ajax_add_or_de
                          ajax_change_qty_on_attribute, ajax_products_discount_add, ajax_product_discount_delete,
                          popup_category, popup_brand, popup_vendor, popup_color,ajax_different_color_product_view,
                          ajax_product_calculate_view, ajax_related_products_view, ajax_modify_gift_view, ajax_attribute_show_or_hide,
-                         ajax_quick_change_qty_to_product,
+                         ajax_quick_change_qty_to_product, ajax_handle_attribute_manager_view
                          )
 app_name = 'dashboard'
 
@@ -81,6 +81,7 @@ urlpatterns = [
     path('ajax/discount/delete-product/<int:pk>/<int:dk>/', ajax_product_discount_delete, name='ajax_products_discount_delete'),
     path('ajax-modify-gift/<int:pk>/<int:dk>/<slug:action>/', ajax_modify_gift_view, name='ajax_modify_gift'),
     path('ajax/add-or-hide-attr/<int:pk>/', ajax_attribute_show_or_hide, name='ajax_show_or_hide_attr'),
+    path('ajax/add-or-delete/attribute-manager/<int:pk>/<int:dk>/<slug:action>/', ajax_handle_attribute_manager_view, name='ajax_attribute_manager'),
 
 
     path('product/characteristic-manager/<int:pk>/', CharacteristicsManagerView.as_view(), name='char_manager_view'),

@@ -418,9 +418,6 @@ class OrderItem(DefaultOrderItemModel):
             return True
         return False
 
-    def get_clean_value(self):
-        return self.final_value * (100 - self.order.taxes / 100)
-
     def get_extra_value(self):
         attrs = self.attributes.all()
         attr_cost = attrs.aggregate(Sum('value'))['value__sum'] if attrs.exists() else 0.00
@@ -435,8 +432,6 @@ class OrderItem(DefaultOrderItemModel):
     def get_total_cost_value(self):
         return round(self.cost * self.qty, 2)
 
-    def tag_clean_value(self):
-        return '%s %s' % (self.get_clean_value(), CURRENCY)
 
     def tag_total_value(self):
         return '%s %s' % (self.get_total_value, CURRENCY)
@@ -506,18 +501,18 @@ class OrderItem(DefaultOrderItemModel):
                 id = field.split('_')[1]
                 print('works', id)
 
-                attr_class = get_object_or_404(AttributeProductClass, id=id)
-                if attr_class.class_related.is_radio_button:
+                attr_class = get_object_or_404(AttributeClass, id=id)
+                if attr_class.is_radio_button:
                     attr_id = request.POST.get(field)
                     if attr_id.isdigit():
-                        attr = get_object_or_404(Attribute, id=attr_id)
+                        attr = get_object_or_404(AttributeTitle, id=attr_id)
                         order_item_attr.attribute.add(attr)
                 else:
                     attr_ids = request.POST.getlist(field)
                     for attr in attr_ids:
                         if attr.isdigit():
                             print('attr', attr)
-                            attr_se = get_object_or_404(Attribute, id=attr)
+                            attr_se = get_object_or_404(AttributeTitle, id=attr)
                             order_item_attr.attribute.add(attr_se)
 
     @staticmethod

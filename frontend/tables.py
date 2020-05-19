@@ -33,7 +33,9 @@ class UserOrderItemTable(tables.Table):
         "{% if record.favorite %} <i class='fa fa-minus'></i> {% else %} <i class='fa fa-plus'></i> {% endif %}</a>",
         orderable=False, verbose_name='Αγαπημενα Προϊόντα')
 
+    tag_final_value = tables.Column(orderable=False, verbose_name='Αξια')
+
     class Meta:
         model = OrderItem
         template_name = 'django_tables2/bootstrap.html'
-        fields = ['title', 'qty', 'tag_final_value']
+        fields = ['timestamp', 'title','qty', 'tag_final_value']

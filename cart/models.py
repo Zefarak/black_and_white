@@ -439,8 +439,8 @@ class CartProfile(models.Model):
     address = models.CharField(max_length=100, verbose_name='Διευθυνση', blank=True, null=True)
     city = models.CharField(max_length=100, verbose_name='Πολη', blank=True, null=True)
     zip_code = models.CharField(max_length=5, verbose_name='Ταχυδρομικος Κωδικας', blank=True, null=True)
-    cellphone = models.CharField(max_length=10, verbose_name='Κινητό', blank=True, null=True)
-    phone = models.CharField(max_length=10, blank=True, verbose_name='Σταθερο Τηλεφωνο')
+    cellphone = models.CharField(max_length=100, verbose_name='Κινητό', blank=True, null=True)
+    phone = models.CharField(max_length=100, blank=True, verbose_name='Σταθερο Τηλεφωνο')
     notes = models.TextField(blank=True, verbose_name='Σημειωσεις')
     cart_related = models.OneToOneField(Cart, on_delete=models.CASCADE, related_name='cart_profile')
 
