@@ -10,7 +10,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-header">
-                                    <h4>dsfdsf</h4>
+                                    <h4>{{ instance }}</h4>
+                                    <a href="{% url 'dashboard:attribute_class_list_view' %}" class="btn btn-danger pull-right">Επιστροφη</a>
                                 </div>
                             </div>
                         </div>
@@ -20,6 +21,22 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h4>Προϊόντα</h4>
+                                        <form method="get" class="form">
+                                            <input type="text" class="form-control" name="search_name">
+                                            <div class="row">
+                                                {% for category in categories %}
+                                                    <div class="col-3">
+                                                        <div class="form-check">
+                                                            <input name="cate_name" value="{{ category.slug }}" type="checkbox" class="form-check-input" id="cate_{{ category.id }}">
+                                                            <label class="form-check-label" for="cate_{{ category.id }}">{{ category.name }}</label>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                            <br><hr>
+                                            <button type="submit" class="btn-success btn"><i class="fa fa-save"></i> </button>
+                                            <a href="{{ request.path }}" class="btn btn-warning">Καθαρισμος</a>
+                                        </form>
                                     </div>
                                     <div class="card-body">
                                         <table class="table table-bordered">

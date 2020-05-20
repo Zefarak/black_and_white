@@ -373,6 +373,7 @@ def attribute_class_manager_view(request, pk):
     instance = get_object_or_404(AttributeClass, id=pk)
     selected_data = instance.products.all()
     products = Product.filters_data(request, Product.objects.all())
+    categories = Category.objects.all()
     context = locals()
 
     return render(request, 'dashboard/settings/attribute_class_manager.html', context)

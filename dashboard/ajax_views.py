@@ -301,14 +301,13 @@ def ajax_quick_change_qty_to_product(request, pk):
 
 @staff_member_required
 def ajax_handle_attribute_manager_view(request, pk, dk, action):
-    print('hitted!')
     attribute_class = get_object_or_404(AttributeClass, id=pk)
     product = get_object_or_404(Product, id=dk)
     attribute_class.products.add(product) if action == 'add' else attribute_class.products.remove(product)
     attribute_class.save()
     data = dict()
     data['result'] = render_to_string(request=request,
-                                      template_name='dashboard/ajax_views/attribute_class_manager/html',
+                                      template_name='dashboard/ajax_calls/attribute_class_manager.html',
                                       context={'selected_data': attribute_class.products.all(),
                                                'instance': attribute_class
                                                }

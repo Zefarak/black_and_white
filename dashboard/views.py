@@ -625,7 +625,7 @@ class GiftUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(GiftUpdateView, self).get_context_data(**kwargs)
         context['queryset'] = Product.filters_data(self.request, Product.objects.all())[:30]
-
+        context['categories'] = Category.objects.all()
         return context
 
 

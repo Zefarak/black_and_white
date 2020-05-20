@@ -38,4 +38,4 @@ class UserOrderItemTable(tables.Table):
     class Meta:
         model = OrderItem
         template_name = 'django_tables2/bootstrap.html'
-        fields = ['timestamp', 'title','qty', 'tag_final_value']
+        fields = ['timestamp', 'title', 'qty', 'tag_final_value']
