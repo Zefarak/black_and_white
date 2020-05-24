@@ -174,9 +174,7 @@ class ProductView(DetailView, FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = self.object
-        attributes = None
-        if product.have_attr:
-            attributes = Attribute.my_query.product_attributes_with_qty(product)
+        print(product.my_attr_class.all())
         contact_form = ContactFrontEndForm()
         categories_p = self.object.category_site.all()
         same_cate_products = Product.my_query.active_for_site().filter(category_site__in=categories_p).exclude(id=self.object.id)[:4]
@@ -189,6 +187,7 @@ class ProductView(DetailView, FormView):
         return context
 
     def form_valid(self, form):
+        # not use,  when form is valid its redirect to another url
         product = get_object_or_404(Product, slug=self.kwargs['slug'])
 
         if product.have_attr:
@@ -197,9 +196,11 @@ class ProductView(DetailView, FormView):
             return super().form_valid(form)
         qty = form.cleaned_data.get('qty', 1)
         attribute_id = self.request.POST.get('attribute', None)
-        cart = check_or_create_cart(self.request)
-        result, message = CartItem.create_cart_item(cart, product, qty, attribute_id)
-        messages.success(self.request, message)
+        print('attribute', attribute_id)
+        # cart = check_or_create_cart(self.request)
+        # result, message = CartItem.create_cart_item(cart, product, qty, attribute_id)
+        # messages.success(self.request, message)
+
         return super(ProductView, self).form_valid(form)
 
     def form_invalid(self, form):

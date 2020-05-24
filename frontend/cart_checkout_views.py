@@ -15,6 +15,7 @@ from cart.models import CartItem, CartProfile, CartItemGifts
 from cart.subscribe_models import  CartSubscribe, CartSubscribeDiscount
 from cart.tools import check_or_create_cart, add_product_to_cart_movements
 from catalogue.models import Product
+from .my_decorators import site_active
 from catalogue.product_attritubes import Attribute
 from site_settings.models import Shipping, PaymentMethod
 from cart.forms import CheckOutForm
@@ -50,12 +51,8 @@ def add_subscribe_to_cart(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@site_active
 def add_product_to_cart(request, slug):
-    site_setting = get_object_or_404(SiteSettings, id=1)
-    if not site_setting.is_open:
-        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
     if product.support_transcations and product.qty <= 0:
@@ -77,11 +74,8 @@ def add_product_to_cart(request, slug):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@site_active
 def add_product_with_attr_to_cart(request, slug):
-    site_setting = get_object_or_404(SiteSettings, id=1)
-    if not site_setting.is_open:
-        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     cart = check_or_create_cart(request)
     product = get_object_or_404(Product, slug=slug)
     cart_item, message = CartItem.create_cart_item_with_multi_attr(cart, product, request)
@@ -97,10 +91,8 @@ def delete_product_from_cart(request, pk):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@site_active
 def ajax_change_cart_item_qty(request, pk, action):
-    site_setting = get_object_or_404(SiteSettings, id=1)
-    if not site_setting.is_open:
-        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
     cart_item = get_object_or_404(CartItem, id=pk)
     cart = cart_item.cart
     session_id = request.SESSION.get('cart_id')
