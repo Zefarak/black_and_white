@@ -43,7 +43,7 @@ class CartPageView(TemplateView):
 def add_subscribe_to_cart(request, pk):
     site_setting = get_object_or_404(SiteSettings, id=1)
     if not site_setting.is_open:
-        messages.warning(request, 'Το κατάστημά μας είναι κλειστό αυτή την στιγμή')
+        messages.warning(request, 'Αυτή την στιγμή το delivery είναι κλείστο. Ελάτε για ένα ποτάκι όμως!')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
     instance = get_object_or_404(Subscribe, id=pk)
     cart = check_or_create_cart(request)

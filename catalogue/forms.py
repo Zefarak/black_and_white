@@ -104,7 +104,7 @@ class ProductForm(BaseForm, forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['title', 'sku',
+        fields = ['title', 'sku', 'product_class',
                   'vendor', 'order_code',
                   'brand', 'slug',
                   'price', 'price_discount',

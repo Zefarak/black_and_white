@@ -59,6 +59,7 @@ class ProductFormWithQty(BaseForm, forms.ModelForm):
         model = Product
         fields = ['active',
                   'featured_product',
+                  'product_class',
                   'title', 'sku',
                   'measure_unit',
                   'price', 'price_discount',

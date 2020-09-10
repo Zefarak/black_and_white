@@ -81,7 +81,7 @@ class Product(DefaultBasicModel):
 
     class Meta:
         verbose_name_plural = "1. Products"
-        ordering = ['-active', '-id', ]
+        ordering = ['-active', '-featured_product', '-id', ]
 
     def save(self, *args, **kwargs):
         self.final_price = self.price_discount if self.price_discount > 0 else self.price
