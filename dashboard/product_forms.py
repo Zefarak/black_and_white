@@ -37,7 +37,7 @@ class ProductFormWarehouseTranscations(BaseForm, forms.ModelForm):
 
 
 class ProductForm(BaseForm, forms.ModelForm):
-    product_class = forms.ModelChoiceField(queryset=ProductClass.objects.all(), widget=forms.HiddenInput())
+    # product_class = forms.ModelChoiceField(queryset=ProductClass.objects.all(), widget=forms.HiddenInput())
 
     class Meta:
         model = Product

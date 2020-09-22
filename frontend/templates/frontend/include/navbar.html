@@ -20,6 +20,7 @@
                                     <!-- Vertical Menu -->
                                     <ul id="sub-menu" class="sm pixelstrap sm-vertical">
                                         <li><a href="{% url 'homepage' %}">Αρχικη Σελιδα</a> </li>
+                                        <li><a href="{% url 'offer_view' %}">Προσφορες</a> </li>
                                         {% for category in parent_categories %}
                                         <li><a href="{{category.get_absolute_url }}">{{ category }}</a>
                                             <ul class="mega-menu clothing-menu">
