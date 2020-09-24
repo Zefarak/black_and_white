@@ -121,7 +121,8 @@ class CheckoutView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profiles'] = self.request.user.profile.all()
+        if self.request.user.is_authenticated:
+            context['profiles'] = self.request.user.profile.all()
         return context
 
     def get(self, request, *args, **kwargs):
