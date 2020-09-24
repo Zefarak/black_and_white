@@ -191,13 +191,13 @@ class Banner(models.Model):
                    )
     SIDE_CHOICES = (
         ('p-left', 'Αριστερα'),
-        ('p-right', 'Δεχιά'),
+        ('p-right', 'Δεξιά'),
         ('none', 'Κάθόλου')
     )
     active = models.BooleanField(default=False, verbose_name='Κατάσταση')
     category = models.CharField(max_length=1, choices=BANNER_TYPE, default='a')
     title = models.CharField(unique=True, max_length=100, verbose_name='Τίτλος')
-    text = HTMLField(verbose_name='Σχόλiα', blank=True)
+    text = HTMLField(verbose_name='Σχόλια', blank=True)
     image = models.ImageField(upload_to=upload_banner, validators=[validate_size, ])
     url = models.URLField(blank=True, null=True)
     bootstrap_class = models.CharField(default='home-slide', max_length=200, help_text='home-slide text-center')
