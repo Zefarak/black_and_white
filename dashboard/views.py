@@ -389,7 +389,7 @@ class ProductAttriClassManagerView(ListView):
 
 @staff_member_required
 def delete_product_attribute_view(request, pk, dk):
-    instance = get_object_or_404(Product, pk)
+    instance = get_object_or_404(Product, id=pk)
     attribute = get_object_or_404(AttributeClass, id=dk)
     attribute.products.remove(instance)
     attribute.save()

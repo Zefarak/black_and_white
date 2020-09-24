@@ -63,7 +63,7 @@ urlpatterns = [
     path('product/attribute-manager/<int:pk>/', ProductAttributeManagerView.as_view(), name='attribute_manager_view'),
     path('product/attribute-create/<int:pk>/<int:dk>/', create_attr_product_class, name='product_create_attr_view'),
     path('product/attribute-detail/<int:pk>/', ProductAttriClassManagerView.as_view(), name='product_attr_detail_view'),
-    path('product/attribute-delete/<int:pk>/', delete_product_attribute_view, name='delete_product_attr'),
+    path('product/attribute-delete/<int:pk>/<int:dk>/', delete_product_attribute_view, name='delete_product_attr'),
 
     path('product/related/<int:pk>/', RelatedProductsView.as_view(), name='related_products_manager_view'),
     path('product/different-color/<int:pk>/', ProductWithDifferentColorListView.as_view(), name='different_color_manager_view'),
