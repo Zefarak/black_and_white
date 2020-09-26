@@ -43,6 +43,24 @@
                 </div>
             </div>
         </div>
+
+    {% else %}
+         <div class="home text-left p-left">
+            <img src="{% static 'frontend/my_assets/banner_for_login.jpg' %}" alt="" class="bg-img blur-up lazyload">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="slider-contain">
+                            <div>
+                                <br> <br>
+                                <a style="margin-left: 40%" href="{% url 'login' %}" class="btn btn-success pull-right">Συνδεθείτε!</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
     {% for banner in banners %}
         <div>

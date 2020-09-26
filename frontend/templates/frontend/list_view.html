@@ -99,7 +99,26 @@
                 },
             onAfterPageLoad: function ($items) {
                 $('.loading').hide();
+                $('.add_product_modal').click(function (evt) {
+                    evt.preventDefault();
+                    console.log('work i thing')
+                    $('#modal_area').empty();
+                    const my_btn = $(this);
+                    const url = my_btn.attr('data-href');
+                    $.ajax({
+                        method: 'GET',
+                        dataType: 'json',
+                        url: url,
+
+                        success: function (data) {
+                            $('#modal_area').html(data.add_modal);
+                            $('#quick-view').modal('show');
+                        }
+                    })
+    })
+
             }
+
         });
     </script>
 {% endblock %}
