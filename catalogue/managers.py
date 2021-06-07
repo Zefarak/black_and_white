@@ -45,7 +45,7 @@ class ProductManager(models.Manager):
         return self.active().filter(is_offer=True)
 
     def active_for_site(self):
-        return self.active()
+        return self.active().filter(product_class__cocktail=False)
 
     def active_with_qty(self):
         return self.active_for_site().filter(qty__gte=0)
@@ -58,6 +58,9 @@ class ProductManager(models.Manager):
 
     def new_products(self):
         return self.active_for_site().filter(timestamp_gte=one_month_earlier)
+
+    def cocktails(self):
+        return self.active().filter(product_class__cocktail=True)
 
 
 class CategoryManager(models.Manager):

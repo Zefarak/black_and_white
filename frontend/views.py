@@ -223,6 +223,20 @@ def newsletter_form_view(request):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+class CocktailListView(ListView):
+    model = Product
+    template_name = 'frontend/cocktail.html'
+
+    def get_queryset(self):
+        return Product.my_query.cocktails()
+
+    def get_context_data(self,  **kwargs):
+        context = super(CocktailListView, self).get_context_data(**kwargs)
+        context['page_title'] = 'Cocktails'
+
+        return context
+
+
 def demo_only_view_restart_session(request):
     del request.session['cart_id']
     return HttpResponseRedirect('/')

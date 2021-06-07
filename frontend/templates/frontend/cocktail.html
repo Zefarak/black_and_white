@@ -1,0 +1,71 @@
+{% extends 'frontend/index.html' %}
+
+
+
+{% block content %}
+
+    <!-- breadcrumb start -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title">
+                        <h2>review</h2>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <nav aria-label="breadcrumb" class="theme-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Coctails</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb End -->
+
+
+    <!-- section start -->
+    <section class="section-b-space blog-detail-page review-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2>Cocktails</h2>
+                    <br>
+                    <hr>
+                </div>
+                <div class="col-sm-12">
+                    <ul class="comment-section">
+                        {% for cocktail in object_list %}
+                        <li>
+                            <div class="media">
+                                <div class="media-body">
+                                    <h6>{{ cocktail }}</h6>
+                                    {{ cocktail.site_text|default_if_none:'No description'|safe }}
+                                    <br>
+                                    <ul class="comnt-sec">
+                                        <li><a style="color: white" href="{% url 'add_to_cart' cocktail.slug %}" class="btn btn-dark">
+                                            <span><i class="fa fa-cart"></i> </span> Προσθηκη στο καλαθι</a>
+                                        </li>
+                                        <li>Τιμή {{ cocktail.tag_final_price }}</li>
+                                    </ul>
+                                    <hr>
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section ends -->
+
+{% endblock %}
+
+
+
+

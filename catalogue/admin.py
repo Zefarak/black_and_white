@@ -58,7 +58,7 @@ class ProductAdmin(ImportExportModelAdmin):
                        ('title', 'brand', 'sku'),
                        'category_site',
                        ('price', 'price_discount', 'tag_final_price'),
-                       ('qty', 'qty_kilo', 'measure_unit'),
+                       ('qty', 'measure_unit'),
                        )
         }),
 

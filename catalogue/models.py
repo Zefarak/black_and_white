@@ -29,6 +29,7 @@ class ProductClass(models.Model):
     is_service = models.BooleanField(default=False, verbose_name='Υπηρεσία')
     have_transcations = models.BooleanField(default=True, verbose_name='Υποστηρίζει συναλλαγές')
     have_attribute = models.BooleanField(default=False, verbose_name='Μεγεθολόγιο')
+    cocktail = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Product Class'

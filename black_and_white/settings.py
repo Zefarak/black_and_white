@@ -11,9 +11,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 REAL_DB = True
-PRODUCTION = True
+PRODUCTION = False
 
 
 if PRODUCTION:
@@ -152,8 +152,6 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Istanbul'
 
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
 
 USE_L10N = True
@@ -227,25 +225,3 @@ SENDGRID_SANDBOX_MODE_IN_DEBUG = False
 SENDGRID_ECHO_TO_STDOUT = True
 SITE_EMAIL = 'lirageika@hotmail.gr'
 
-TINYMCE_DEFAULT_CONFIG = {
-    'theme': "advanced",
-    'skin': "o2k7",
-    'skin_variant': "silver",
-    'relative_urls': False,
-    'width': "700",
-    'height': "400",
-    'theme_advanced_toolbar_location': "top",
-    'theme_advanced_toolbar_align': "left",
-    'theme_advanced_statusbar_location': "bottom",
-    'theme_advanced_resizing': True,
-    'element_format': "html",
-    'plugins': "contextmenu,directionality,fullscreen,paste,preview,searchreplace,spellchecker,visualchars,wordcount,table",
-    'theme_advanced_buttons3_add' : "tablecontrols",
-    'table_styles' : "Header 1=header1;Header 2=header2;Header 3=header3",
-    'table_cell_styles' : "Header 1=header1;Header 2=header2;Header 3=header3;Table Cell=tableCel1",
-    'table_row_styles' : "Header 1=header1;Header 2=header2;Header 3=header3;Table Row=tableRow1",
-    'table_cell_limit' : 100,
-    'table_row_limit' : 5,
-    'table_col_limit' : 5,
-    'table_inline_editing': True,
-}
