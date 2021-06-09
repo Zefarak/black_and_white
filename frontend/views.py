@@ -92,8 +92,13 @@ class CategoryView(ListView):
     model = Product
     paginate_by = 8
 
-    def get_queryset(self):
+    def get(self, request, *args, **kwargs):
         self.category = get_object_or_404(Category, slug=self.kwargs['slug'])
+        if not self.category.product_support_image:
+            self.template_name = 'frontend/cocktail.html'
+        return super().get(request, *args, **kwargs)
+
+    def get_queryset(self):
         qs = Product.objects.filter(category_site=self.category)
         self.initial_queryset = qs
         qs = self.initial_queryset

@@ -55,6 +55,7 @@ class Category(MPTTModel):
     order = models.IntegerField(default=1)
     slug = models.SlugField(blank=True, null=True, allow_unicode=True)
     show_on_menu = models.BooleanField(default=False, verbose_name='Active on Navbar')
+    product_support_image = models.BooleanField(default=True, verbose_name='Χρησιμοποιηση εικόνων')
     browser = CategoryManager()
     objects = models.Manager()
 

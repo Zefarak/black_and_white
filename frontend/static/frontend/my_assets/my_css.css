@@ -13,3 +13,8 @@
     margin-top: 6%;
 }
 
+.blog-detail-page .comment-section li {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    border-top: 1px solid #eee;
+}

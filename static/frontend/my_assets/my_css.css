@@ -1,3 +1,9 @@
 .full-scroll-menu {
     background-color: whitesmoke;
 }
+
+.blog-detail-page .comment-section li {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    border-top: 1px solid #eee;
+}
